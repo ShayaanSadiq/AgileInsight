@@ -1,49 +1,107 @@
 import { useState, useEffect } from "react";
 
 export default function UserDashboard() {
-
+  const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
+
+  const currentUser = "Ahmed"; // normally comes from login
 
   useEffect(() => {
     const savedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+
+    const savedTasks = JSON.parse(localStorage.getItem("all_tasks")) || [];
+
     setProjects(savedProjects);
+
+    const myTasks = savedTasks.filter((task) => task.assignee === currentUser);
+
+    setTasks(myTasks);
   }, []);
+
+  const completed = tasks.filter((t) => t.status === "done").length;
+  const pending = tasks.filter((t) => t.status !== "done").length;
 
   return (
     <div style={styles.page}>
-
-      <div style={styles.navbar}>
-        User Dashboard
-      </div>
+      <div style={styles.navbar}>{currentUser} Dashboard</div>
 
       <div style={styles.dashboard}>
+        {/* Analytics */}
 
-        <h2 style={styles.heading}>Existing Projects</h2>
+        <div style={styles.analytics}>
+          <div style={styles.card}>
+            My Tasks
+            <p>{tasks.length}</p>
+          </div>
 
-        {projects.length === 0 ? (
-          <p>No projects available.</p>
+          <div style={styles.card}>
+            Completed
+            <p>{completed}</p>
+          </div>
+
+          <div style={styles.card}>
+            Pending
+            <p>{pending}</p>
+          </div>
+        </div>
+
+        {/* Assigned Tasks */}
+
+        <h2 style={styles.heading}>My Tasks</h2>
+
+        {tasks.length === 0 ? (
+          <p>No tasks assigned.</p>
         ) : (
-          <div style={styles.projectGrid}>
-            {projects.map((project) => (
-              <div key={project.id} style={styles.projectCard}>
-                {project.name}
-              </div>
-            ))}
+          <div style={styles.taskList}>
+            {tasks.map((task) => {
+              const project = projects.find((p) => p.id === task.projectId);
+
+              return (
+                <div key={task.id} style={styles.taskCard}>
+                  <h3>{task.title}</h3>
+
+                  <p style={styles.projectName}>
+                    Project: {project?.name || "Unknown"}
+                  </p>
+
+                  <p>
+                    Status: <b>{task.status}</b>
+                  </p>
+
+                  <p>Deadline: {task.deadline || "Not set"}</p>
+                </div>
+              );
+            })}
           </div>
         )}
 
-      </div>
+        {/* Upcoming Deadlines */}
 
+        <h2 style={styles.heading}>Upcoming Deadlines</h2>
+
+        <div style={styles.deadlineList}>
+          {tasks
+            .filter((t) => t.deadline)
+            .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+            .slice(0, 3)
+            .map((task) => (
+              <div key={task.id} style={styles.deadlineCard}>
+                <b>{task.title}</b>
+
+                <p>{task.deadline}</p>
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 const styles = {
-
   page: {
-    height: "100vh",
+    height: "100%",
     background: "linear-gradient(135deg,#4682B4,#2a5298)",
-    fontFamily: "Arial"
+    fontFamily: "Arial",
   },
 
   navbar: {
@@ -54,7 +112,7 @@ const styles = {
     alignItems: "center",
     paddingLeft: "20px",
     fontSize: "20px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   dashboard: {
@@ -63,32 +121,61 @@ const styles = {
     borderRadius: "10px",
     padding: "30px",
     height: "calc(100vh - 100px)",
-    overflowY: "auto"
+    overflowY: "auto",
+  },
+
+  analytics: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3,1fr)",
+    gap: "20px",
+    marginBottom: "30px",
+  },
+
+  card: {
+    backgroundColor: "#f7f7f7",
+    borderRadius: "8px",
+    padding: "20px",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   heading: {
-    marginBottom: "20px",
-    fontSize: "28px",
+    marginTop: "25px",
+    marginBottom: "15px",
+    fontSize: "24px",
     fontWeight: "800",
     color: "#1f3f7a",
-    letterSpacing: "1px",
-    borderBottom: "3px solid #1f3f7a",
-    paddingBottom: "8px"
   },
 
-  projectGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))",
-    gap: "15px"
+  taskList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
   },
 
-  projectCard: {
-    padding: "20px",
+  taskCard: {
     border: "1px solid #ddd",
     borderRadius: "8px",
-    backgroundColor: "#f7f7f7",
-    fontWeight: "bold",
-    textAlign: "center"
-  }
+    padding: "15px",
+    background: "#f7f7f7",
+  },
 
+  projectName: {
+    fontSize: "14px",
+    color: "#444",
+  },
+
+  deadlineList: {
+    display: "flex",
+    gap: "15px",
+    flexWrap: "wrap",
+  },
+
+  deadlineCard: {
+    background: "#f7f7f7",
+    padding: "15px",
+    borderRadius: "8px",
+    border: "1px solid #ddd",
+    width: "200px",
+  },
 };

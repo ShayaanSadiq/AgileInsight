@@ -1,20 +1,19 @@
 import { useState } from "react";
 
 export default function OrgAuthPage() {
-
   const [isLogin, setIsLogin] = useState(true);
   const [isHover, setIsHover] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -29,7 +28,7 @@ export default function OrgAuthPage() {
     if (isLogin) {
       console.log("Organization Login Data:", {
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
     } else {
       console.log("Organization Signup Data:", formData);
@@ -38,18 +37,15 @@ export default function OrgAuthPage() {
 
   return (
     <>
-      <div style={styles.navbar}>
-        Organization Portal
-      </div>
+      <div style={styles.navbar}>Organization Portal</div>
 
       <div style={styles.page}>
-
         <div style={styles.container}>
-
-          <h2 style={styles.title}>{isLogin ? "Organization Login" : "Organization Signup"}</h2>
+          <h2 style={styles.title}>
+            {isLogin ? "Organization Login" : "Organization Signup"}
+          </h2>
 
           <form onSubmit={handleSubmit} style={styles.form}>
-
             {!isLogin && (
               <input
                 type="text"
@@ -87,35 +83,28 @@ export default function OrgAuthPage() {
                 ...styles.button,
                 backgroundColor: isHover ? "#1f3f7a" : "#2a5298",
                 transform: isHover ? "scale(1.05)" : "scale(1)",
-                transition: "all 0.2s ease"
+                transition: "all 0.2s ease",
               }}
               onMouseEnter={() => setIsHover(true)}
               onMouseLeave={() => setIsHover(false)}
             >
               {isLogin ? "Login" : "Signup"}
             </button>
-
           </form>
 
           <p style={styles.text}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <span
-              style={styles.toggle}
-              onClick={() => setIsLogin(!isLogin)}
-            >
+            <span style={styles.toggle} onClick={() => setIsLogin(!isLogin)}>
               {isLogin ? " Signup" : " Login"}
             </span>
           </p>
-
         </div>
-
       </div>
     </>
   );
 }
 
 const styles = {
-
   navbar: {
     width: "100%",
     padding: "15px",
@@ -126,17 +115,18 @@ const styles = {
     textAlign: "center",
     position: "fixed",
     top: 0,
-    left: 0
+    left: 0,
   },
 
   page: {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
+    margin: "0px",
     alignItems: "center",
     background: "linear-gradient(135deg, #4682B4, #2a5298)",
     fontFamily: "Arial",
-    paddingTop: "60px"
+    paddingTop: "60px",
   },
 
   container: {
@@ -145,7 +135,7 @@ const styles = {
     backgroundColor: "white",
     borderRadius: "10px",
     boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
-    textAlign: "center"
+    textAlign: "center",
   },
 
   title: {
@@ -155,7 +145,7 @@ const styles = {
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "14px"
+    gap: "14px",
   },
 
   input: {
@@ -163,7 +153,7 @@ const styles = {
     fontSize: "14px",
     borderRadius: "6px",
     border: "1px solid #ccc",
-    outline: "none"
+    outline: "none",
   },
 
   button: {
@@ -172,18 +162,17 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     cursor: "pointer",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   text: {
     marginTop: "15px",
-    fontSize: "14px"
+    fontSize: "14px",
   },
 
   toggle: {
     color: "#2a5298",
     cursor: "pointer",
-    fontWeight: "bold"
-  }
-
+    fontWeight: "bold",
+  },
 };

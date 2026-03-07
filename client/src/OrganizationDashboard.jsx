@@ -1,84 +1,199 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OrgDashboard() {
+  const navigate = useNavigate();
 
   const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+
   const [projectName, setProjectName] = useState("");
+  const [role, setRole] = useState("");
+  const [selectedMembers, setSelectedMembers] = useState([]);
+
+  const [sprintName, setSprintName] = useState("");
+
+  const roleMembers = {
+    "Backend Developer": ["Ahmed", "Ravi", "Imran"],
+    "Frontend Developer": ["Sara", "Ali", "Kiran"],
+    "UI Designer": ["Maya", "Fatima"],
+    Tester: ["John", "Rahul"],
+  };
 
   useEffect(() => {
     const savedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+
+    const savedTasks = JSON.parse(localStorage.getItem("all_tasks")) || [];
+
     setProjects(savedProjects);
+    setTasks(savedTasks);
   }, []);
 
-  const createProject = () => {
+  const toggleMember = (member) => {
+    if (selectedMembers.includes(member)) {
+      setSelectedMembers(selectedMembers.filter((m) => m !== member));
+    } else {
+      setSelectedMembers([...selectedMembers, member]);
+    }
+  };
 
+  const createProject = () => {
     if (!projectName.trim()) {
-      alert("Project name cannot be empty");
+      alert("Project name required");
       return;
     }
 
     const newProject = {
       id: Date.now(),
-      name: projectName
+      name: projectName,
+
+      members: selectedMembers.map((name) => ({
+        name,
+        role,
+      })),
+
+      sprints: sprintName ? [{ id: Date.now() + 1, name: sprintName }] : [],
     };
 
     const updatedProjects = [...projects, newProject];
 
     setProjects(updatedProjects);
+
     localStorage.setItem("projects", JSON.stringify(updatedProjects));
 
     setProjectName("");
+    setRole("");
+    setSelectedMembers([]);
+    setSprintName("");
+
     setShowModal(false);
   };
 
+  const completedTasks = tasks.filter((t) => t.status === "done").length;
+
   return (
     <div style={styles.page}>
+      {/* NAVBAR */}
 
-      {/* Navbar */}
       <div style={styles.navbar}>
         <span>Organization Dashboard</span>
 
-        <button
-          style={styles.addButton}
-          onClick={() => setShowModal(true)}
-        >
+        <button style={styles.addButton} onClick={() => setShowModal(true)}>
           +
         </button>
       </div>
 
-      {/* White Dashboard Area */}
       <div style={styles.dashboard}>
+        {/* ANALYTICS */}
 
-        <h2 style={styles.heading}>Existing Projects</h2>
+        <div style={styles.analytics}>
+          <div style={styles.card}>
+            <h3>Total Projects</h3>
+            <p>{projects.length}</p>
+          </div>
+
+          <div style={styles.card}>
+            <h3>Total Tasks</h3>
+            <p>{tasks.length}</p>
+          </div>
+
+          <div style={styles.card}>
+            <h3>Completed Tasks</h3>
+            <p>{completedTasks}</p>
+          </div>
+
+          <div style={styles.card}>
+            <h3>Active Tasks</h3>
+            <p>{tasks.length - completedTasks}</p>
+          </div>
+        </div>
+
+        {/* PROJECTS */}
+
+        <h2 style={styles.heading}>Projects</h2>
 
         {projects.length === 0 ? (
           <p>No projects created yet.</p>
         ) : (
           <div style={styles.projectGrid}>
             {projects.map((project) => (
-              <div key={project.id} style={styles.projectCard}>
-                {project.name}
+              <div
+                key={project.id}
+                style={styles.projectCard}
+                onClick={() => navigate(`/project/${project.id}`)}
+              >
+                <h3>{project.name}</h3>
+
+                <p style={styles.projectStats}>
+                  Members: {project.members?.length || 0}
+                </p>
+
+                <p style={styles.projectStats}>
+                  Sprints: {project.sprints?.length || 0}
+                </p>
               </div>
             ))}
           </div>
         )}
-
       </div>
 
-      {/* Modal for Creating Project */}
+      {/* CREATE PROJECT MODAL */}
+
       {showModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
+            <h3>Create Project</h3>
 
-            <h3>Create New Project</h3>
+            {/* Project Name */}
 
             <input
-              type="text"
+              style={styles.input}
               placeholder="Project Name"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
+            />
+
+            {/* Role Selection */}
+
+            <select
               style={styles.input}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="">Select Role</option>
+
+              {Object.keys(roleMembers).map((r) => (
+                <option key={r}>{r}</option>
+              ))}
+            </select>
+
+            {/* Members */}
+
+            {role && (
+              <div style={styles.memberList}>
+                {roleMembers[role].map((member) => (
+                  <label key={member}>
+                    <input
+                      type="checkbox"
+                      checked={selectedMembers.includes(member)}
+                      onChange={() => toggleMember(member)}
+                    />
+
+                    {member}
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {/* Sprint */}
+
+            <input
+              style={styles.input}
+              placeholder="First Sprint Name"
+              value={sprintName}
+              onChange={(e) => setSprintName(e.target.value)}
             />
 
             <div style={styles.modalButtons}>
@@ -93,21 +208,17 @@ export default function OrgDashboard() {
                 Cancel
               </button>
             </div>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }
-
 const styles = {
-
   page: {
-    height: "100vh",
+    height: "100%",
     background: "linear-gradient(135deg,#4682B4,#2a5298)",
-    fontFamily: "Arial"
+    fontFamily: "Arial",
   },
 
   navbar: {
@@ -119,7 +230,7 @@ const styles = {
     alignItems: "center",
     padding: "0 20px",
     fontSize: "20px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
   addButton: {
@@ -131,7 +242,6 @@ const styles = {
     width: "40px",
     height: "40px",
     cursor: "pointer",
-    fontWeight: "bold"
   },
 
   dashboard: {
@@ -140,23 +250,35 @@ const styles = {
     borderRadius: "10px",
     padding: "30px",
     height: "calc(100vh - 100px)",
-    overflowY: "auto"
+  },
+
+  analytics: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4,1fr)",
+    gap: "20px",
+    marginBottom: "30px",
+  },
+
+  card: {
+    backgroundColor: "#f7f7f7",
+    borderRadius: "8px",
+    padding: "20px",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   heading: {
-    marginBottom: "20px",
-    fontSize: "28px",
+    marginTop: "20px",
+    marginBottom: "15px",
+    fontSize: "26px",
     fontWeight: "800",
     color: "#1f3f7a",
-    letterSpacing: "1px",
-    borderBottom: "3px solid #1f3f7a",
-    paddingBottom: "8px"
   },
 
   projectGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))",
-    gap: "15px"
+    gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))",
+    gap: "15px",
   },
 
   projectCard: {
@@ -164,8 +286,33 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     backgroundColor: "#f7f7f7",
+    cursor: "pointer",
+  },
+
+  projectStats: {
+    marginTop: "10px",
+    fontSize: "14px",
+    color: "#444",
+  },
+
+  taskList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  taskItem: {
+    padding: "12px",
+    border: "1px solid #ddd",
+    borderRadius: "6px",
+    display: "flex",
+    justifyContent: "space-between",
+    backgroundColor: "#f7f7f7",
+  },
+
+  status: {
+    color: "#2a5298",
     fontWeight: "bold",
-    textAlign: "center"
   },
 
   modalOverlay: {
@@ -177,7 +324,7 @@ const styles = {
     backgroundColor: "rgba(0,0,0,0.5)",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   modal: {
@@ -185,7 +332,7 @@ const styles = {
     padding: "30px",
     borderRadius: "8px",
     width: "300px",
-    textAlign: "center"
+    textAlign: "center",
   },
 
   input: {
@@ -194,12 +341,12 @@ const styles = {
     marginTop: "15px",
     marginBottom: "20px",
     borderRadius: "5px",
-    border: "1px solid #ccc"
+    border: "1px solid #ccc",
   },
 
   modalButtons: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 
   createBtn: {
@@ -208,7 +355,7 @@ const styles = {
     border: "none",
     padding: "8px 15px",
     borderRadius: "5px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
 
   cancelBtn: {
@@ -216,7 +363,6 @@ const styles = {
     border: "none",
     padding: "8px 15px",
     borderRadius: "5px",
-    cursor: "pointer"
-  }
-
+    cursor: "pointer",
+  },
 };
