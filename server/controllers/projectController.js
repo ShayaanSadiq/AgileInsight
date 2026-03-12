@@ -3,6 +3,7 @@ const ExpressError = require("../utils/ExpressError.js");
 
 const getAllProjects = async (req, res) => {
   let { orgId } = req.params;
+  console.log(orgId);
   const projects = await Project.find({ orgId: orgId });
   if (!projects) throw new ExpressError(400, "No chats available.");
   res

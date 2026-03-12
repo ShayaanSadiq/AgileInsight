@@ -5,9 +5,10 @@ const {
   getLogoutController,
   isMeUserAuthenticated,
 } = require("../controllers/orgAuthController.js");
+const isAuthenticated = require("../middlewares/orgAuthMiddleware.js");
 const WrapAsync = require("../utils/WrapAsync.js");
 
-router.get("/verify-me", isMeUserAuthenticated);
+router.get("/verify-me", isAuthenticated, isMeUserAuthenticated);
 router.post("/signup", WrapAsync(SignupController));
 router.post("/login", WrapAsync(LoginController));
 router.get("/logout", getLogoutController);

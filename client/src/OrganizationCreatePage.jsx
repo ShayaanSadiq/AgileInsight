@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OrgAuthPage() {
+  const navigate = useNavigate();
+
   const [isLogin, setIsLogin] = useState(true);
   const [isHover, setIsHover] = useState(false);
 
@@ -17,7 +20,7 @@ export default function OrgAuthPage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
@@ -25,13 +28,36 @@ export default function OrgAuthPage() {
       return;
     }
 
-    if (isLogin) {
-      console.log("Organization Login Data:", {
-        email: formData.email,
-        password: formData.password,
+    try {
+      const url = isLogin
+        ? "http://localhost:8000/org-auth/login"
+        : "http://localhost:8000/org-auth/signup";
+
+      const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
-    } else {
-      console.log("Organization Signup Data:", formData);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Something went wrong");
+        return;
+      }
+
+      // Save organization session
+      localStorage.setItem("organization", JSON.stringify(data));
+
+      alert(isLogin ? "Login Successful" : "Signup Successful");
+
+      navigate("/org/dashboard");
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
     }
   };
 
@@ -50,7 +76,7 @@ export default function OrgAuthPage() {
               <input
                 type="text"
                 name="name"
-                placeholder="Organization Name (optional)"
+                placeholder="Organization Name"
                 value={formData.name}
                 onChange={handleChange}
                 style={styles.input}
@@ -94,6 +120,7 @@ export default function OrgAuthPage() {
 
           <p style={styles.text}>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
+
             <span style={styles.toggle} onClick={() => setIsLogin(!isLogin)}>
               {isLogin ? " Signup" : " Login"}
             </span>
@@ -122,9 +149,8 @@ const styles = {
     height: "100vh",
     display: "flex",
     justifyContent: "center",
-    margin: "0px",
     alignItems: "center",
-    background: "linear-gradient(135deg, #4682B4, #2a5298)",
+    background: "linear-gradient(135deg,#4682B4,#2a5298)",
     fontFamily: "Arial",
     paddingTop: "60px",
   },
