@@ -23,14 +23,18 @@ const getProjectController = async (req, res) => {
 const createProjectController = async (req, res) => {
   let { name, description, orgId } = req.body;
 
-  await Project.create({
+  const newProject = await Project.create({
     name,
     description,
     orgId,
   });
+  let project = {
+    id: newProject._id,
+    name,
+  };
   res
     .status(200)
-    .json({ status: true, message: "Project created successfully" });
+    .json({ status: true, message: "Project created successfully", project });
 };
 
 const deleteProjectController = async (req, res) => {

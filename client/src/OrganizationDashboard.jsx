@@ -1,11 +1,28 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OrgDashboard() {
+  const navigate = useNavigate();
+
   const [orgId, setOrgId] = useState(null);
   const [projects, setProjects] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
+
   const [projectName, setProjectName] = useState("");
+  const [role, setRole] = useState("");
+  const [selectedMembers, setSelectedMembers] = useState([]);
+
+  // TEMP USERS (IDs you gave)
+  const roleMembers = {
+    Manager: [{ id: "69abe6742983fc5b7dd87997", name: "Ayaan" }],
+    Developer: [
+      { id: "69ac0f1bc9f55fd7232ee1d8", name: "Shayaan" },
+      { id: "69ac0f1bc9f55fd7232ee1d9", name: "Rahul" },
+    ],
+    Tester: [{ id: "69ac0f1bc9f55fd7232ee1dc", name: "Sara" }],
+    Designer: [{ id: "69ac0f1bc9f55fd7232ee1d9", name: "Rahul" }],
+  };
 
   useEffect(() => {
     verifyOrganization();
@@ -19,10 +36,8 @@ export default function OrgDashboard() {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        console.log("Not authenticated");
-        return;
-      }
+      if (!res.ok) return;
+
       const id = data.user.id;
 
       setOrgId(id);
@@ -37,18 +52,28 @@ export default function OrgDashboard() {
     try {
       const res = await fetch(
         `http://localhost:8000/project/get-all/${orgId}`,
-        {
-          credentials: "include",
-        },
+        { credentials: "include" },
       );
 
       const data = await res.json();
-      console.log(data);
 
       setProjects(data.projects || []);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleMemberSelect = (e) => {
+    const options = e.target.options;
+    const selected = [];
+
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selected.push(options[i].value);
+      }
+    }
+
+    setSelectedMembers(selected);
   };
 
   const createProject = async () => {
@@ -69,7 +94,7 @@ export default function OrgDashboard() {
 
         body: JSON.stringify({
           name: projectName,
-          orgId: orgId,
+          orgId,
         }),
       });
 
@@ -80,9 +105,30 @@ export default function OrgDashboard() {
         return;
       }
 
+      const projectId = data.project._id;
+
+      await fetch("http://localhost:8000/member/add", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        credentials: "include",
+
+        body: JSON.stringify({
+          projectId,
+          role,
+          members: selectedMembers,
+        }),
+      });
+
       fetchProjects(orgId);
 
       setProjectName("");
+      setRole("");
+      setSelectedMembers([]);
+
       setShowModal(false);
     } catch (err) {
       console.error(err);
@@ -102,6 +148,12 @@ export default function OrgDashboard() {
     }
   };
 
+  const goToProject = (id) => {
+    navigate(`/project/${id}`);
+  };
+
+  const totalProjects = projects.length;
+
   return (
     <div style={styles.page}>
       <div style={styles.navbar}>
@@ -112,6 +164,13 @@ export default function OrgDashboard() {
         </button>
       </div>
 
+      <div style={styles.analytics}>
+        <div style={styles.analyticsCard}>
+          <h3>{totalProjects}</h3>
+          <p>Total Projects</p>
+        </div>
+      </div>
+
       <div style={styles.dashboard}>
         <h2 style={styles.heading}>Projects</h2>
 
@@ -120,15 +179,19 @@ export default function OrgDashboard() {
         ) : (
           <div style={styles.projectGrid}>
             {projects.map((project) => (
-              <div key={project._id} style={styles.projectCard}>
+              <div
+                key={project._id}
+                style={styles.projectCard}
+                onClick={() => goToProject(project._id)}
+              >
                 <h3>{project.name}</h3>
-
-                <p>Members: {project.members?.length || 0}</p>
-                <p>Sprints: {project.sprints?.length || 0}</p>
 
                 <button
                   style={styles.deleteBtn}
-                  onClick={() => deleteProject(project._id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteProject(project._id);
+                  }}
                 >
                   Delete
                 </button>
@@ -149,6 +212,35 @@ export default function OrgDashboard() {
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
             />
+
+            <select
+              style={styles.input}
+              value={role}
+              onChange={(e) => {
+                setRole(e.target.value);
+                setSelectedMembers([]);
+              }}
+            >
+              <option value="">Select Role</option>
+              <option value="Manager">Manager</option>
+              <option value="Developer">Developer</option>
+              <option value="Tester">Tester</option>
+              <option value="Designer">Designer</option>
+            </select>
+
+            {role && (
+              <select
+                multiple
+                style={styles.input}
+                onChange={handleMemberSelect}
+              >
+                {roleMembers[role].map((member) => (
+                  <option key={member.id} value={member.id}>
+                    {member.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <div style={styles.modalButtons}>
               <button style={styles.createBtn} onClick={createProject}>
@@ -171,7 +263,7 @@ export default function OrgDashboard() {
 
 const styles = {
   page: {
-    height: "100vh",
+    minHeight: "100vh",
     background: "linear-gradient(135deg,#4682B4,#2a5298)",
     fontFamily: "Arial",
   },
@@ -197,6 +289,17 @@ const styles = {
     cursor: "pointer",
   },
 
+  analytics: {
+    margin: "20px",
+  },
+
+  analyticsCard: {
+    background: "white",
+    borderRadius: "10px",
+    padding: "20px",
+    textAlign: "center",
+  },
+
   dashboard: {
     backgroundColor: "white",
     margin: "20px",
@@ -206,7 +309,6 @@ const styles = {
 
   heading: {
     fontSize: "26px",
-    color: "#1f3f7a",
     marginBottom: "15px",
   },
 
@@ -221,6 +323,7 @@ const styles = {
     border: "1px solid #ddd",
     borderRadius: "8px",
     background: "#f7f7f7",
+    cursor: "pointer",
   },
 
   deleteBtn: {
@@ -230,7 +333,6 @@ const styles = {
     border: "none",
     padding: "6px 10px",
     borderRadius: "4px",
-    cursor: "pointer",
   },
 
   modalOverlay: {
@@ -249,13 +351,13 @@ const styles = {
     background: "white",
     padding: "30px",
     borderRadius: "8px",
-    width: "300px",
+    width: "320px",
   },
 
   input: {
     width: "100%",
     padding: "10px",
-    marginTop: "15px",
+    marginTop: "10px",
     borderRadius: "5px",
     border: "1px solid #ccc",
   },
@@ -272,7 +374,6 @@ const styles = {
     border: "none",
     padding: "8px 15px",
     borderRadius: "5px",
-    cursor: "pointer",
   },
 
   cancelBtn: {
@@ -280,6 +381,5 @@ const styles = {
     border: "none",
     padding: "8px 15px",
     borderRadius: "5px",
-    cursor: "pointer",
   },
 };
