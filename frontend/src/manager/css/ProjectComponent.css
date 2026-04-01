@@ -1,0 +1,11 @@
+.project-component {
+  padding: 4px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-sno {
+  display: flex;
+  flex-direction: column;
+}

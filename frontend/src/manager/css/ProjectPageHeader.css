@@ -1,0 +1,10 @@
+.project-page-first-section {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.project-page-box {
+  height: 200px;
+  width: 200px;
+  border: 2px solid black;
+}

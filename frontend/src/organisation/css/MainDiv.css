@@ -2,4 +2,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.projects-div {
+  margin-top: 5px;
+}
+
+.analytics-div {
+  flex: 1;
 }

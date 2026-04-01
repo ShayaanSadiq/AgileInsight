@@ -1,10 +1,10 @@
-import OrgHomePage from "./organisation/pages/HomePage.jsx";
+import ManagerProjectPage from "./manager/pages/ProjectPage.jsx";
 import "./App.css";
 
 function App() {
   return (
     <>
-      <OrgHomePage />
+      <ManagerProjectPage />
     </>
   );
 }
