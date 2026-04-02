@@ -1,5 +1,5 @@
 .project-page-body {
-  height: 100vh;
+  min-height: 100vh;
   background: rgb(203, 241, 245);
   padding: 7px;
   padding-top: 10px;

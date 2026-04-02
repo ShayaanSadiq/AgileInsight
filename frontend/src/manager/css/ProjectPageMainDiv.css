@@ -1,5 +1,5 @@
 .project-page-main {
-  height: 97%;
+  min-height: 100vh;
   padding: 10px;
   background-color: white;
   border-radius: 30px;
