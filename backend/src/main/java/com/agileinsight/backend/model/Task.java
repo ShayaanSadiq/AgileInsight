@@ -14,9 +14,12 @@ public class Task {
     @NotBlank(message = "Name is required") 
     private String name;
 
+    private String task;
+
     @NotBlank(message = "Password is required") 
     private String description;
 
+    @NotBlank(message = "Password is required") 
     private String projectId;
 
     public String getId() {
