@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const orgAuthroute = require("./routes/organisation/authRoute.js");
 const managerAuthroute = require("./routes/manager/authRoute.js");
 const userAuthroute = require("./routes/user/authRoute.js");
+const projectCreateRoute = require("./routes/project/createProjectRoute.js");
+const projectDeleteRoute = require("./routes/project/deleteProjetRoutes.js");
 
 const app = express();
 
@@ -24,6 +26,8 @@ mongoose
 app.use("/api/organisation", orgAuthroute);
 app.use("/api/manager", managerAuthroute);
 app.use("/api/user", userAuthroute);
+app.use("/api/project1", projectCreateRoute);  //check routes
+app.use("/api/project2", projectDeleteRoute);   //check routes
 
 const PORT = 5000;
 
