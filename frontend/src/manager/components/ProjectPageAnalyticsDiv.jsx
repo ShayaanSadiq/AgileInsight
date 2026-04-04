@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import "../css/ProjectPageAnalyticsDiv.css";
 
-export const ProjectPageAnalyticsDiv = () => {
+export const ProjectPageAnalyticsDiv = ({ activeOption }) => {
   const analytics = {
     percentageProjectCompleted: 100,
   };
@@ -17,6 +17,7 @@ export const ProjectPageAnalyticsDiv = () => {
     <section className="project-analytics-section">
       <div className="analytics-box">
         <h4>Completed</h4>
+        {console.log(activeOption)}
         <div className="completion-outer-div">
           <div
             className="completion-inner-div"
