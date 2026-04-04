@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,13 @@ public class OrganisationController {
     private OrganisationService organisationService;
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid Organisation organisation) {
+    public Map<String, String> login(@RequestBody @Valid Organisation organisation) {
         boolean isValid = organisationService.loginOrganisation(organisation.getEmail(), organisation.getPassword());
 
         if(isValid) {
-            return "Login Successful";
+            return Map.of("message", "Login success");
         } else {
-            return "Login failed.";
+            return Map.of("error", "Login failed");
         }
     }
 

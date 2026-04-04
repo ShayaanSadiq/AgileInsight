@@ -5,16 +5,24 @@ export const orgAuthApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api/organisations/",
     credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
   }),
   endpoints: (builder) => ({
-    postSignup: builder.mutation({
-      query: (data) => ({
-        url: "login",
-        method: "POST",
-        body: data,
-      }),
+    postLogin: builder.mutation({
+      query: (data) => {
+        return {
+          url: "login",
+          method: "POST",
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+        };
+      },
     }),
   }),
 });
 
-export const { usePostSignupMutation } = orgAuthApi;
+export const { usePostLoginMutation } = orgAuthApi;

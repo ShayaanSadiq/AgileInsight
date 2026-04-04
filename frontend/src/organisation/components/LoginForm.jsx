@@ -1,12 +1,13 @@
 import "../css/LoginForm.css";
 import { useForm } from "react-hook-form";
-import { usePostSignupMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
 
 export const LoginForm = () => {
-  const [loginUser, { isLoading }] = usePostSignupMutation();
+  const [loginUser, { isLoading }] = usePostLoginMutation();
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(data);
     const result = await loginUser(data);
     console.log(result);
   };
