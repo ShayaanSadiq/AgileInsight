@@ -1,8 +1,6 @@
 package com.agileinsight.backend.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,11 +77,6 @@ public class OrganisationController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    @GetMapping("/all")
-    public List<Organisation> getAllOrganisation() {
-        return organisationService.getAllOrganisations();
     }
 
     @GetMapping("/verify")
