@@ -1,31 +1,15 @@
 import React from "react";
 import { ProjectComponent } from "./ProjectComponent.jsx";
+import { useGetProjectsByIdQuery } from "../../redux/manager/ProjectApiSlice.js";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import "../css/ProjectList.css";
 
 export const ProjectListComponent = () => {
-  const projects = [
-    {
-      id: 1,
-      name: "kill muqeet1",
-      dueDate: "123456",
-      completed: "50%",
-      link: "https://kuchbhi.com",
-    },
-    {
-      id: 2,
-      name: "kill muqeet2",
-      dueDate: "654321",
-      completed: "40%",
-      link: "https://kuchbhi5.com",
-    },
-    {
-      id: 3,
-      name: "kill muqeet3",
-      dueDate: "98765",
-      completed: "60%",
-      link: "https://kuchbhi7.com",
-    },
-  ];
+  const id = useSelector((state) => state.currOrg.id);
+  const { data, isLoading, isError } = useGetProjectsByIdQuery(id);
+
   return (
     <div className="project-headings">
       <table>
@@ -36,7 +20,7 @@ export const ProjectListComponent = () => {
           <th></th>
         </tr>
 
-        {projects.map((project) => (
+        {data?.map((project) => (
           <tr key={project.id}>
             <ProjectComponent project={project} />
           </tr>
