@@ -1,42 +1,61 @@
-// package com.agileinsight.backend.utility;
+package com.agileinsight.backend.utility;
 
-// import java.security.Key;
-// import java.util.Date;
+import java.util.Date;
 
-// import org.springframework.stereotype.Component;
+import javax.crypto.SecretKey;
 
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.security.Keys;
-// import io.jsonwebtoken.security.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
-// @Component
-// public class JwtUtil {
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
-//     private final String SECRET = "kuchbhisecretjwtkaaaaaaaaaaaaaaaaaaa";
+@Component
+public class JwtUtil {
 
-//     private Key getSignKey() {
-//         return Keys.hmacShaKeyFor(SECRET.getBytes());
-//     }
+    private final String SECRET = "secret_key_more_than_32_characters";
 
-//     public String generateToken(String username) {
-//         return Jwts.builder()
-//                 .setSubject(username)
-//                 .setIssuedAt(new Date())
-//                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hr
-//                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
-//                 .compact();
-//     }
+    private SecretKey getSignKey() {
+        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    }
 
-//     public String extractUsername(String token) {
-//         return Jwts.parserBuilder()
-//                 .setSigningKey(getSignKey())
-//                 .build()
-//                 .parseClaimsJws(token)
-//                 .getBody()
-//                 .getSubject();
-//     }
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(getSignKey())
+                .compact();
+    }
 
-//     public boolean validateToken(String token, String username) {
-//         return extractUsername(token).equals(username);
-//     }
-// }
+    public String extractUsername(String token) {
+        return Jwts.parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token, String username) {
+        String extractedUsername = extractUsername(token);
+        try {
+            if(extractedUsername.equals(username) && !isTokenExpired(token)) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiration =  Jwts.parser()
+            .verifyWith(getSignKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .getExpiration();
+
+        return expiration.before(new Date());
+    }
+}

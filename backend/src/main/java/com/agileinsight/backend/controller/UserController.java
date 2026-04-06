@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid User user) {
+    public Map<String, String> login(@RequestBody @Valid User user) {
         boolean isValid = userService.loginUser(user.getEmail(), user.getPassword());
 
         if(isValid) {
-            return "Login Successful";
+            return Map.of("message", "Login success");
         } else {
-            return "Login failed.";
+            return Map.of("error", "Login failed");
         }
     }
 
