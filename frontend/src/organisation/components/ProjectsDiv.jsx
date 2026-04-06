@@ -1,58 +1,15 @@
 import React from "react";
+import { useGetProjectsByIdQuery } from "../../redux/organisation/projectApiSlice.js";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "../css/ProjectsDiv.css";
 
 export const ProjectsDiv = () => {
-  const isProjects = true;
-  const projects = [
-    {
-      id: 1,
-      name: "Kill muqeet",
-      description: "Free muqeet from world tensions",
-      status: "to-do",
-      assignedTo: "Killer Shayaan",
-      priority: "Highest",
-    },
-    {
-      id: 2,
-      name: "Kill muqeet2",
-      description: "Free muqeet from world tensions2",
-      status: "to-do",
-      assignedTo: "Killer Shayaan2",
-      priority: "Highest",
-    },
-    {
-      id: 3,
-      name: "Kill muqeet2",
-      description: "Free muqeet from world tensions2",
-      status: "to-do",
-      assignedTo: "Killer Shayaan2",
-      priority: "Highest",
-    },
-    {
-      id: 4,
-      name: "Kill muqeet2",
-      description: "Free muqeet from world tensions2",
-      status: "to-do",
-      assignedTo: "Killer Shayaan2",
-      priority: "Highest",
-    },
-    {
-      id: 5,
-      name: "Kill muqeet2",
-      description: "Free muqeet from world tensions2",
-      status: "to-do",
-      assignedTo: "Killer Shayaan2",
-      priority: "Highest",
-    },
-    {
-      id: 6,
-      name: "Kill muqeet2",
-      description: "Free muqeet from world tensions2",
-      status: "to-do",
-      assignedTo: "Killer Shayaan2",
-      priority: "Highest",
-    },
-  ];
+  const id = useSelector((state) => state.currOrg.id);
+  const { data, isLoading, isError } = useGetProjectsByIdQuery(id);
+  const navigate = useNavigate();
+  const isProjects = data && !isLoading && !isError;
+
   let counter = 0;
   return (
     <>
@@ -66,7 +23,7 @@ export const ProjectsDiv = () => {
             <th>Assigned to</th>
             <th>Priority</th>
           </tr>
-          {projects.map((project) => (
+          {data?.map((project) => (
             <tr key={project.id}>
               <td>{++counter}</td>
               <td>{project.name}</td>

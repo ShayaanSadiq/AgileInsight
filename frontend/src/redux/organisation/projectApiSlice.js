@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const projectApi = createApi({
-  reducerPath: "projectApi",
+export const orgProjectApi = createApi({
+  reducerPath: "orgProjectApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/managers/",
+    baseUrl: "http://localhost:8080/api/organisations/",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -18,4 +18,4 @@ export const projectApi = createApi({
   }),
 });
 
-export const { useGetProjectsByIdQuery } = projectApi;
+export const { useGetProjectsByIdQuery } = orgProjectApi;

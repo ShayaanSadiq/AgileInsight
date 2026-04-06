@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/ProjectList.css";
 
 export const ProjectListComponent = () => {
-  const id = useSelector((state) => state.currOrg.id);
+  const id = useSelector((state) => state.currManager.id);
   const { data, isLoading, isError } = useGetProjectsByIdQuery(id);
 
   return (
