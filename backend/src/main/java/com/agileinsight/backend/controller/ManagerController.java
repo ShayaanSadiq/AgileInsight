@@ -1,6 +1,5 @@
 package com.agileinsight.backend.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Manager;
-import com.agileinsight.backend.model.Organisation;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.service.ManagerService;
 import com.agileinsight.backend.utility.JwtUtil;
