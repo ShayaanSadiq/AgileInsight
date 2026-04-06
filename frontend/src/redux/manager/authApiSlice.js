@@ -32,7 +32,24 @@ export const managerAuthApi = createApi({
         }),
       }),
     }),
+
+    getVerify: builder.query({
+      query: () => ({
+        url: "verify",
+      }),
+    }),
+
+    getLogout: builder.query({
+      query: () => ({
+        url: "logout",
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation, usePostSignupMutation } = managerAuthApi;
+export const {
+  usePostLoginMutation,
+  usePostSignupMutation,
+  useGetLogoutQuery,
+  useGetVerifyQuery,
+} = managerAuthApi;

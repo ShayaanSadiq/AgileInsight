@@ -34,7 +34,24 @@ export const orgAuthApi = createApi({
         }),
       }),
     }),
+
+    getVerify: builder.query({
+      query: () => ({
+        url: "verify",
+      }),
+    }),
+
+    getLogout: builder.query({
+      query: () => ({
+        url: "logout",
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation, usePostSignupMutation } = orgAuthApi;
+export const {
+  usePostLoginMutation,
+  usePostSignupMutation,
+  useGetLogoutQuery,
+  useGetVerifyQuery,
+} = orgAuthApi;

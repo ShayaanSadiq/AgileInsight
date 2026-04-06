@@ -14,11 +14,12 @@ export const LoginForm = () => {
 
   const onSubmit = async (data) => {
     const result = await loginUser(data);
-    if (result.data.message == "Login success") {
+    if (result.data.message == "Login successful") {
       dispatch(setCurrOrg({ email: data.email }));
       toast.success("Login Successfull");
       navigate("/org/home");
     } else {
+      console.log(result);
       toast.error(result.data.error);
     }
   };
