@@ -1,11 +1,26 @@
 import "../css/LoginForm.css";
+import { usePostLoginMutation } from "../../redux/manager/authApiSlice.js";
 import { useForm } from "react-hook-form";
+import { setCurrManager } from "../../redux/manager/currManagerSlice.js";
+import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
+  const [loginManager, { isLoading }] = usePostLoginMutation();
   const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const result = await loginManager(data);
+    if (result.data.message == "login successfull") {
+      dispatch(setCurrManager(data.email));
+      toast.success("Login successfull.");
+      navigate("/manager/home");
+    } else {
+      toast.error("Login unsuccessfull.");
+    }
   };
   return (
     <>

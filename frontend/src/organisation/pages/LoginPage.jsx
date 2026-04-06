@@ -8,7 +8,7 @@ const LoginPage = () => {
     <div className="login-body">
       <div className="login-card">
         <LoginForm />
-        <Text text={"Already have an account"} link={"signup"} />
+        <Text text={"Don't have an account"} link={"signup"} />
       </div>
     </div>
   );

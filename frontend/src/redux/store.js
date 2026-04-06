@@ -1,13 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { orgAuthApi } from "./organisation/authApiSlice";
+import { managerAuthApi } from "./manager/authApiSlice.js";
+import currOrgReducer from "./organisation/currOrg";
+import currManagerReducer from "./manager/currManagerSlice.js";
 
 const store = configureStore({
   reducer: {
     orgAuth: orgAuthApi.reducer,
+    managerAuth: managerAuthApi.reducer,
+    currOrg: currOrgReducer,
+    currManager: currManagerReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(orgAuthApi.middleware),
+    getDefaultMiddleware().concat(
+      orgAuthApi.middleware,
+      managerAuthApi.middleware,
+    ),
 });
 
 setupListeners(store.dispatch);

@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const orgAuthApi = createApi({
-  reducerPath: "orgAuth",
+export const managerAuthApi = createApi({
+  reducerPath: "managerAuthApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/organisations/",
+    baseUrl: "http://localhost:8080/api/managers/",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
@@ -11,16 +11,14 @@ export const orgAuthApi = createApi({
   }),
   endpoints: (builder) => ({
     postLogin: builder.mutation({
-      query: (data) => {
-        return {
-          url: "login",
-          method: "POST",
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-          }),
-        };
-      },
+      query: (data) => ({
+        url: "login",
+        method: "POST",
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      }),
     }),
 
     postSignup: builder.mutation({
@@ -37,4 +35,4 @@ export const orgAuthApi = createApi({
   }),
 });
 
-export const { usePostLoginMutation, usePostSignupMutation } = orgAuthApi;
+export const { usePostLoginMutation, usePostSignupMutation } = managerAuthApi;

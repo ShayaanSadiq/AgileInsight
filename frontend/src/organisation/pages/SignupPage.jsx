@@ -8,7 +8,7 @@ const SignupPage = () => {
     <div className="signup-body">
       <div className="signup-card">
         <SignupForm />
-        <Text text={"Don't have an account"} link={"Login"} />
+        <Text text={"Already have an account"} link={"Login"} />
       </div>
     </div>
   );

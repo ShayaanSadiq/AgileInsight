@@ -1,15 +1,26 @@
 import "../css/LoginForm.css";
 import { useForm } from "react-hook-form";
 import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurrOrg } from "../../redux/organisation/currOrg.js";
+import toast from "react-hot-toast";
 
 export const LoginForm = () => {
   const [loginUser, { isLoading }] = usePostLoginMutation();
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    console.log(data);
     const result = await loginUser(data);
-    console.log(result);
+    if (result.data.message == "Login success") {
+      dispatch(setCurrOrg({ email: data.email }));
+      toast.success("Login Successfull");
+      navigate("/org/home");
+    } else {
+      toast.error(result.data.error);
+    }
   };
   return (
     <>
