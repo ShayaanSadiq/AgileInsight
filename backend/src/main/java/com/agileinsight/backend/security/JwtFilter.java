@@ -28,6 +28,13 @@ public class JwtFilter extends OncePerRequestFilter {
                                 FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        if (path.contains("/login") || path.contains("/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = null;
         String username = null;
 
