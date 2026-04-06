@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.Organisation;
+import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.service.ManagerService;
+import com.agileinsight.backend.utility.JwtUtil;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -25,14 +33,34 @@ public class ManagerController {
     @Autowired
     private ManagerService managerService;
 
+    @Autowired
+    private ManagerRepository managerRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody @Valid Manager manager) {
+    public ResponseEntity<?> login(@RequestBody @Valid Manager manager, HttpServletResponse response) {
         boolean isValid = managerService.loginManager(manager.getEmail(), manager.getPassword());
 
+        String id = (managerRepository.findByEmail(manager.getEmail())).getId();
+
         if(isValid) {
-            return Map.of("message", "Login success");
+            String token = jwtUtil.generateToken(manager.getEmail(), id); 
+            
+            ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                                    .httpOnly(true)
+                                    .secure(false)
+                                    .path("/")
+                                    .maxAge(1000 * 60 * 60)
+                                    .sameSite("Lax")
+                                    .build();
+            
+            return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Map.of("message", "Login successful", "id", id));
         } else {
-            return Map.of("error", "Login failed");
+            return ResponseEntity.status(401).body(Map.of("error", "Login failed"));
         }
     }
 
@@ -46,9 +74,56 @@ public class ManagerController {
         }
     }
 
-    @GetMapping("/all")
-    public List<Manager> getAllUsers() {
-        return managerService.getAllManagers();
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
+        String token = null;
+
+        String id = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+                if("id".equals(cookie.getName())) {
+                    id = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.status(401).body("No token");
+        }
+
+        try {
+            String username = jwtUtil.extractUsername(token);
+
+            if (jwtUtil.validateToken(token, username) && managerRepository.findById(id) != null) {
+                return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "id", id
+                ));
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid token");
+        }
+
+        return ResponseEntity.status(401).body("Invalid token");
+    }
+    
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                                .httpOnly(true)
+                                .secure(false)
+                                .path("/")
+                                .maxAge(0)
+                                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(Map.of("message", "Logout successful"));
     }
 }
 
