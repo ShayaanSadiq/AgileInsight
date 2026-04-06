@@ -12,8 +12,8 @@ public class Organisation {
     
     @Id
     private String id;
-    
-    @NotBlank(message = "Name is required")
+
+    // @NotBlank(message = "Name is required")
     private String name;
 
     @Indexed(unique = true)

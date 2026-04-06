@@ -19,6 +19,8 @@ import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.service.OrganisationService;
 import com.agileinsight.backend.utility.JwtUtil;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -55,7 +57,7 @@ public class OrganisationController {
             
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("message", "Login successful"));
+                .body(Map.of("message", "Login successful", "id", id));
         } else {
             return ResponseEntity.status(401).body(Map.of("error", "Login failed"));
         }
@@ -76,12 +78,43 @@ public class OrganisationController {
         return organisationService.getAllOrganisations();
     }
 
-    // @GetMapping("/projects")
-    // public void getAllProjects(@JwtToken) {
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
+        String token = null;
 
-    //     JwtToken = exta
-    //     return projectService.getAllProjects()
-    // }
+        String id = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+                if("id".equals(cookie.getName())) {
+                    id = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.status(401).body("No token");
+        }
+
+        try {
+            String username = jwtUtil.extractUsername(token);
+
+            if (jwtUtil.validateToken(token, username) && organisationRepository.findById(id) != null) {
+                return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "id", id
+                ));
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid token");
+        }
+
+        return ResponseEntity.status(401).body("Invalid token");
+    }
     
     @GetMapping("/logout")
     public ResponseEntity<?> logout() {
