@@ -12,7 +12,7 @@ public class User {
     
     @Id
     private String id;
-
+    @NotBlank(message = "Name is required")
     private String name;
 
     @Indexed(unique = true)
