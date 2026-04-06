@@ -1,13 +1,16 @@
 package com.agileinsight.backend.security;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,8 +24,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   FilterChain filterChain)
+                                HttpServletResponse response,
+                                FilterChain filterChain)
             throws ServletException, IOException {
 
         String token = null;
@@ -35,21 +38,31 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
         }
-        
+
         if (token != null) {
             try {
                 username = jwtUtil.extractUsername(token);
             } catch (Exception e) {
-                // Invalid token
+                System.out.println("JWT error: " + e.getMessage());
             }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (jwtUtil.validateToken(token, username)) {
+            boolean isValid = jwtUtil.validateToken(token, username);
+
+            if (isValid) {
 
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(username, null, null);
+                        new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                        );
+
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
