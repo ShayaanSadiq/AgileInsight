@@ -1,5 +1,6 @@
 package com.agileinsight.backend.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +166,7 @@ public class OrganisationController {
             return ResponseEntity.status(403).body("Access denied");
         }
 
-        List<Project> projects = projectRepository.findByOrganisationId(orgId);
+        ArrayList<Project> projects = projectRepository.findByOrganisationId(orgId);
 
         return ResponseEntity.ok(projects);
     }
