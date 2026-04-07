@@ -1,6 +1,6 @@
 package com.agileinsight.backend.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -28,7 +28,27 @@ public class Project {
     @NotBlank(message = "Password is required") 
     private String description;
 
+    // Implement in analytics
+    // private Integer totalSprints;
+
+    private Integer currentSprintNumber;
+
+    private String currentSprintId;
+
+    @NotBlank(message = "StartDate is required")
+    private LocalDate startDate;
+
+    @NotBlank(message = "EndDate is required")
+    private LocalDate endDate;
+
+    @NotBlank(message = "ManagerId is required")
+    private String managerId;
+
+    @NotBlank(message = "OrganisationId is required")
     private String organisationId;
 
-    private Date dueDate;
+    @NotBlank(message = "ExpectedSprints is required")
+    private Integer expectedSprints;
+
+    // private Enum status;
 }

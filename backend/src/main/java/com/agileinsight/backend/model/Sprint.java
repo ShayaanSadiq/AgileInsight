@@ -28,9 +28,14 @@ public class Sprint {
     @NotBlank(message = "Description is required")
     private String description;
 
-    private String projectId;
-
+    @NotBlank(message = "StartDate is required")
     private LocalDate startDate;
 
+    @NotBlank(message = "EndDate is required")
     private LocalDate endDate;
+
+    @NotBlank(message = "ProjectId is required")
+    private String projectId;
+
+    // private Integer totalTasks;
 }

@@ -1,5 +1,7 @@
 package com.agileinsight.backend.model;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,6 +27,20 @@ public class Task {
     @NotBlank(message = "Password is required") 
     private String description;
 
-    @NotBlank(message = "Password is required") 
+    // private Enum type; (bug, feature, improvement)
+
+    @NotBlank(message = "StartDate is required")
+    private LocalDate startDate;
+
+    @NotBlank(message = "EndDate is required")
+    private LocalDate endDate;
+
+    @NotBlank(message = "AssignedTo is required")
+    private String assignedTo;
+
+    @NotBlank(message = "AssignedBy is required")
+    private String assignedBy;
+
+    @NotBlank(message = "ProjectId is required") 
     private String projectId;
 }
