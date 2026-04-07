@@ -58,7 +58,9 @@ public class ManagerController {
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(Map.of("message", "Login successful", "id", id));
         } else {
-            return ResponseEntity.status(401).body(Map.of("error", "Login failed"));
+            return ResponseEntity.ok(Map.of(
+                "message","Login failed"
+            ));
         }
     }
 
@@ -69,7 +71,9 @@ public class ManagerController {
             return ResponseEntity.ok()
                                  .body(Map.of("message","Register successful"));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(Map.of("error", "Register failed"));
+            return ResponseEntity.ok(Map.of(
+                "message","Register failed"
+            ));
         }
     }
 
@@ -91,7 +95,9 @@ public class ManagerController {
         }
 
         if (token == null) {
-            return ResponseEntity.status(401).body("No token");
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
         }
 
         try {
@@ -105,10 +111,14 @@ public class ManagerController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid token");
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid token"
+            ));
         }
 
-        return ResponseEntity.status(401).body("Invalid token");
+        return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
     }
     
     @GetMapping("/logout")
