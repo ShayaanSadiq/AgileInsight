@@ -63,9 +63,15 @@ public class OrganisationController {
             
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(Map.of("message", "Login successful", "id", id));
+                .body(Map.of(
+                    "message", "Login successful", "id", id
+                )
+            );
         } else {
-            return ResponseEntity.status(401).body(Map.of("error", "Login failed"));
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login failed"
+                )
+            );
         }
     }
 
@@ -76,7 +82,10 @@ public class OrganisationController {
             return ResponseEntity.ok()
                                  .body(Map.of("message","Register successful"));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(Map.of("error", "Register failed"));
+            return ResponseEntity.ok(Map.of(
+                    "message", "Register failed"
+                )
+            );
         }
     }
 
@@ -150,7 +159,9 @@ public class OrganisationController {
         }
 
         if (token == null) {
-            return ResponseEntity.status(401).body("No token");
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
         }
 
         String tokenId = jwtUtil.extractId(token);
@@ -159,7 +170,9 @@ public class OrganisationController {
         System.out.println("Token id: " + tokenId);
 
         if (!orgId.equals(tokenId)) {
-            return ResponseEntity.status(403).body("Access denied");
+            return ResponseEntity.ok(Map.of(
+                "message","Incorrect organisation id"
+            ));
         }
 
         ArrayList<Project> projects = projectRepository.findByOrganisationId(orgId);
