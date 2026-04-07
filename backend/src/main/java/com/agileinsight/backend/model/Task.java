@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,10 +32,12 @@ public class Task {
 
     // private Enum type; (bug, feature, improvement)
 
-    @NotBlank(message = "StartDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate startDate;
 
-    @NotBlank(message = "EndDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate endDate;
 
     @NotBlank(message = "AssignedTo is required")

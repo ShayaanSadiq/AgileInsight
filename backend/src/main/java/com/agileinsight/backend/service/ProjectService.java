@@ -17,9 +17,8 @@ public class ProjectService {
     @Autowired
     private DeleteProject delete;
 
-    public Project createProject(Project project) {
-        create.createProject(project);
-        return project;
+    public String createProject(Project project) {
+        return create.createProject(project);
     }
 
     public ObjectId deleteProject(ObjectId id) {

@@ -6,7 +6,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,10 +38,12 @@ public class Project {
 
     private String currentSprintId;
 
-    @NotBlank(message = "StartDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate startDate;
 
-    @NotBlank(message = "EndDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate endDate;
 
     @NotBlank(message = "ManagerId is required")
@@ -47,7 +52,7 @@ public class Project {
     @NotBlank(message = "OrganisationId is required")
     private String organisationId;
 
-    @NotBlank(message = "ExpectedSprints is required")
+    @NotNull
     private Integer expectedSprints;
 
     // private Enum status;

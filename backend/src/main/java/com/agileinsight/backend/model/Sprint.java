@@ -6,7 +6,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,10 +31,12 @@ public class Sprint {
     @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "StartDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate startDate;
 
-    @NotBlank(message = "EndDate is required")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     private LocalDate endDate;
 
     @NotBlank(message = "ProjectId is required")

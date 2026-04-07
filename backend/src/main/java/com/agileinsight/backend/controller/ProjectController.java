@@ -1,5 +1,7 @@
 package com.agileinsight.backend.controller;
 
+import java.util.Map;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +31,10 @@ public class ProjectController {
     private ProjectRepository projectRepository;
     
     @PostMapping("/create")
-    public Project createProject(@RequestBody @Valid Project project) {
-        return projectService.createProject(project);
+    public ResponseEntity<?> createProject(@RequestBody @Valid Project project) {
+        return ResponseEntity.ok(Map.of(
+            "message", projectService.createProject(project)
+        ));
     }
 
     @DeleteMapping("/delete/{id}")

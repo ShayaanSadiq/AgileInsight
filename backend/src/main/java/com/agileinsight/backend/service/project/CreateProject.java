@@ -16,14 +16,16 @@ public class CreateProject {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public Project createProject(Project project) {
+    public String createProject(Project project) {
         System.out.println(project.getId());
         boolean exists = organisationRepository.existsById(project.getOrganisationId());
 
         if(!exists) {
-            throw new RuntimeException("Organisation not found.");
+            System.out.println("Organisation not found.");
+            return "Project not created";
         } else {
-            return projectRepository.save(project);
+            projectRepository.save(project);
+            return "Project created successfully";
         }
     }
 }
