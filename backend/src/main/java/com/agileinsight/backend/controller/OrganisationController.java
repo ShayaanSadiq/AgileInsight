@@ -84,25 +84,23 @@ public class OrganisationController {
     public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
         String token = null;
 
-        String id = null;
-
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                 }
-                if("id".equals(cookie.getName())) {
-                    id = cookie.getValue();
-                }
             }
         }
 
         if (token == null) {
-            return ResponseEntity.status(401).body("No token");
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
         }
 
         try {
             String username = jwtUtil.extractUsername(token);
+            String id = jwtUtil.extractId(token);
 
             if (jwtUtil.validateToken(token, username) && organisationRepository.findById(id) != null) {
                 return ResponseEntity.ok(Map.of(
@@ -112,10 +110,14 @@ public class OrganisationController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid token");
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid token"
+            ));
         }
 
-        return ResponseEntity.status(401).body("Invalid token");
+        return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
     }
     
     @GetMapping("/logout")
