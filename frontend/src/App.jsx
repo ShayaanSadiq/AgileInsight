@@ -5,13 +5,21 @@ import OrgSignupPage from "./organisation/pages/SignupPage.jsx";
 import ManagerLoginPage from "./manager/pages/LoginPage.jsx";
 import ManagerHomePage from "./manager/pages/HomePage.jsx";
 import ManagerProjectPage from "./manager/pages/ProjectPage.jsx";
+import { ProtectedRoute } from "./organisation/utils/ProtectedRoute.jsx";
 import "./App.css";
 
 function App() {
   return (
     <Routes>
       <Route path="/org/login" element={<OrgLoginPage />} />
-      <Route path="/org/home" element={<OrgHomePage />} />
+      <Route
+        path="/org/home"
+        element={
+          <ProtectedRoute>
+            <OrgHomePage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/org/signup" element={<OrgSignupPage />} />
       <Route path="/manager/login" element={<ManagerLoginPage />} />
       <Route path="/manager/home" element={<ManagerHomePage />} />

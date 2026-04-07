@@ -1,0 +1,25 @@
+.org-menu {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  right: 20px;
+  top: 60px;
+  border-radius: 30px;
+  padding: 5px;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.option {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.option-logout {
+  border-bottom: none;
+}
+
+.option:hover {
+  background-color: rgb(239, 239, 239);
+}

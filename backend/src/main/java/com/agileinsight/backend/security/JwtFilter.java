@@ -24,16 +24,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                HttpServletResponse response,
-                                FilterChain filterChain)
+                                   HttpServletResponse response,
+                                   FilterChain filterChain)
             throws ServletException, IOException {
-
-        String path = request.getRequestURI();
-
-        if (path.contains("/login") || path.contains("/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         String token = null;
         String username = null;
@@ -45,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
         }
-
+        
         if (token != null) {
             try {
                 username = jwtUtil.extractUsername(token);
@@ -60,12 +53,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (isValid) {
 
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                username,
-                                null,
-                                List.of(new SimpleGrantedAuthority("ROLE_USER"))
-                        );
+                UsernamePasswordAuthenticationToken authToken = 
+                    new UsernamePasswordAuthenticationToken(
+                                    username,
+                                    null,
+                                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                            );
 
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
