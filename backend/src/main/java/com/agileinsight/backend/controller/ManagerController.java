@@ -68,8 +68,14 @@ public class ManagerController {
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
         try {
             managerService.registerManager(manager);
+
+            String id = (managerRepository.findByEmail(manager.getEmail())).getId();
+            
             return ResponseEntity.ok()
-                                 .body(Map.of("message","Register successful"));
+                                 .body(Map.of(
+                                    "message","Register successful",
+                                    "id", id
+                                ));
         } catch (RuntimeException e) {
             return ResponseEntity.ok(Map.of(
                 "message","Register failed"
