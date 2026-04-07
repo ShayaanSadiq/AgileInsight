@@ -1,5 +1,7 @@
 package com.agileinsight.backend.model;
 
+import java.sql.Date;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,6 +21,8 @@ public class Project {
     private String description;
 
     private String organisationId;
+
+    private Date dueDate;
 
     Project() {
 
