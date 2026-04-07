@@ -65,10 +65,11 @@ public class ManagerController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
         try {
-            Manager savedManager = managerService.registerManager(manager);
-            return ResponseEntity.ok(savedManager);
+            managerService.registerManager(manager);
+            return ResponseEntity.ok()
+                                 .body(Map.of("message","Register successful"));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(401).body(Map.of("error", "Register failed"));
         }
     }
 
