@@ -21,14 +21,14 @@ export const managerAuthApi = createApi({
       }),
     }),
 
-    postSignup: builder.mutation({
+    postManagerSignup: builder.mutation({
       query: (data) => ({
         url: "register",
         method: "POST",
         body: JSON.stringify({
           name: data.name,
           email: data.email,
-          password: data.password,
+          password: data.email,
         }),
       }),
     }),
@@ -49,7 +49,7 @@ export const managerAuthApi = createApi({
 
 export const {
   usePostLoginMutation,
-  usePostSignupMutation,
+  usePostManagerSignupMutation,
   useGetLogoutQuery,
   useGetVerifyQuery,
 } = managerAuthApi;

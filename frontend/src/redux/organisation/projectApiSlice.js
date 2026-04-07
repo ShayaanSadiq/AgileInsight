@@ -18,4 +18,5 @@ export const orgProjectApi = createApi({
   }),
 });
 
-export const { useGetProjectsByIdQuery } = orgProjectApi;
+export const { useGetProjectsByIdQuery, usePostCreateProjectMutation } =
+  orgProjectApi;

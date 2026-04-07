@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import "../css/ProjectsDiv.css";
 
 export const ProjectsDiv = () => {
-  const id = useSelector((state) => state.currOrg.id);
-  const { data, isLoading, isError } = useGetProjectsByIdQuery(id);
+  const orgId = useSelector((state) => state.currOrg.id);
+  const { data, isLoading, isError } = useGetProjectsByIdQuery(orgId, {
+    skip: !orgId,
+  });
   const navigate = useNavigate();
   const isProjects = data && !isLoading && !isError;
 
@@ -23,6 +25,7 @@ export const ProjectsDiv = () => {
             <th>Assigned to</th>
             <th>Priority</th>
           </tr>
+          {console.log(data)}
           {data?.map((project) => (
             <tr key={project.id}>
               <td>{++counter}</td>

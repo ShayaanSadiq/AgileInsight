@@ -1,42 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "../css/CreateProject.css";
 import { MdOutlineArrowBackIos } from "react-icons/md";
+import { ManagerForm } from "./ManagerForm.jsx";
+import { CreateProjectForm } from "./CreateProjectForm.jsx";
+import { usePostManagerSignupMutation } from "../../redux/manager/authApiSlice.js";
+import { usePostCreateProjectMutation } from "../../redux/project/projectApiSlice.js";
+import { useSelector } from "react-redux";
 
 function CreateProject({ useBack }) {
+  const [isContinued, setIsContinued] = useState(false);
+  const [managerId, setManagerId] = useState("");
   const { register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const organisationId = useSelector((state) => state.currOrg.id);
 
   return (
     <div className="main">
       <div className="div">
-        <MdOutlineArrowBackIos className="back-button" onClick={useBack} />
-        <form onSubmit={handleSubmit(onSubmit)} className="form">
-          <input
-            type="text"
-            placeholder="Enter the project name"
-            {...register("name")}
-            className="input"
+        <div className="logo-div">
+          <MdOutlineArrowBackIos className="back-button" onClick={useBack} />
+        </div>
+
+        {!isContinued && (
+          <ManagerForm
+            setIsContinued={setIsContinued}
+            usePostManagerSignupMutation={usePostManagerSignupMutation}
+            setManagerId={setManagerId}
           />
-          <input
-            type="number"
-            placeholder="Enter the number of sprints"
-            {...register("sprints")}
-            className="input"
+        )}
+
+        {isContinued && (
+          <CreateProjectForm
+            register={register}
+            handleSubmit={handleSubmit}
+            managerId={managerId}
+            organisationId={organisationId}
+            usePostCreateProjectMutation={usePostCreateProjectMutation}
           />
-          <input
-            type="text"
-            placeholder="Enter email id of manager"
-            {...register("managerEmail")}
-            className="input"
-          />
-          <button type="submit" className="submit-button">
-            Create
-          </button>
-        </form>
+        )}
       </div>
     </div>
   );
