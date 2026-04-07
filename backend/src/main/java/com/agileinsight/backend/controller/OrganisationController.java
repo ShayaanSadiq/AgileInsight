@@ -166,9 +166,6 @@ public class OrganisationController {
 
         String tokenId = jwtUtil.extractId(token);
 
-        System.out.println("Path orgId: " + orgId);
-        System.out.println("Token id: " + tokenId);
-
         if (!orgId.equals(tokenId)) {
             return ResponseEntity.ok(Map.of(
                 "message","Incorrect organisation id"
