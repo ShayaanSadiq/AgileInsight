@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Sprint {
     
     @Id
-    private ObjectId id;
+    private String id;
 
     @NotBlank(message = "Name is required")
     private String name;

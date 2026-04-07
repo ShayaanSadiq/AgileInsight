@@ -2,7 +2,6 @@ package com.agileinsight.backend.model;
 
 import java.time.LocalDate;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,7 +22,7 @@ import lombok.Setter;
 public class Project {
     
     @Id
-    private ObjectId id;
+    private String id;
 
     @NotBlank(message = "Name is required") 
     private String name;
