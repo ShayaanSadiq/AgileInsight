@@ -25,7 +25,7 @@
   background: transparent;
   cursor: pointer;
 }
-
+.active,
 .project-page-header-options-button:hover {
   color: white;
   background-color: rgb(118, 210, 219);

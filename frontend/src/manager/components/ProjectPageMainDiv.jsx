@@ -9,12 +9,15 @@ export const ProjectPageMainDiv = () => {
   const [activeOption, setActiveOption] = useState("project");
   return (
     <div className="project-page-main">
-      <ProjectPageHeader setActiveOption={setActiveOption} />
+      <ProjectPageHeader
+        activeOption={activeOption}
+        setActiveOption={setActiveOption}
+      />
       <div className="project-page-lowerBody">
-        <ProjectOverview />
+        <ProjectOverview activeOption={activeOption} />
         <div className="rightSide-content">
           <EditBox />
-          <AnalyticsBox />
+          <AnalyticsBox activeOption={activeOption} />
         </div>
       </div>
     </div>
