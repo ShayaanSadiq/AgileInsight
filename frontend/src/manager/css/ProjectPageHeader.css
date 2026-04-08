@@ -21,11 +21,12 @@
   border-radius: 30px;
   font-size: large;
   font-weight: 700;
-  color: white;
+  color: #76d2db;
   background: transparent;
   cursor: pointer;
 }
 
 .project-page-header-options-button:hover {
+  color: white;
   background-color: rgb(118, 210, 219);
 }

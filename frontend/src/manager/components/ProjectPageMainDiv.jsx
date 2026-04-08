@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ProjectPageHeader } from "./ProjectPageHeader";
-import { ProjectPageAnalyticsDiv } from "./ProjectPageAnalyticsDiv";
+import { ProjectOverview } from "./ProjectOverview";
+import { EditBox } from "./EditBox.jsx";
+import { AnalyticsBox } from "./AnalyticsBox.jsx";
 import "../css/ProjectPageMainDiv.css";
 
 export const ProjectPageMainDiv = () => {
@@ -8,7 +10,13 @@ export const ProjectPageMainDiv = () => {
   return (
     <div className="project-page-main">
       <ProjectPageHeader setActiveOption={setActiveOption} />
-      <ProjectPageAnalyticsDiv activeOption={activeOption} />
+      <div className="project-page-lowerBody">
+        <ProjectOverview />
+        <div className="rightSide-content">
+          <EditBox />
+          <AnalyticsBox />
+        </div>
+      </div>
     </div>
   );
 };
