@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Manager;
-import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.ManagerRepository;
-import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.ManagerService;
 import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
@@ -45,9 +43,6 @@ public class ManagerController {
 
     @Autowired
     private ProjectService projectService;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Manager manager, HttpServletResponse response) {
