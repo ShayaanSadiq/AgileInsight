@@ -9,10 +9,10 @@ import currManagerReducer from "./manager/currManagerSlice.js";
 
 const store = configureStore({
   reducer: {
-    orgAuth: orgAuthApi.reducer,
-    managerAuth: managerAuthApi.reducer,
-    managerProjectApi: projectApi.reducer,
-    orgProjectApi: orgProjectApi.reducer,
+    [orgAuthApi.reducerPath]: orgAuthApi.reducer,
+    [managerAuthApi.reducerPath]: managerAuthApi.reducer,
+    [projectApi.reducerPath]: projectApi.reducer,
+    [orgProjectApi.reducerPath]: orgProjectApi.reducer,
     currOrg: currOrgReducer,
     currManager: currManagerReducer,
   },

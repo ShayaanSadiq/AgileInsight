@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialize = {
   id: "",
-  email: "",
 };
 
 const currManager = createSlice({
@@ -10,7 +9,7 @@ const currManager = createSlice({
   initialState: initialize,
   reducers: {
     setCurrManager: (state, action) => {
-      ((state.id = action.payload.id), (state.email = action.payload.email));
+      state.id = action.payload.id;
     },
   },
 });

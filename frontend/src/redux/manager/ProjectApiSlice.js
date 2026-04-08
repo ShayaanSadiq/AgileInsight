@@ -12,7 +12,7 @@ export const projectApi = createApi({
   endpoints: (builder) => ({
     getProjectsById: builder.query({
       query: (id) => ({
-        url: `projects/${id}`,
+        url: `project/${id}`,
       }),
     }),
   }),

@@ -7,6 +7,7 @@ import ManagerLoginPage from "./manager/pages/LoginPage.jsx";
 import ManagerHomePage from "./manager/pages/HomePage.jsx";
 import ManagerProjectPage from "./manager/pages/ProjectPage.jsx";
 import { ProtectedRoute } from "./organisation/utils/ProtectedRoute.jsx";
+import { ManagerProtectedRoute } from "./manager/utils/ManagerProtectdRoute.jsx";
 import "./App.css";
 
 function App() {
@@ -22,12 +23,30 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="/org/project/:projectId" element={<OrgProjectPage />} />
+      <Route
+        path="/org/project/:projectId"
+        element={
+          <ProtectedRoute>
+            <OrgProjectPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/manager/login" element={<ManagerLoginPage />} />
-      <Route path="/manager/home" element={<ManagerHomePage />} />
+      <Route
+        path="/manager/home"
+        element={
+          <ManagerProtectedRoute>
+            <ManagerHomePage />
+          </ManagerProtectedRoute>
+        }
+      />
       <Route
         path="/manager/project/:projectId"
-        element={<ManagerProjectPage />}
+        element={
+          <ManagerProtectedRoute>
+            <ManagerProjectPage />
+          </ManagerProtectedRoute>
+        }
       />
     </Routes>
   );
