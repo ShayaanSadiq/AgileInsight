@@ -43,9 +43,12 @@ public class Task {
     @NotBlank(message = "AssignedTo is required")
     private String assignedTo;
 
-    @NotBlank(message = "AssignedBy is required")
-    private String assignedBy;
+    @NotBlank(message = "ManagerId is required")
+    private String managerId;
 
     @NotBlank(message = "ProjectId is required") 
     private String projectId;
+
+    @NotBlank(message = "SprintId is required")
+    private String sprintId;
 }

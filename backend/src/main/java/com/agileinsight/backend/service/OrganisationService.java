@@ -39,5 +39,4 @@ public class OrganisationService{
     public List<Organisation> getAllOrganisations() {
         return organisationRepository.findAll();
     }
-    
 }

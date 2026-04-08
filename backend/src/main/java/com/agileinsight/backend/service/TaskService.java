@@ -1,11 +1,11 @@
 package com.agileinsight.backend.service;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.agileinsight.backend.model.Task;
 import com.agileinsight.backend.repository.ProjectRepository;
+import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.repository.TaskRepository;
 
 @Service
@@ -17,25 +17,26 @@ public class TaskService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private SprintRepository sprintRepository;
+
     public Task createTask(Task task) {
+        String projectId = task.getProjectId();
+        String sprintId = task.getSprintId();
 
-        ObjectId objectId = new ObjectId(task.getProjectId());
-        boolean exists = projectRepository.existsById(objectId);        
+        if(projectRepository.existsById(projectId) && sprintRepository.existsById(sprintId)) {
+            Task task1 = taskRepository.save(task);
 
-        if(!exists) {
-            throw new RuntimeException("Project not found.");
-        }
-
-        return taskRepository.save(task);
-    }
-    public String deleteTask(String id) {
-        ObjectId objectId = new ObjectId(id);
-        taskRepository.deleteById(objectId);
-        if(taskRepository.existsById(objectId)) {
-            throw new RuntimeException("Task not deleted.");
+            if(task1 != null) {
+                return task1;
+            } else {
+                return null;
+            }
         } else {
-            System.out.println("Task deleted successfully");
+            return null;
         }
-        return id;
+    }
+    public void deleteTask(String id) {
+        taskRepository.deleteById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
-import org.bson.types.ObjectId;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,20 +30,32 @@ public class TaskController {
     private TaskRepository taskRepository;
     
     @PostMapping("/create")
-    public Task createTask(@RequestBody @Valid Task task) {
-        return taskService.createTask(task);
+    public ResponseEntity<?> createTask(@RequestBody @Valid Task task) {
+        Task createdTask = taskService.createTask(task);
+
+        if(createdTask != null) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Task created succesfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Task created successfully"
+            ));
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable String id) {
-        ObjectId objectId = new ObjectId(id);
-        
         taskService.deleteTask(id);
 
-        if(taskRepository.existsById(objectId)) {
-            throw new RuntimeException("Task not deleted.");
+        if(taskRepository.findById(id) != null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Task deleted successfully"
+            ));
         } else {
-        return ResponseEntity.ok(id);
+            return ResponseEntity.ok(Map.of(
+                "message","Task not deleted"
+            ));
         }
     }
 }

@@ -2,7 +2,6 @@ package com.agileinsight.backend.controller;
 
 import java.util.Map;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,21 +31,31 @@ public class ProjectController {
     
     @PostMapping("/create")
     public ResponseEntity<?> createProject(@RequestBody @Valid Project project) {
-        return ResponseEntity.ok(Map.of(
-            "message", projectService.createProject(project)
-        ));
+        Project createdProject = projectService.createProject(project);
+
+        if(createdProject != null) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Project created successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message", "Project not created"
+            ));
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable String id) {
-        ObjectId objectId = new ObjectId(id);
-        
-        projectService.deleteProject(objectId);
+        projectService.deleteProject(id);
 
-        if(projectRepository.existsById(objectId)) {
-            throw new RuntimeException("Project not deleted.");
+        if(projectRepository.findById(id) != null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Project deleted successfully"
+            ));
         } else {
-        return ResponseEntity.ok(id);
+        return ResponseEntity.ok(Map.of(
+            "message","Project not deleted"
+        ));
         }
     }
 }

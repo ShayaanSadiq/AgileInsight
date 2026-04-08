@@ -2,7 +2,6 @@ package com.agileinsight.backend.service;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +27,12 @@ public class ProjectService {
     @Autowired
     private GetProject getProject;
 
-    public String createProject(Project project) {
+    public Project createProject(Project project) {
         return create.createProject(project);
     }
 
-    public ObjectId deleteProject(ObjectId id) {
+    public void deleteProject(String id) {
         delete.deleteProject(id);
-        return id;
     }
 
     public List<ProjectResponse> getAllOrganisationProjects(String organisationId) {

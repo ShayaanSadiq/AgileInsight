@@ -1,6 +1,9 @@
 package com.agileinsight.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Sprint;
+import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.service.SprintService;
 
 import jakarta.validation.Valid;
@@ -22,14 +26,36 @@ public class SprintController {
     @Autowired
     private SprintService sprintService;
 
+    @Autowired
+    private SprintRepository sprintRepository;
+
     @PostMapping("/create")
-    public Sprint createSprint(@RequestBody @Valid Sprint sprint) {
-        sprintService.createSprint(sprint);
-        return sprint;
+    public ResponseEntity<?> createSprint(@RequestBody @Valid Sprint sprint) {
+        Sprint createdSprint = sprintService.createSprint(sprint);
+
+        if(createdSprint != null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint created successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint not created"
+            ));
+        }
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteSprint(@PathVariable String id) {
+    public ResponseEntity<?> deleteSprint(@PathVariable String id) {
         sprintService.deleteSprint(id);
+
+        if(sprintRepository.findById(id) != null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint deleted successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint not deleted"
+            ));
+        }
     }
 }

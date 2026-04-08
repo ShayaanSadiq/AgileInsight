@@ -1,14 +1,14 @@
 package com.agileinsight.backend.repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.agileinsight.backend.model.Project;
 import com.mongodb.lang.Nullable;
 
-public interface ProjectRepository extends MongoRepository<Project, ObjectId>{
+public interface ProjectRepository extends MongoRepository<Project, String>{
     
     @Nullable
     ArrayList<Project> findByOrganisationId(String organisationId);
@@ -17,7 +17,10 @@ public interface ProjectRepository extends MongoRepository<Project, ObjectId>{
     Project findByName(String name);
 
     @Nullable
-    Project findById(String id);
+    Optional<Project> findById(String id);
+
+    @Nullable
+    void deleteById(String id);
 
     ArrayList<Project> findByManagerId(String managerId);
 

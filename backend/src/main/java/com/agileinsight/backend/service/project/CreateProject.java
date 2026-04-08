@@ -11,21 +11,24 @@ import com.agileinsight.backend.repository.ProjectRepository;
 public class CreateProject {
 
     @Autowired
-    private OrganisationRepository organisationRepository;
-
-    @Autowired
     private ProjectRepository projectRepository;
 
-    public String createProject(Project project) {
-        System.out.println(project.getId());
-        boolean exists = organisationRepository.existsById(project.getOrganisationId());
+    @Autowired
+    private OrganisationRepository organisationRepository;
 
-        if(!exists) {
-            System.out.println("Organisation not found.");
-            return "Project not created";
+    public Project createProject(Project project) {
+        String organisationId = project.getOrganisationId();
+
+        if(organisationRepository.existsById(organisationId)) {
+            Project project1 = projectRepository.save(project);
+
+            if(project1 != null) {
+                return project1;
+            } else {
+                return null;
+            }
         } else {
-            projectRepository.save(project);
-            return "Project created successfully";
+            return null;
         }
     }
 }

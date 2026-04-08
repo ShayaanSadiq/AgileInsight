@@ -17,12 +17,10 @@ public class SprintService {
     private DeleteSprint delete;
 
     public Sprint createSprint(Sprint sprint) {
-        create.createSprint(sprint);
-        return sprint;
+        return create.createSprint(sprint);
     }
 
-    public String deleteSprint(String id) {
+    public void deleteSprint(String id) {
         delete.deleteSprint(id);
-        return id;
     }
 }
