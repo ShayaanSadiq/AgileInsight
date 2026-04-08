@@ -30,7 +30,7 @@ public class Task {
     @NotBlank(message = "Password is required") 
     private String description;
 
-    @NotBlank(message = "Type is required")
+    @NotNull
     private Type type;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
