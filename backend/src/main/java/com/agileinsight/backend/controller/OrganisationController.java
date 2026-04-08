@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Organisation;
-import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.OrganisationRepository;
-import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.OrganisationService;
+import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
 
 import jakarta.servlet.http.Cookie;
@@ -39,7 +40,7 @@ public class OrganisationController {
     private OrganisationRepository organisationRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectService projectService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -172,7 +173,7 @@ public class OrganisationController {
             ));
         }
 
-        ArrayList<Project> projects = projectRepository.findByOrganisationId(orgId);
+        List<ProjectResponse> projects = projectService.getAllProjects(orgId);
 
         return ResponseEntity.ok(projects);
     }
