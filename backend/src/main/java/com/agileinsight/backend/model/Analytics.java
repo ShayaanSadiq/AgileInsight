@@ -33,4 +33,6 @@ public class Analytics {
     private String projectId;
 
     private long expectedSprints;
+
+    private double completionPercentage;
 }

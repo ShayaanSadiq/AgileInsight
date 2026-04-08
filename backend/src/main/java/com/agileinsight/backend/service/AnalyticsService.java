@@ -22,6 +22,7 @@ public class AnalyticsService {
         analytics.setTotalBugs(0);
         analytics.setResolvedBugs(0);
         analytics.setExpectedSprints(expectedSprints);
+        analytics.setCompletionPercentage(0);
         analytics.setProjectId(projectId);
 
         analyticsRepository.save(analytics);
@@ -96,10 +97,35 @@ public class AnalyticsService {
     }
 
     public void setTotalTasks(String projectId, long totalTasks) {
-        analyticsRepository.findByProjectId(projectId).setTotalTasks(totalTasks);
+        Analytics analytics = analyticsRepository.findByProjectId(projectId);
+
+        if(analytics == null) {
+            return;
+        }
+
+        analytics.setTotalTasks(totalTasks);
+        analyticsRepository.save(analytics);
     }
 
     public void deleteAnalytics(String projectId) {
         analyticsRepository.delete(analyticsRepository.findByProjectId(projectId));
+    }
+
+    public void calulateCompletionPercentage(String projectId) {
+        Analytics analytics = analyticsRepository.findByProjectId(projectId);
+
+        double completionPercentage;
+
+        if(analytics == null) {
+            return;
+        }
+        if(analytics.getCompletedTasks() == 0) {
+            completionPercentage = 0;
+        } else {
+            completionPercentage = ((double) analytics.getCompletedTasks() / (double) analytics.getTotalTasks()) * 100;
+        }
+
+        analytics.setCompletionPercentage(completionPercentage);
+        analyticsRepository.save(analytics);
     }
 }
