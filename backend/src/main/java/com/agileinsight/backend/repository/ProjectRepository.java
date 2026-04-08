@@ -16,4 +16,9 @@ public interface ProjectRepository extends MongoRepository<Project, ObjectId>{
     @Nullable
     Project findByName(String name);
 
+    @Nullable
+    Project findById(String id);
+
+    ArrayList<Project> findByManagerId(String managerId);
+
 }

@@ -20,13 +20,38 @@ public class AllProjects {
     @Autowired
     private ManagerRepository managerRepository;
 
-    public List<ProjectResponse> getAllProjects(String organisationId) {
+    public List<ProjectResponse> getAllOrganisationProjects(String organisationId) {
         List<Project> projects = projectRepository.findByOrganisationId(organisationId);
 
         return projects.stream().map(project -> {
 
             Manager manager = managerRepository
                     .findById(project.getManagerId())
+                    .orElse(null);
+
+            return new ProjectResponse(
+                    project.getId(),
+                    project.getName(),
+                    project.getDescription(),
+                    project.getCurrentSprintNumber(),
+                    project.getCurrentSprintId(),
+                    project.getStartDate(),
+                    project.getEndDate(),
+                    manager,
+                    project.getOrganisationId(),
+                    project.getExpectedSprints()
+            );
+
+        }).toList();
+    }
+
+    public List<ProjectResponse> getAllManagerProjects(String managerId) {
+        List<Project> projects = projectRepository.findByManagerId(managerId);
+
+        return projects.stream().map(project -> {
+
+            Manager manager = managerRepository
+                    .findById(managerId)
                     .orElse(null);
 
             return new ProjectResponse(

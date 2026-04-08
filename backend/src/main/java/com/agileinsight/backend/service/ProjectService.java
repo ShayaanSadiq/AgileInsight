@@ -11,6 +11,7 @@ import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.service.project.AllProjects;
 import com.agileinsight.backend.service.project.CreateProject;
 import com.agileinsight.backend.service.project.DeleteProject;
+import com.agileinsight.backend.service.project.GetProject;
 
 @Service
 public class ProjectService {
@@ -24,6 +25,9 @@ public class ProjectService {
     @Autowired
     private AllProjects allProjects;
 
+    @Autowired
+    private GetProject getProject;
+
     public String createProject(Project project) {
         return create.createProject(project);
     }
@@ -32,7 +36,16 @@ public class ProjectService {
         delete.deleteProject(id);
         return id;
     }
-    public List<ProjectResponse> getAllProjects(String organisationId) {
-        return allProjects.getAllProjects(organisationId);
+
+    public List<ProjectResponse> getAllOrganisationProjects(String organisationId) {
+        return allProjects.getAllOrganisationProjects(organisationId);
+    }
+
+    public List<ProjectResponse> getAllManagerProjects(String managerId) {
+        return allProjects.getAllManagerProjects(managerId);
+    }
+
+    public ProjectResponse getProject(String projectId) {
+        return getProject.getProject(projectId);
     }
 }

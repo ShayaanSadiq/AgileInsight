@@ -1,5 +1,6 @@
 package com.agileinsight.backend.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,19 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.ManagerRepository;
+import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.ManagerService;
+import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
 
 import jakarta.servlet.http.Cookie;
@@ -36,6 +42,12 @@ public class ManagerController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private ProjectService projectService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Manager manager, HttpServletResponse response) {
@@ -135,6 +147,71 @@ public class ManagerController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(Map.of("message", "Logout successful"));
+    }
+
+    @GetMapping("/projects/{managerId}")
+    public ResponseEntity<?> getProjects(
+            @PathVariable String managerId,
+            HttpServletRequest request) {
+
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        String tokenId = jwtUtil.extractId(token);
+
+        if (!managerId.equals(tokenId)) {
+            return ResponseEntity.ok(Map.of(
+                "message","Incorrect organisation id"
+            ));
+        }
+
+        List<ProjectResponse> projects = projectService.getAllManagerProjects(managerId);
+
+        return ResponseEntity.ok(projects);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<?> getProject(@PathVariable String projectId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        ProjectResponse projectResponse = projectService.getProject(projectId);
+
+        String tokenId = jwtUtil.extractId(token);
+
+        if (!projectResponse.getManagerId().equals(tokenId)) {
+            return ResponseEntity.ok(Map.of(
+                "message","Project not found"
+            ));
+        }
+
+        return ResponseEntity.ok(projectResponse);
     }
 }
 

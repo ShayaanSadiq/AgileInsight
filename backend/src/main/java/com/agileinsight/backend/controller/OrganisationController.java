@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Organisation;
+import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.OrganisationRepository;
+import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.OrganisationService;
 import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
@@ -42,6 +44,9 @@ public class OrganisationController {
     private ProjectService projectService;
 
     @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
@@ -63,7 +68,8 @@ public class OrganisationController {
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(Map.of(
-                    "message", "Login successful", "id", id
+                    "message", "Login successful", 
+                    "id", id
                 )
             );
         } else {
@@ -171,9 +177,40 @@ public class OrganisationController {
             ));
         }
 
-        List<ProjectResponse> projects = projectService.getAllProjects(orgId);
+        List<ProjectResponse> projects = projectService.getAllOrganisationProjects(orgId);
 
         return ResponseEntity.ok(projects);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<?> getProject(@PathVariable String projectId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        ProjectResponse projectResponse = projectService.getProject(projectId);
+
+        String tokenId = jwtUtil.extractId(token);
+
+        if (!projectResponse.getOrganisationId().equals(tokenId)) {
+            return ResponseEntity.ok(Map.of(
+                "message","Project not found"
+            ));
+        }
+
+        return ResponseEntity.ok(projectResponse);
     }
 }
 
