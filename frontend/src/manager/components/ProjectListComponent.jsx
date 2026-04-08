@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import "../css/ProjectList.css";
 
 export const ProjectListComponent = () => {
-  const id = useSelector((state) => state.currManager.id);
-  const { data, isLoading, isError } = useGetProjectsByIdQuery(id);
+  const managerId = useSelector((state) => state.currManager.id);
+  const { data, isLoading, isError } = useGetProjectsByIdQuery(managerId, {
+    skip: !managerId,
+  });
 
   return (
     <div className="project-headings">
@@ -19,7 +21,7 @@ export const ProjectListComponent = () => {
           <th>Completed</th>
           <th></th>
         </tr>
-
+        {console.log(managerId)}
         {data?.map((project) => (
           <tr key={project.id}>
             <ProjectComponent project={project} />

@@ -29,6 +29,7 @@ export const ProjectsDiv = () => {
             <th>End date</th>
             <th>Assigned to</th>
           </tr>
+          {console.log(data)}
           {data?.map((project) => (
             <tr key={project.id}>
               <td>{++counter}</td>
@@ -36,7 +37,7 @@ export const ProjectsDiv = () => {
               <td>{project.description}</td>
               <td>{project.startDate}</td>
               <td>{project.endDate}</td>
-              <td>{project.managerId}</td>
+              <td>{project.manager.email}</td>
               <td className="go-btn-td" onClick={() => handleClick(project.id)}>
                 Go
                 <MdOutlineArrowOutward />
