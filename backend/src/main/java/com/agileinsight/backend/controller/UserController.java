@@ -81,15 +81,10 @@ public class UserController {
     public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
         String token = null;
 
-        String id = null;
-
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
-                }
-                if("id".equals(cookie.getName())) {
-                    id = cookie.getValue();
                 }
             }
         }
@@ -102,7 +97,8 @@ public class UserController {
 
         try {
             String username = jwtUtil.extractUsername(token);
-
+            String id = jwtUtil.extractId(token);
+            
             if (jwtUtil.validateToken(token, username) && userRepository.findById(id) != null) {
                 return ResponseEntity.ok(Map.of(
                     "message", "Login successful",
