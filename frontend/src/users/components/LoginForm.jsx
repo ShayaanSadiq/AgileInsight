@@ -1,9 +1,9 @@
 import "../css/LoginForm.css";
 import { useForm } from "react-hook-form";
-import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostLoginMutation } from "../../redux/user/authApiSlice.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrOrg } from "../../redux/organisation/currOrg.js";
+import { setCurrUser } from "../../redux/user/currUserSlice.js";
 import toast from "react-hot-toast";
 
 export const LoginForm = () => {
@@ -15,12 +15,11 @@ export const LoginForm = () => {
   const onSubmit = async (data) => {
     const result = await loginUser(data);
     if (result?.data?.message == "Login successful") {
-      dispatch(setCurrOrg({ email: data.email }));
+      dispatch(setCurrUser({ id: data.id }));
       toast.success("Login Successfull");
-      navigate("/org/home");
+      navigate("/user/home");
     } else {
-      console.log(result);
-      toast.error(result.error.data.error);
+      toast.error(result.data.message);
     }
   };
   return (

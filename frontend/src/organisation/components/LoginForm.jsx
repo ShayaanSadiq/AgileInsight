@@ -7,20 +7,19 @@ import { setCurrOrg } from "../../redux/organisation/currOrg.js";
 import toast from "react-hot-toast";
 
 export const LoginForm = () => {
-  const [loginUser, { isLoading }] = usePostLoginMutation();
+  const [loginOrg, { isLoading }] = usePostLoginMutation();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    const result = await loginUser(data);
+    const result = await loginOrg(data);
     if (result?.data?.message == "Login successful") {
-      dispatch(setCurrOrg({ email: data.email }));
+      dispatch(setCurrOrg({ id: data.id }));
       toast.success("Login Successfull");
       navigate("/org/home");
     } else {
-      console.log(result);
-      toast.error(result.error.data.error);
+      toast.error(result.data.message);
     }
   };
   return (
