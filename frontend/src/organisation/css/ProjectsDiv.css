@@ -8,3 +8,17 @@ td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+
+.go-btn-td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgb(118, 210, 219);
+  font-size: large;
+}
+
+.go-btn-td:hover {
+  color: white;
+  background-color: rgb(118, 210, 219);
+}
