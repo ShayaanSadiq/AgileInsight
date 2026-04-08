@@ -11,20 +11,27 @@ export const ProjectListComponent = () => {
   const { data, isLoading, isError } = useGetProjectsByIdQuery(managerId, {
     skip: !managerId,
   });
+  const navigate = useNavigate();
 
+  const handleClick = (projectId) => {
+    navigate(`/manager/project/${projectId}`);
+  };
   return (
     <div className="project-headings">
       <table>
         <tr>
           <th>Name</th>
-          <th>Due-Date</th>
-          <th>Completed</th>
+          <th>Description</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Current sprint</th>
+          <th>Expected sprints</th>
           <th></th>
         </tr>
-        {console.log(managerId)}
+
         {data?.map((project) => (
           <tr key={project.id}>
-            <ProjectComponent project={project} />
+            <ProjectComponent project={project} handleClick={handleClick} />
           </tr>
         ))}
       </table>

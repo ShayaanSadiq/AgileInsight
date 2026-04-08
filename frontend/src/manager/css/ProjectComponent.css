@@ -9,3 +9,16 @@
   display: flex;
   flex-direction: column;
 }
+
+.project-go-td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  cursor: pointer;
+}
+
+.project-go-td:hover {
+  background-color: rgb(118, 210, 219);
+  color: white;
+}
