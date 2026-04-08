@@ -4,8 +4,10 @@ import { orgAuthApi } from "./organisation/authApiSlice";
 import { managerAuthApi } from "./manager/authApiSlice.js";
 import { projectApi } from "./manager/ProjectApiSlice.js";
 import { orgProjectApi } from "./organisation/projectApiSlice.js";
+import { userAuthApi } from "./user/authApiSlice.js";
 import currOrgReducer from "./organisation/currOrg";
 import currManagerReducer from "./manager/currManagerSlice.js";
+import currUserReducer from "./user/currUserSlice.js";
 
 const store = configureStore({
   reducer: {
@@ -13,8 +15,10 @@ const store = configureStore({
     [managerAuthApi.reducerPath]: managerAuthApi.reducer,
     [projectApi.reducerPath]: projectApi.reducer,
     [orgProjectApi.reducerPath]: orgProjectApi.reducer,
+    [userAuthApi.reducerPath]: userAuthApi.reducer,
     currOrg: currOrgReducer,
     currManager: currManagerReducer,
+    currUser: currUserReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -22,6 +26,7 @@ const store = configureStore({
       managerAuthApi.middleware,
       projectApi.middleware,
       orgProjectApi.middleware,
+      userAuthApi.middleware,
     ),
 });
 

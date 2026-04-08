@@ -1,23 +1,23 @@
 import "../css/LoginForm.css";
 import { useForm } from "react-hook-form";
-import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostLoginMutation } from "../../redux/user/authApiSlice.js";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrOrg } from "../../redux/organisation/currOrg.js";
+import { setCurrUser } from "../../redux/user/currUserSlice.js";
 import toast from "react-hot-toast";
 
 export const LoginForm = () => {
-  const [loginOrg, { isLoading }] = usePostLoginMutation();
+  const [loginUser, { isLoading }] = usePostLoginMutation();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    const result = await loginOrg(data);
+    const result = await loginUser(data);
     if (result?.data?.message == "Login successful") {
-      dispatch(setCurrOrg({ id: data.id }));
+      dispatch(setCurrUser({ id: data.id }));
       toast.success("Login Successfull");
-      navigate("/org/home");
+      navigate("/user/home");
     } else {
       toast.error(result.data.message);
     }

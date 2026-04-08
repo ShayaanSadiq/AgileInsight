@@ -1,17 +1,17 @@
 import React from "react";
 import "../css/ProjectComponent.css";
 
-export const ProjectComponent = ({ project }) => {
+export const ProjectComponent = ({ project, handleClick }) => {
   return (
     <>
-      <td>
-        <span>{project.name}</span>
-        <p>{project.description}</p>
-      </td>
-      <td>{project.dueDate}</td>
-      <td>{project.completed}</td>
-      <td>
-        <button>Go {project.link}</button>
+      <td>{project.name}</td>
+      <td>{project.description}</td>
+      <td>{project.startDate}</td>
+      <td>{project.endDate}</td>
+      <td>{project.currentSprintNumber}</td>
+      <td>{project.expectedSprints}</td>
+      <td className="project-go-td" onClick={() => handleClick(project.id)}>
+        Go
       </td>
     </>
   );
