@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.agileinsight.backend.model.Sprint;
 import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.repository.SprintRepository;
+import com.agileinsight.backend.service.AnalyticsService;
 
 @Component
 public class CreateSprint {
@@ -16,6 +17,9 @@ public class CreateSprint {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private AnalyticsService analyticsService;
+
     public Sprint createSprint(Sprint sprint) {
         String projectId = sprint.getProjectId();
 
@@ -24,7 +28,8 @@ public class CreateSprint {
 
             projectRepository.findById(projectId).orElse(null).setCurrentSprintNumber(1);
             projectRepository.findById(projectId).orElse(null).setCurrentSprintId(sprint1.getId());
-            
+
+            analyticsService.incrementSprint(projectId);
             return sprint1;
         } else {
             return null;

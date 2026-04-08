@@ -30,9 +30,6 @@ public class Project {
     @NotBlank(message = "Password is required") 
     private String description;
 
-    // Implement in analytics
-    // private Integer totalSprints;
-
     private Integer currentSprintNumber;
 
     private String currentSprintId;
@@ -54,5 +51,5 @@ public class Project {
     @NotNull
     private Integer expectedSprints;
 
-    // private Enum status;
+    private Status status;
 }

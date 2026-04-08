@@ -30,7 +30,8 @@ public class Task {
     @NotBlank(message = "Password is required") 
     private String description;
 
-    // private Enum type; (bug, feature, improvement)
+    @NotBlank(message = "Type is required")
+    private Type type;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @NotNull
@@ -51,4 +52,6 @@ public class Task {
 
     @NotBlank(message = "SprintId is required")
     private String sprintId;
+
+    private Status status;
 }

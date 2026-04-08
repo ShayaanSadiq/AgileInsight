@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.ProjectRepository;
+import com.agileinsight.backend.service.AnalyticsService;
 import com.agileinsight.backend.service.ProjectService;
 
 import jakarta.validation.Valid;
@@ -28,12 +29,17 @@ public class ProjectController {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private AnalyticsService analyticsService;
     
     @PostMapping("/create")
     public ResponseEntity<?> createProject(@RequestBody @Valid Project project) {
         Project createdProject = projectService.createProject(project);
 
         if(createdProject != null) {
+            analyticsService.createAnalytics(project.getId(), project.getExpectedSprints());
+
             return ResponseEntity.ok(Map.of(
                 "message", "Project created successfully"
             ));

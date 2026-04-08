@@ -18,22 +18,19 @@ public class Analytics {
     @Id
     private String id;
 
-    private Integer totalTasks;
+    private long totalTasks;
 
-    private Integer completedTasks;
+    private long completedTasks;
 
-    private Integer totalSprints;
+    private long totalSprints;
 
-    private Integer completedSprints;
+    private long completedSprints;
 
-    // Duplicate in Project Model
-    // private Integer expectedSprints;
+    private long totalBugs;
 
-    private Integer totalBugs;
-
-    private Integer resolvedBugs;
-
-    private String sprintId;
+    private long resolvedBugs;
 
     private String projectId;
+
+    private long expectedSprints;
 }

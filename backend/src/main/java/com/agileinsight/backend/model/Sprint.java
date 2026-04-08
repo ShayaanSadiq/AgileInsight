@@ -41,5 +41,5 @@ public class Sprint {
     @NotBlank(message = "ProjectId is required")
     private String projectId;
 
-    // private Integer totalTasks;
+    private Status status;
 }

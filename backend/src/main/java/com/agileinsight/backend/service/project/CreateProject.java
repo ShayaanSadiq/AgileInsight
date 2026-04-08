@@ -1,5 +1,7 @@
 package com.agileinsight.backend.service.project;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +21,7 @@ public class CreateProject {
     public Project createProject(Project project) {
         String organisationId = project.getOrganisationId();
 
-        if(organisationRepository.existsById(organisationId)) {
+        if(organisationRepository.existsById(organisationId) && project.getStartDate().isAfter(LocalDate.now())) {
             Project project1 = projectRepository.save(project);
 
             if(project1 != null) {

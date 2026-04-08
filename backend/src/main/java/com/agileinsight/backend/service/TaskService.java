@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.agileinsight.backend.model.Task;
+import com.agileinsight.backend.model.Type;
 import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.repository.TaskRepository;
@@ -20,6 +21,9 @@ public class TaskService {
     @Autowired
     private SprintRepository sprintRepository;
 
+    @Autowired
+    private AnalyticsService analyticsService;
+
     public Task createTask(Task task) {
         String projectId = task.getProjectId();
         String sprintId = task.getSprintId();
@@ -28,6 +32,11 @@ public class TaskService {
             Task task1 = taskRepository.save(task);
 
             if(task1 != null) {
+                if(task1.getType() == Type.BUG) {
+                    analyticsService.incrementBug(projectId);
+                } else {
+                    analyticsService.incrementTask(projectId);
+                }
                 return task1;
             } else {
                 return null;
