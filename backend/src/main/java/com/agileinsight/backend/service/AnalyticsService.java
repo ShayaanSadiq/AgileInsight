@@ -58,6 +58,7 @@ public class AnalyticsService {
         }
 
         analytics.setTotalBugs(analytics.getTotalBugs() + 1);
+        analytics.setTotalTasks(analytics.getTotalTasks() + 1);
         analyticsRepository.save(analytics);
     }
 
