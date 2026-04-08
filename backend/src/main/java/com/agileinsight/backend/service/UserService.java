@@ -27,13 +27,13 @@ public class UserService{
         return userRepository.save(user);
     }
     
-    public boolean loginUser(String email, String rawPassword) {
+    public User loginUser(String email, String rawPassword) {
         User user = userRepository.findByEmail(email);
 
         if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
-            return true;
+            return user;
         }
-        return false;
+        return null;
     }
 
     public List<User> getAllUsers() {

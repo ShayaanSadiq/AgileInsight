@@ -27,13 +27,13 @@ public class OrganisationService{
         return organisationRepository.save(organisation);
     }
     
-    public boolean loginOrganisation(String email, String rawPassword) {
+    public Organisation loginOrganisation(String email, String rawPassword) {
         Organisation organisation = organisationRepository.findByEmail(email);
 
         if (organisation != null && passwordEncoder.matches(rawPassword, organisation.getPassword())) {
-            return true;
+            return organisation;
         }
-        return false;
+        return null;
     }
 
     public List<Organisation> getAllOrganisations() {

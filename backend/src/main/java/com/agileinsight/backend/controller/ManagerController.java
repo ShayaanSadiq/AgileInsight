@@ -39,12 +39,12 @@ public class ManagerController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Manager manager, HttpServletResponse response) {
-        boolean isValid = managerService.loginManager(manager.getEmail(), manager.getPassword());
+        Manager manager1 = managerService.loginManager(manager.getEmail(), manager.getPassword());
 
-        String id = (managerRepository.findByEmail(manager.getEmail())).getId();
+        if(manager1 != null) {
+            String id = manager1.getId();
 
-        if(isValid) {
-            String token = jwtUtil.generateToken(manager.getEmail(), id); 
+            String token = jwtUtil.generateToken(manager1.getEmail(), id); 
             
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                     .httpOnly(true)

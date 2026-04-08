@@ -1,6 +1,5 @@
 package com.agileinsight.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.ProjectResponse;
+import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Organisation;
 import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.service.OrganisationService;
@@ -47,12 +47,11 @@ public class OrganisationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Organisation organisation, HttpServletResponse response) {
-        boolean isValid = organisationService.loginOrganisation(organisation.getEmail(), organisation.getPassword());
+        Organisation organisation1 = organisationService.loginOrganisation(organisation.getEmail(), organisation.getPassword());
 
-        String id = (organisationRepository.findByEmail(organisation.getEmail())).getId();
-
-        if(isValid) {
-            String token = jwtUtil.generateToken(organisation.getEmail(), id); 
+        if(organisation1 != null) {
+            String id = organisation1.getId();
+            String token = jwtUtil.generateToken(organisation1.getEmail(), id);
             
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                     .httpOnly(true)

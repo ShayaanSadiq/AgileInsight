@@ -27,13 +27,13 @@ public class ManagerService{
         return managerRepository.save(manager);
     }
     
-    public boolean loginManager(String email, String rawPassword) {
+    public Manager loginManager(String email, String rawPassword) {
         Manager manager = managerRepository.findByEmail(email);
-
+        
         if (manager != null && passwordEncoder.matches(rawPassword, manager.getPassword())) {
-            return true;
+            return manager;
         }
-        return false;
+        return null;
     }
 
     public List<Manager> getAllManagers() {

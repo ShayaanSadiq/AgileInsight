@@ -39,12 +39,13 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid User user, HttpServletResponse response) {
-        boolean isValid = userService.loginUser(user.getEmail(), user.getPassword());
+        User user1 = userService.loginUser(user.getEmail(), user.getPassword());
 
-        String id = (userRepository.findByEmail(user.getEmail())).getId();
+        
 
-        if(isValid) {
-            String token = jwtUtil.generateToken(user.getEmail(), id); 
+        if(user1 != null) {
+            String id = user1.getId();
+            String token = jwtUtil.generateToken(user1.getEmail(), id); 
             
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                     .httpOnly(true)
