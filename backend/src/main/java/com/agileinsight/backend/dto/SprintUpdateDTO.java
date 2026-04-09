@@ -13,10 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ProjectUpdateDTO {
+public class SprintUpdateDTO {
+    
     private String name;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String managerId;
 }

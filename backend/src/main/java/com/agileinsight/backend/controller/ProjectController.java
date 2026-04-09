@@ -80,6 +80,5 @@ public class ProjectController {
                 "message","Project not updated"
             ));
         }
-        
     }
 }

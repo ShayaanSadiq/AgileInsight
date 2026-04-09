@@ -23,18 +23,21 @@ public class UpdateProject {
         Project project = projectRepository.findById(projectId).orElse(null);
 
         if(project != null) {
-            if(projectUpdateDTO.getName() != null && project.getName() != projectUpdateDTO.getName()) {
+            if(projectUpdateDTO.getName() != null) {
                 project.setName(projectUpdateDTO.getName());
             }
-            if(projectUpdateDTO.getDescription() != null && project.getDescription() != projectUpdateDTO.getDescription()) {
+            if(projectUpdateDTO.getDescription() != null) {
                 project.setDescription(projectUpdateDTO.getDescription());
             }
             if(projectUpdateDTO.getStartDate() != null && 
-               !(project.getStartDate() == projectUpdateDTO.getStartDate()) && 
                project.getStartDate().isAfter(LocalDate.now().minusDays(1)) && project.getEndDate().isAfter(project.getStartDate())) {
                 project.setStartDate(projectUpdateDTO.getStartDate());
             }
-            if(projectUpdateDTO.getManagerId() != null && project.getManagerId() != projectUpdateDTO.getManagerId() && 
+            if(projectUpdateDTO.getEndDate() != null && 
+               project.getEndDate().isAfter(project.getStartDate())) {
+                project.setEndDate(projectUpdateDTO.getEndDate());
+            }
+            if(projectUpdateDTO.getManagerId() != null && 
                managerRepository.existsById(projectUpdateDTO.getManagerId())) {
                 project.setManagerId(projectUpdateDTO.getManagerId());
             }

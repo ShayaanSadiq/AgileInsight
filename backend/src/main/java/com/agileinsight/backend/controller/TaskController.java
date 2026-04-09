@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.dto.TaskUpdateDTO;
 import com.agileinsight.backend.model.Task;
 import com.agileinsight.backend.repository.TaskRepository;
 import com.agileinsight.backend.service.TaskService;
@@ -55,6 +57,21 @@ public class TaskController {
         } else {
             return ResponseEntity.ok(Map.of(
                 "message","Task not deleted"
+            ));
+        }
+    }
+
+    @PatchMapping("/update/{taskId}")
+    public ResponseEntity<?> updateTask(@PathVariable @Valid String taskId, @RequestBody @Valid TaskUpdateDTO taskUpdateDTO) {
+        boolean updated = taskService.updateTask(taskId, taskUpdateDTO);
+
+        if(updated) {
+            return ResponseEntity.ok(Map.of(
+                "message","Task updated successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Task not updated"
             ));
         }
     }

@@ -2,6 +2,8 @@ package com.agileinsight.backend.dto;
 
 import java.time.LocalDate;
 
+import com.agileinsight.backend.model.Type;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -13,10 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ProjectUpdateDTO {
+public class TaskUpdateDTO {
+    
     private String name;
     private String description;
+    private Type type;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String managerId;
+    private String assignedTo;
 }

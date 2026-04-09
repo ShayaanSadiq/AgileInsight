@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.dto.SprintUpdateDTO;
 import com.agileinsight.backend.model.Sprint;
 import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.service.SprintService;
@@ -55,6 +57,21 @@ public class SprintController {
         } else {
             return ResponseEntity.ok(Map.of(
                 "message","Sprint not deleted"
+            ));
+        }
+    }
+
+    @PatchMapping("/update/{sprintId}")
+    public ResponseEntity<?> updateSprint(@PathVariable @Valid String sprintId, @RequestBody @Valid SprintUpdateDTO sprintUpdateDTO) {
+        boolean updated = sprintService.updateSprint(sprintId, sprintUpdateDTO);
+
+        if(updated) {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint updated successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Sprint not updated"
             ));
         }
     }
