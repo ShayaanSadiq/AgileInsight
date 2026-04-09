@@ -13,8 +13,10 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data);
     const result = await loginManager(data);
-    if (result.data.message == "Login successful") {
+    console.log(result);
+    if (result.data?.message && result.data.message == "Login successful") {
       let payload = { id: result.data.id };
       dispatch(setCurrManager(payload));
       toast.success("Login successfull.");
