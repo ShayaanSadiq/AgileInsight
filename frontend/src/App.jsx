@@ -9,6 +9,7 @@ import ManagerProjectPage from "./manager/pages/ProjectPage.jsx";
 import UserLoginPage from "./users/pages/LoginPage.jsx";
 import UserHomePage from "./users/pages/HomePage.jsx";
 import UserProjectPage from "./users/pages/ProjectPage.jsx";
+import ManagerEditPage from "./manager/pages/EditPage.jsx";
 import { ProtectedRoute } from "./organisation/utils/ProtectedRoute.jsx";
 import { ManagerProtectedRoute } from "./manager/utils/ManagerProtectdRoute.jsx";
 import "./App.css";
@@ -48,6 +49,14 @@ function App() {
         element={
           <ManagerProtectedRoute>
             <ManagerProjectPage />
+          </ManagerProtectedRoute>
+        }
+      />
+      <Route
+        path="/manager/project/edit/:projectId"
+        element={
+          <ManagerProtectedRoute>
+            <ManagerEditPage />
           </ManagerProtectedRoute>
         }
       />
