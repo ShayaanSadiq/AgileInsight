@@ -1,5 +1,7 @@
 package com.agileinsight.backend.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,11 @@ public class TaskService {
         String projectId = task.getProjectId();
         String sprintId = task.getSprintId();
 
-        if(projectRepository.existsById(projectId) && sprintRepository.existsById(sprintId)) {
+        if(projectRepository.existsById(projectId) && 
+           sprintRepository.existsById(sprintId) && 
+           task.getStartDate().isAfter(LocalDate.now().minusDays(1)) && 
+           task.getEndDate().isAfter(task.getStartDate()) &&
+           task.getStatus() == null) {
             Task task1 = taskRepository.save(task);
 
             if(task1 != null) {
@@ -37,6 +43,9 @@ public class TaskService {
                 } else {
                     analyticsService.incrementTask(projectId);
                 }
+
+                analyticsService.calulateCompletionPercentage(projectId);
+
                 return task1;
             } else {
                 return null;
