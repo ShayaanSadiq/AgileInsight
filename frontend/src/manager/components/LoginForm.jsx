@@ -14,7 +14,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (data) => {
     const result = await loginManager(data);
-    if (result.data.message == "Login successful") {
+    if (result.data?.message && result.data.message == "Login successful") {
       let payload = { id: result.data.id };
       dispatch(setCurrManager(payload));
       toast.success("Login successfull.");

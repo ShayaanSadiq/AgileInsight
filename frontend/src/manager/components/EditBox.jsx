@@ -10,7 +10,12 @@ export const EditBox = () => {
         </div>
         <button>Edit project</button>
       </div>
-      <p>description</p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+        necessitatibus doloremque repudiandae quia numquam. Fugiat similique
+        totam atque maxime officiis necessitatibus architecto molestiae, eos
+        nisi dolorem, vero commodi blanditiis ullam!
+      </p>
     </div>
   );
 };
