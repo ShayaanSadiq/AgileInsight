@@ -1,5 +1,6 @@
 package com.agileinsight.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.ProjectResponse;
+import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Organisation;
+import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.service.OrganisationService;
 import com.agileinsight.backend.service.ProjectService;
@@ -43,6 +46,9 @@ public class OrganisationController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private ManagerRepository managerRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid Organisation organisation, HttpServletResponse response) {
@@ -213,5 +219,28 @@ public class OrganisationController {
         }
 
         return ResponseEntity.ok(projectResponse);
+    }
+
+    @GetMapping("/getallmanagers/{organisationId}")
+    public ResponseEntity<?> getAllManagers(@PathVariable @Valid String organisationId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+        
+        ArrayList<Manager> managers = managerRepository.findByOrganisationId(organisationId);
+
+        return ResponseEntity.ok(managers);
     }
 }

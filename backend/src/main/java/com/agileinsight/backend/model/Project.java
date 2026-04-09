@@ -27,7 +27,6 @@ public class Project {
     @NotBlank(message = "Name is required") 
     private String name;
 
-    @NotBlank(message = "Password is required") 
     private String description;
 
     private Integer currentSprintNumber;
@@ -42,14 +41,14 @@ public class Project {
     @NotNull
     private LocalDate endDate;
 
-    @NotBlank(message = "ManagerId is required")
     private String managerId;
 
     @NotBlank(message = "OrganisationId is required")
     private String organisationId;
 
-    @NotNull
     private Integer expectedSprints;
 
     private Status status;
+
+    private Priority priority;
 }

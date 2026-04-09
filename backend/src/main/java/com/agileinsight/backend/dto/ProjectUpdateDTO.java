@@ -2,6 +2,8 @@ package com.agileinsight.backend.dto;
 
 import java.time.LocalDate;
 
+import com.agileinsight.backend.model.Priority;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,4 +21,5 @@ public class ProjectUpdateDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private String managerId;
+    private Priority priority;
 }

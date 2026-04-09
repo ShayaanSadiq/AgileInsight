@@ -84,6 +84,9 @@ public class TaskService {
             if(taskUpdateDTO.getAssignedTo() != null && userRepository.existsById(taskUpdateDTO.getAssignedTo())) {
                 task.setAssignedTo(taskUpdateDTO.getAssignedTo());
             }
+            if(taskUpdateDTO.getPriority() != null) {
+                task.setPriority(taskUpdateDTO.getPriority());
+            }
 
             taskRepository.save(task);
             return true;

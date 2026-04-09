@@ -54,4 +54,7 @@ public class Task {
     private String sprintId;
 
     private Status status;
+
+    @NotNull
+    private Priority priority;
 }

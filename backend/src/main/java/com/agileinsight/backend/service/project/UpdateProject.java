@@ -41,6 +41,9 @@ public class UpdateProject {
                managerRepository.existsById(projectUpdateDTO.getManagerId())) {
                 project.setManagerId(projectUpdateDTO.getManagerId());
             }
+            if(projectUpdateDTO.getPriority() != null) {
+                project.setPriority(projectUpdateDTO.getPriority());
+            }
 
             projectRepository.save(project);
             return true;

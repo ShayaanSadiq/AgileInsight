@@ -67,7 +67,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid User user) {
-        if(user.getName() != null && user.getRole() != null) {
+        if(user.getName() != null) {
             try {
                 userService.registerUser(user);
                 return ResponseEntity.ok()
