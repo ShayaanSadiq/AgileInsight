@@ -53,7 +53,7 @@ function App() {
         }
       />
       <Route
-        path="/manager/project/edit/:projectId"
+        path="/manager/project/:projectId/edit"
         element={
           <ManagerProtectedRoute>
             <ManagerEditPage />

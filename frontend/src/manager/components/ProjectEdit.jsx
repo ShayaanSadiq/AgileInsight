@@ -1,7 +1,7 @@
 import React from "react";
-import { BottomDiv } from "../components/BottomDiv.jsx";
+import { BottomDiv } from "./BottomDiv.jsx";
+import { HeadingDescription } from "./HeadingDescription.jsx";
 import { useForm } from "react-hook-form";
-import "../css/ProjectEdit.css";
 
 export const ProjectEdit = () => {
   const { register, handleSubmit } = useForm({
@@ -12,22 +12,13 @@ export const ProjectEdit = () => {
       endDate: "15-04-2026",
     },
   });
-  const headingStyles = {
-    fontSize: "larger",
-    marginTop: "10px",
-    marginBottom: "5px",
-    fontWeight: "bold",
-  };
   return (
     <>
-      <span style={headingStyles}>Project</span>
-      <div className="description-div">
-        <span>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit unde
-          velit delectus quam perferendis,
-        </span>
-        <span>latest updated</span>
-      </div>
+      <HeadingDescription
+        title={"Project"}
+        description={"please kill bad people"}
+        lastUpdated={"today"}
+      />
       <BottomDiv register={register} />
     </>
   );

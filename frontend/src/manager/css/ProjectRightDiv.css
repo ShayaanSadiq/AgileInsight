@@ -1,0 +1,23 @@
+.right-div-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 30px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.right-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.right-head span {
+  font-size: medium;
+  font-weight: bold;
+}
+
+.member {
+  padding: 5px;
+  border-bottom: 1px solid black;
+}

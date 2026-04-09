@@ -1,0 +1,28 @@
+.sprint-edit {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sprint-edit-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5px;
+  gap: 10px;
+}
+
+.sprint-left {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sprint-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
