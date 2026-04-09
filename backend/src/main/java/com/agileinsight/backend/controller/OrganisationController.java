@@ -77,11 +77,18 @@ public class OrganisationController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Organisation organisation) {
-        try {
-            organisationService.registerOrganisation(organisation);
-            return ResponseEntity.ok()
-                                 .body(Map.of("message","Register successful"));
-        } catch (RuntimeException e) {
+        if(organisation.getName() != null) {    
+            try {
+                organisationService.registerOrganisation(organisation);
+                return ResponseEntity.ok()
+                                    .body(Map.of("message","Register successful"));
+            } catch (RuntimeException e) {
+                return ResponseEntity.ok(Map.of(
+                        "message", "Register failed"
+                    )
+                );
+            }
+        } else {
             return ResponseEntity.ok(Map.of(
                     "message", "Register failed"
                 )

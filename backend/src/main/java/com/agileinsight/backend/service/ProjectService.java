@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.agileinsight.backend.ProjectResponse;
+import com.agileinsight.backend.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.service.project.AllProjects;
 import com.agileinsight.backend.service.project.CreateProject;
 import com.agileinsight.backend.service.project.DeleteProject;
 import com.agileinsight.backend.service.project.GetProject;
+import com.agileinsight.backend.service.project.UpdateProject;
 
 @Service
 public class ProjectService {
@@ -26,6 +28,9 @@ public class ProjectService {
 
     @Autowired
     private GetProject getProject;
+
+    @Autowired
+    private UpdateProject updateProject;
 
     public Project createProject(Project project) {
         return create.createProject(project);
@@ -45,5 +50,9 @@ public class ProjectService {
 
     public ProjectResponse getProject(String projectId) {
         return getProject.getProject(projectId);
+    }
+
+    public boolean updateProject(String projectId, ProjectUpdateDTO projectUpdateDTO) {
+        return updateProject.updateProject(projectId, projectUpdateDTO);
     }
 }

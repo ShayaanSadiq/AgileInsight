@@ -21,8 +21,9 @@ public class GlobalExceptionHandler {
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("success", false);
-        response.put("errors", errors);
+        // response.put("success", false);
+        // response.put("errors", errors);
+        response.put("message", errors);
 
         return ResponseEntity.badRequest().body(response);
     }

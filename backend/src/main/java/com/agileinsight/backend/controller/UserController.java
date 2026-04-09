@@ -67,11 +67,17 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid User user) {
-        try {
-            userService.registerUser(user);
-            return ResponseEntity.ok()
-                                 .body(Map.of("message","Register successful"));
-        } catch (RuntimeException e) {
+        if(user.getName() != null) {
+            try {
+                userService.registerUser(user);
+                return ResponseEntity.ok()
+                                    .body(Map.of("message","Register successful"));
+            } catch (RuntimeException e) {
+                return ResponseEntity.ok(Map.of(
+                    "message","Register failed"
+                ));
+            }
+        } else {
             return ResponseEntity.ok(Map.of(
                 "message","Register failed"
             ));

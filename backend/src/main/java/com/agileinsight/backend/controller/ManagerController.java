@@ -73,17 +73,23 @@ public class ManagerController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
-        try {
-            managerService.registerManager(manager);
+        if(manager.getName() != null) {
+            try {
+                managerService.registerManager(manager);
 
-            String id = (managerRepository.findByEmail(manager.getEmail())).getId();
-            
-            return ResponseEntity.ok()
-                                 .body(Map.of(
-                                    "message","Register successful",
-                                    "id", id
-                                ));
-        } catch (RuntimeException e) {
+                String id = (managerRepository.findByEmail(manager.getEmail())).getId();
+                
+                return ResponseEntity.ok()
+                                    .body(Map.of(
+                                        "message","Register successful",
+                                        "id", id
+                                    ));
+            } catch (RuntimeException e) {
+                return ResponseEntity.ok(Map.of(
+                    "message","Register failed"
+                ));
+            }
+        } else {
             return ResponseEntity.ok(Map.of(
                 "message","Register failed"
             ));

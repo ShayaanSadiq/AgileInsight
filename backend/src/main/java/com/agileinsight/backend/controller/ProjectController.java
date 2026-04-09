@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.AnalyticsService;
@@ -63,5 +65,21 @@ public class ProjectController {
             "message","Project not deleted"
         ));
         }
+    }
+
+    @PatchMapping("/update/{projectId}")
+    public ResponseEntity<?> updateProject(@PathVariable @Valid String projectId, @RequestBody @Valid ProjectUpdateDTO projectUpdateDTO) {
+        boolean updated = projectService.updateProject(projectId, projectUpdateDTO);
+
+        if(updated) {
+            return ResponseEntity.ok(Map.of(
+                "message","Project updated successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Project not updated"
+            ));
+        }
+        
     }
 }
