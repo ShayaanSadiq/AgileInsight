@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.agileinsight.backend.ProjectResponse;
-import com.agileinsight.backend.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.model.Project;
+import com.agileinsight.backend.model.dto.ProjectUpdateDTO;
+import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.service.project.AllProjects;
 import com.agileinsight.backend.service.project.CreateProject;
 import com.agileinsight.backend.service.project.DeleteProject;
@@ -18,10 +18,10 @@ import com.agileinsight.backend.service.project.UpdateProject;
 public class ProjectService {
 
     @Autowired
-    private CreateProject create;
+    private CreateProject createProject;
 
     @Autowired
-    private DeleteProject delete;
+    private DeleteProject deleteProject;
 
     @Autowired
     private AllProjects allProjects;
@@ -33,11 +33,11 @@ public class ProjectService {
     private UpdateProject updateProject;
 
     public Project createProject(Project project) {
-        return create.createProject(project);
+        return createProject.createProject(project);
     }
 
     public void deleteProject(String id) {
-        delete.deleteProject(id);
+        deleteProject.deleteProject(id);
     }
 
     public List<ProjectResponse> getAllOrganisationProjects(String organisationId) {

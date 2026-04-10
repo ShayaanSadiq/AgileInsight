@@ -1,8 +1,8 @@
-package com.agileinsight.backend.dto;
+package com.agileinsight.backend.model.dto;
 
 import java.time.LocalDate;
 
-import com.agileinsight.backend.model.Priority;
+import com.agileinsight.backend.model.defaultoptions.Priority;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

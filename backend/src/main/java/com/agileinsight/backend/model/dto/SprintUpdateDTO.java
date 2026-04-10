@@ -1,4 +1,4 @@
-package com.agileinsight.backend.dto;
+package com.agileinsight.backend.model.dto;
 
 import java.time.LocalDate;
 

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Project;
+import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.ProjectRepository;
 
@@ -26,21 +26,21 @@ public class AllProjects {
         return projects.stream().map(project -> {
 
             Manager manager = managerRepository
-                    .findById(project.getManagerId())
-                    .orElse(null);
+                .findById(project.getManagerId())
+                .orElse(null);
 
             return new ProjectResponse(
-                    project.getId(),
-                    project.getName(),
-                    project.getDescription(),
-                    project.getCurrentSprintNumber(),
-                    project.getCurrentSprintId(),
-                    project.getStartDate(),
-                    project.getEndDate(),
-                    manager,
-                    project.getOrganisationId(),
-                    project.getExpectedSprints(),
-                    project.getStatus()
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getCurrentSprintNumber(),
+                project.getCurrentSprintId(),
+                project.getStartDate(),
+                project.getEndDate(),
+                manager,
+                project.getOrganisationId(),
+                project.getExpectedSprints(),
+                project.getStatus()
             );
 
         }).toList();
@@ -52,21 +52,21 @@ public class AllProjects {
         return projects.stream().map(project -> {
 
             Manager manager = managerRepository
-                    .findById(managerId)
-                    .orElse(null);
+                .findById(managerId)
+                .orElse(null);
 
             return new ProjectResponse(
-                    project.getId(),
-                    project.getName(),
-                    project.getDescription(),
-                    project.getCurrentSprintNumber(),
-                    project.getCurrentSprintId(),
-                    project.getStartDate(),
-                    project.getEndDate(),
-                    manager,
-                    project.getOrganisationId(),
-                    project.getExpectedSprints(),
-                    project.getStatus()
+                project.getId(),
+                project.getName(),
+                project.getDescription(),
+                project.getCurrentSprintNumber(),
+                project.getCurrentSprintId(),
+                project.getStartDate(),
+                project.getEndDate(),
+                manager,
+                project.getOrganisationId(),
+                project.getExpectedSprints(),
+                project.getStatus()
             );
 
         }).toList();

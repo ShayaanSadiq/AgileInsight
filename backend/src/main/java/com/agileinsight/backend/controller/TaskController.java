@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agileinsight.backend.dto.TaskUpdateDTO;
 import com.agileinsight.backend.model.Task;
+import com.agileinsight.backend.model.dto.TaskUpdateDTO;
 import com.agileinsight.backend.repository.TaskRepository;
 import com.agileinsight.backend.service.TaskService;
 

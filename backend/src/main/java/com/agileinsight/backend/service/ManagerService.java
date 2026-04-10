@@ -3,41 +3,34 @@ package com.agileinsight.backend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.repository.ManagerRepository;
+import com.agileinsight.backend.service.manager.LoginManager;
+import com.agileinsight.backend.service.manager.RegisterManager;
 
 @Service
 public class ManagerService{
 
     @Autowired
-    private ManagerRepository managerRepository;
+    private RegisterManager registerManager;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private LoginManager loginManager;
+
+    @Autowired
+    private ManagerRepository managerRepository;
 
     public Manager registerManager(Manager manager) {
-        if (managerRepository.findByEmail(manager.getEmail()) != null) {
-            throw new RuntimeException("Email already registered");
-        }
-
-        manager.setPassword(passwordEncoder.encode(manager.getPassword()));
-        return managerRepository.save(manager);
+        return registerManager.registerManager(manager);
     }
     
     public Manager loginManager(String email, String rawPassword) {
-        Manager manager = managerRepository.findByEmail(email);
-        
-        if (manager != null && passwordEncoder.matches(rawPassword, manager.getPassword())) {
-            return manager;
-        }
-        return null;
+        return loginManager.loginManager(email, rawPassword);
     }
 
     public List<Manager> getAllManagers() {
         return managerRepository.findAll();
-    }
-    
+    }  
 }

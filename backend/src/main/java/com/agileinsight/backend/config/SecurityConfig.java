@@ -1,4 +1,4 @@
-package com.agileinsight.backend.security;
+package com.agileinsight.backend.config;
 
 import java.util.List;
 
@@ -14,6 +14,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.agileinsight.backend.filter.JwtFilter;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration

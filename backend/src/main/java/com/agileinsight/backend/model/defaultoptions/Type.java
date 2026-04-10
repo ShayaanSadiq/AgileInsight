@@ -1,4 +1,4 @@
-package com.agileinsight.backend.model;
+package com.agileinsight.backend.model.defaultoptions;
 
 public enum Type {
     BUG,

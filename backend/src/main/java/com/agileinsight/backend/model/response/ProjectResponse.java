@@ -1,9 +1,9 @@
-package com.agileinsight.backend;
+package com.agileinsight.backend.model.response;
 
 import java.time.LocalDate;
 
 import com.agileinsight.backend.model.Manager;
-import com.agileinsight.backend.model.Status;
+import com.agileinsight.backend.model.defaultoptions.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

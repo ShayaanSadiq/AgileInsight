@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.agileinsight.backend.dto.SprintUpdateDTO;
 import com.agileinsight.backend.model.Sprint;
+import com.agileinsight.backend.model.dto.SprintUpdateDTO;
 import com.agileinsight.backend.repository.SprintRepository;
 
 @Component

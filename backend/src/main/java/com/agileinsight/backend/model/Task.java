@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.agileinsight.backend.model.defaultoptions.Priority;
+import com.agileinsight.backend.model.defaultoptions.Status;
+import com.agileinsight.backend.model.defaultoptions.Type;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.NotBlank;

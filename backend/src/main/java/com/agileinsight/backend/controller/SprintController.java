@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agileinsight.backend.dto.SprintUpdateDTO;
 import com.agileinsight.backend.model.Sprint;
+import com.agileinsight.backend.model.dto.SprintUpdateDTO;
 import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.service.SprintService;
 

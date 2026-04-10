@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.agileinsight.backend.model.Status;
 import com.agileinsight.backend.model.Task;
-import com.agileinsight.backend.model.Type;
+import com.agileinsight.backend.model.defaultoptions.Status;
+import com.agileinsight.backend.model.defaultoptions.Type;
 import com.mongodb.lang.Nullable;
 
 public interface TaskRepository extends MongoRepository<Task, String>{

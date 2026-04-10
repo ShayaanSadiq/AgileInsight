@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agileinsight.backend.ProjectResponse;
 import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Organisation;
+import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.service.OrganisationService;

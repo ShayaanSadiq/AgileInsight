@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.agileinsight.backend.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.model.Project;
+import com.agileinsight.backend.model.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.ProjectRepository;
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.agileinsight.backend.model.Project;
-import com.agileinsight.backend.model.Status;
+import com.agileinsight.backend.model.defaultoptions.Status;
 import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.repository.ProjectRepository;
 

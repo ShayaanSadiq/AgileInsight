@@ -3,37 +3,32 @@ package com.agileinsight.backend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.agileinsight.backend.model.User;
 import com.agileinsight.backend.repository.UserRepository;
+import com.agileinsight.backend.service.user.LoginUser;
+import com.agileinsight.backend.service.user.RegisterUser;
 
 @Service
 public class UserService{
 
     @Autowired
-    private UserRepository userRepository;
+    private RegisterUser registerUser;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private LoginUser loginUser;
+
+    @Autowired
+    private UserRepository userRepository;
+
 
     public User registerUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Email already registered");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return registerUser.registerUser(user);
     }
     
     public User loginUser(String email, String rawPassword) {
-        User user = userRepository.findByEmail(email);
-
-        if (user != null && passwordEncoder.matches(rawPassword, user.getPassword())) {
-            return user;
-        }
-        return null;
+        return loginUser.loginUser(email, rawPassword);
     }
 
     public List<User> getAllUsers() {
