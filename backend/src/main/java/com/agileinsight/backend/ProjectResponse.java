@@ -3,6 +3,8 @@ package com.agileinsight.backend;
 import java.time.LocalDate;
 
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,9 +41,11 @@ public class ProjectResponse {
 
     private Integer expectedSprints;
 
+    private Status status;
+
     public ProjectResponse(String id, String name, String description, Integer currentSprintNumber,
             String currentSprintId, LocalDate startDate, LocalDate endDate, Manager manager, String organisationId,
-            Integer expectedSprints) {
+            Integer expectedSprints, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -52,5 +56,6 @@ public class ProjectResponse {
         this.manager = manager;
         this.organisationId = organisationId;
         this.expectedSprints = expectedSprints;
+        this.status = status;
     }
 }

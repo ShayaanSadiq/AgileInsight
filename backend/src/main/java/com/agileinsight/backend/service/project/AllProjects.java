@@ -39,7 +39,8 @@ public class AllProjects {
                     project.getEndDate(),
                     manager,
                     project.getOrganisationId(),
-                    project.getExpectedSprints()
+                    project.getExpectedSprints(),
+                    project.getStatus()
             );
 
         }).toList();
@@ -64,7 +65,8 @@ public class AllProjects {
                     project.getEndDate(),
                     manager,
                     project.getOrganisationId(),
-                    project.getExpectedSprints()
+                    project.getExpectedSprints(),
+                    project.getStatus()
             );
 
         }).toList();

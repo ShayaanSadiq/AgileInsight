@@ -44,7 +44,8 @@ public class GetProject {
                 project.getManagerId(),
                 manager,
                 project.getOrganisationId(),
-                project.getExpectedSprints()
+                project.getExpectedSprints(),
+                project.getStatus()
         );
     }
 }
