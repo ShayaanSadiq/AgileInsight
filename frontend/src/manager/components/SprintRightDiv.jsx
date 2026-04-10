@@ -32,24 +32,28 @@ export const SprintRightDiv = () => {
       </section>
       <form className="sprint-form" onSubmit={handleSubmit(onSubmit)}>
         {inputs.map((field) => (
-          <div
-            key={field.name}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
+          <div key={field.name} className="one-box">
             <label htmlFor={field.name}>{field.label}</label>
 
             {field.type === "textarea" ? (
-              <textarea id={field.name} {...register(field.name)} />
+              <textarea
+                id={field.name}
+                {...register(field.name)}
+                className="sprint-textarea"
+              />
             ) : (
               <input
                 type={field.type}
                 id={field.name}
                 {...register(field.name)}
+                className="sprint-input"
               />
             )}
           </div>
         ))}
-        <button type="submit">Create</button>
+        <button style={{ alignSelf: "center" }} type="submit">
+          Create
+        </button>
       </form>
     </div>
   );
