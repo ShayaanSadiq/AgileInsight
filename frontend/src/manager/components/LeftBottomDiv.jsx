@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/LeftBottomDiv.css";
+import "../css/manager.left.bottom.css";
 
 export const LeftBottomDiv = ({
   title,
@@ -11,12 +11,12 @@ export const LeftBottomDiv = ({
   setSelectedOption,
 }) => {
   return (
-    <div className="left-bottom">
+    <div className="manager-left-bottom">
       <span style={{ marginBottom: "5px" }}>{title}</span>
       {array?.map((object) => (
         <div
           key={object.id}
-          className={`single-object ${selectedOption === object.id ? "active" : ""}`}
+          className={`mlb-single-object ${selectedOption === object.id ? "mlb-active" : ""}`}
           onClick={() => setSelectedOption(object.id)}
         >
           <span style={{ fontSize: "medium" }}>{object.name}</span>

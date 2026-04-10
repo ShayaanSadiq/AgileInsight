@@ -3,21 +3,39 @@ import { LuFileCode } from "react-icons/lu";
 import { LeftDetails } from "./LeftDetails";
 import { LeftBottomDiv } from "./LeftBottomDiv";
 import { ProjectRightDiv } from "./ProjectRightDiv";
-import "../css/BottomDiv.css";
+import "../css/manager.editPage.bottom.css";
 
 export const BottomDiv = ({ register }) => {
   const [selectedOption, setSelectedOption] = useState("1");
+  const inputs = [
+    { name: "name", label: "Name", type: "text", placeholder: "type here" },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      placeholder: "type here",
+    },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "endDate",
+      label: "End Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+  ];
   return (
-    <div className="bottom-div">
-      <div className="left-div">
+    <div className="manager-projectEdit-bottom">
+      <div className="manager-projectEdit-bottomLeft">
         <LeftDetails
           register={register}
           Icon={LuFileCode}
           title={"Project Details"}
-          label1={"Project Name"}
-          label2={"Project Description"}
-          label3={"Start Date"}
-          label4={"End Date"}
+          inputs={inputs}
           status={"in progress"}
         />
         <LeftBottomDiv
@@ -26,7 +44,7 @@ export const BottomDiv = ({ register }) => {
           setSelectedOption={setSelectedOption}
         />
       </div>
-      <div className="right-div">
+      <div className="manager-projectEdit-bottomRight">
         <ProjectRightDiv />
       </div>
     </div>

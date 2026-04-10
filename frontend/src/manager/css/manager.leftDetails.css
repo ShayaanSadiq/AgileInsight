@@ -1,4 +1,4 @@
-.left-details {
+.manager-left-details {
   height: 55%;
   padding: 10px;
   border-radius: 20px;
@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.left-details-form {
+.manager-left-details-form {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -15,24 +15,29 @@
   font-size: small;
 }
 
-.form-input {
+.manager-form-object {
+  display: flex;
+  flex-direction: column;
+}
+
+.manager-form-input {
   padding: 5px;
   outline: none;
   font-size: medium;
   margin: 5px;
 }
 
-.textarea {
-  height: 25%;
+.manager-textarea {
+  height: 80px;
 }
 
-.status-date {
+.manager-status-date {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  gap: 20px;
 }
 
-.date-input {
+.manager-date-input {
   padding: 2px;
   font-size: medium;
   width: 75%;

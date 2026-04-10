@@ -1,20 +1,17 @@
 import React from "react";
-import "../css/LeftDetails.css";
+import "../css/manager.leftDetails.css";
 
-export const LeftDetails = ({
-  register,
-  Icon,
-  title,
-  label1,
-  label2,
-  label3,
-  label4,
-  status,
-}) => {
+export const LeftDetails = ({ register, Icon, title, status, inputs }) => {
   return (
     <>
-      <div className="left-details">
-        <span>
+      <div className="manager-left-details">
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "3px",
+          }}
+        >
           <Icon />
           <span>{title}</span>
         </span>
@@ -25,54 +22,54 @@ export const LeftDetails = ({
             flexDirection: "column",
           }}
         >
-          <form className="left-details-form">
-            <label htmlFor="project-name">{label1}</label>
-            <input
-              type="text"
-              placeholder="type here"
-              id="project-name"
-              className="form-input"
-              {...register("name")}
-            />
-            <label htmlFor="project-name">{label2}</label>
-            <textarea
-              type="text"
-              placeholder="type here"
-              id="project-description"
-              className="form-input textarea"
-              {...register("description")}
-            />
-            <div className="status-date">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <label htmlFor="start-date">{label3}</label>
-                <input
-                  id="start-date"
-                  type="text"
-                  placeholder="type here"
-                  className="date-input"
-                  {...register("startDate")}
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <label htmlFor="start-date">{label4}</label>
-                <input
-                  id="end-date"
-                  type="text"
-                  placeholder="type here"
-                  className="date-input"
-                  {...register("endDate")}
-                />
-              </div>
+          <form className="manager-left-details-form">
+            {inputs.map((input) => {
+              if (input.type === "textarea") {
+                return (
+                  <div className="manager-form-object">
+                    <label htmlFor={`${input.name}`}>{input.label}</label>
+                    <textarea
+                      type="text"
+                      id={`${input.name}`}
+                      placeholder={`${input.placeholder}`}
+                      {...register(input.name)}
+                      className="manager-form-input manager-textarea"
+                    />
+                  </div>
+                );
+              } else if (input.type === "text") {
+                return (
+                  <div className="manager-form-object">
+                    <label htmlFor={`${input.name}`}>{input.label}</label>
+                    <input
+                      type="text"
+                      id={`${input.name}`}
+                      placeholder={`${input.placeholder}`}
+                      {...register(input.name)}
+                      className="manager-form-input"
+                    />
+                  </div>
+                );
+              }
+            })}
+
+            <div className="manager-status-date">
+              {inputs.map((input) => {
+                if (input.type === "date") {
+                  return (
+                    <div className="manager-form-object">
+                      <label htmlFor={`${input.name}`}>{input.label}</label>
+                      <input
+                        type="text"
+                        id={`${input.name}`}
+                        placeholder={`${input.placeholder}`}
+                        {...register(input.name)}
+                        className="manager-date-input"
+                      />
+                    </div>
+                  );
+                }
+              })}
             </div>
           </form>
           <section>

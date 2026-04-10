@@ -1,4 +1,4 @@
-.left-bottom {
+.manager-left-bottom {
   flex: 1;
   margin-top: 10px;
   padding: 10px;
@@ -8,7 +8,7 @@
   flex-direction: column;
 }
 
-.single-object {
+.mlb-single-object {
   display: flex;
   flex-direction: column;
   padding: 5px;
@@ -16,7 +16,7 @@
   cursor: pointer;
 }
 
-.active {
+.mlb-active {
   background-color: #76d2db;
   color: white;
 }

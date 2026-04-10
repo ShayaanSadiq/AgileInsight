@@ -9,7 +9,7 @@ export const SideBarOption = ({
   return (
     <div
       onClick={() => setActiveOption(text)}
-      className={`side-bar-option ${activeOption === text ? "active" : ""}`}
+      className={`manager-side-bar-option ${activeOption === text ? "manager-sideBar-active" : ""}`}
     >
       <Icon />
       {text}

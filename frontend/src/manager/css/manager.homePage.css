@@ -1,0 +1,14 @@
+.manager-home-page {
+  min-height: 100vh;
+  background-color: rgb(203, 241, 245);
+  display: flex;
+  padding: 5px;
+}
+
+.manager-home-page-body {
+  flex: 1;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  gap: 10px;
+}

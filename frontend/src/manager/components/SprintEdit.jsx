@@ -19,6 +19,27 @@ export const SprintEdit = () => {
       endDate: "15-04-2026",
     },
   });
+  const inputs = [
+    { name: "name", label: "Name", type: "text", placeholder: "type here" },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      placeholder: "type here",
+    },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "endDate",
+      label: "End Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+  ];
   return (
     <div className="sprint-edit">
       <HeadingDescription
@@ -32,10 +53,7 @@ export const SprintEdit = () => {
             Icon={LuIterationCcw}
             register={register}
             title={"Sprint Details"}
-            label1={"Sprint Name"}
-            label2={"Sprint Description"}
-            label3={"Start Date"}
-            label4={"End Date"}
+            inputs={inputs}
             status={"in progress"}
           />
           <LeftBottomDiv

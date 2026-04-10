@@ -17,7 +17,7 @@ export const ProjectListComponent = () => {
     navigate(`/manager/project/${projectId}`);
   };
   return (
-    <div className="project-headings">
+    <div>
       <table>
         <tr>
           <th>Name</th>
