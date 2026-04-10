@@ -1,16 +1,32 @@
 import React from "react";
-import { LoginForm } from "../components/LoginForm";
-import { Text } from "../components/Text";
-import "../css/LoginPage.css";
+import AuthComponent from "../../globalComponents/AuthComponent.jsx";
+import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
+import { setCurrOrg } from "../../redux/organisation/currOrg.js";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
+  const title = "Login";
+  const navigateLink = "/org/home";
+  const inputs = [
+    { name: "email", label: "Email", type: "text", placeholder: "type here" },
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "type here",
+    },
+  ];
+  const { register, handleSubmit } = useForm();
   return (
-    <div className="login-body">
-      <div className="login-card">
-        <LoginForm />
-        <Text text={"Don't have an account"} link={"signup"} />
-      </div>
-    </div>
+    <AuthComponent
+      title={title}
+      inputs={inputs}
+      navigateLink={navigateLink}
+      useAuthMutation={usePostLoginMutation}
+      register={register}
+      handleSubmit={handleSubmit}
+      setCurrData={setCurrOrg}
+    />
   );
 };
 

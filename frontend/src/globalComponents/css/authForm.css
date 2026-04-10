@@ -1,11 +1,18 @@
-.signup-form {
+.auth-form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  align-content: center;
 }
+
+.auth-inputs-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
 .input-field {
   width: 75%;
   margin-bottom: 10px;
@@ -13,7 +20,7 @@
   font-size: large;
   outline: none;
 }
-button {
+.auth-button {
   width: 35%;
   height: 30px;
   color: white;
