@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import AgileInsightHomePage from "./AgileInsightHomePage.jsx";
 import OrgLoginPage from "./organisation/pages/LoginPage.jsx";
 import OrgHomePage from "./organisation/pages/HomePage.jsx";
 import OrgSignupPage from "./organisation/pages/SignupPage.jsx";
@@ -17,6 +18,7 @@ import "./App.css";
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<AgileInsightHomePage />} />
       <Route path="/org/signup" element={<OrgSignupPage />} />
       <Route path="/org/login" element={<OrgLoginPage />} />
       <Route
