@@ -5,14 +5,14 @@ import "../css/MainDiv.css";
 
 export const MainDiv = () => {
   return (
-    <>
+    <div className="orgHome-main-div">
       <div className="projects-div">
-        <h3>Projects</h3>
+        <h4>Projects</h4>
         <ProjectsDiv />
       </div>
       <div className="analytics-div">
         <AnalyticsDiv />
       </div>
-    </>
+    </div>
   );
 };

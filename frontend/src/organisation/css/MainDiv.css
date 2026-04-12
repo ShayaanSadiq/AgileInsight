@@ -1,3 +1,9 @@
+.orgHome-main-div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .create-project-div {
   display: flex;
   justify-content: space-between;
@@ -6,7 +12,9 @@
 }
 
 .projects-div {
+  height: 60%;
   margin-top: 5px;
+  padding-right: 10px;
 }
 
 .analytics-div {

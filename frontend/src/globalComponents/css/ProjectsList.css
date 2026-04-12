@@ -1,3 +1,7 @@
+.project-list-div {
+  height: 100%;
+}
+
 table {
   width: 100%;
   border-spacing: 0;
@@ -11,7 +15,7 @@ th {
 table,
 th,
 td {
-  border: none;
+  border: none !important;
   border-collapse: collapse;
 }
 
@@ -24,7 +28,7 @@ td {
   font-size: small;
 }
 
-.manager-th-row {
+.th-row {
   background-color: #76d2db;
   color: white;
 }

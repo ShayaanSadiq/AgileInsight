@@ -1,8 +1,7 @@
 import React from "react";
 import { useGetProjectsByIdQuery } from "../../redux/organisation/projectApiSlice.js";
+import { ProjectsList } from "../../globalComponents/ProjectsList.jsx";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { MdOutlineArrowOutward } from "react-icons/md";
 import "../css/ProjectsDiv.css";
 
 export const ProjectsDiv = () => {
@@ -10,41 +9,27 @@ export const ProjectsDiv = () => {
   const { data, isLoading, isError } = useGetProjectsByIdQuery(orgId, {
     skip: !orgId,
   });
-  const navigate = useNavigate();
-  const isProjects = data && !isLoading && !isError;
-
-  const handleClick = (projecId) => {
-    navigate(`/org/project/${projecId}`);
-  };
-  let counter = 0;
+  const isProjects = data && data.lenght !== 0 && !isLoading && !isError;
+  console.log(data);
+  const tableHeadings = [
+    "Name",
+    "Description",
+    "Start Date",
+    "End Date",
+    "Assigned To",
+    "Status",
+    "Expected Sprints",
+  ];
+  const navigateLink = "/org/project";
   return (
     <>
       {isProjects && (
-        <table className="show-project-table">
-          <tr>
-            <th>S.No.</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Assigned to</th>
-          </tr>
-          {console.log(data)}
-          {data?.map((project) => (
-            <tr key={project.id}>
-              <td>{++counter}</td>
-              <td>{project.name}</td>
-              <td>{project.description}</td>
-              <td>{project.startDate}</td>
-              <td>{project.endDate}</td>
-              <td>{project.manager.email}</td>
-              <td className="go-btn-td" onClick={() => handleClick(project.id)}>
-                Go
-                <MdOutlineArrowOutward />
-              </td>
-            </tr>
-          ))}
-        </table>
+        <ProjectsList
+          tableHeadings={tableHeadings}
+          navigationLink={navigateLink}
+          projects={data}
+          isOrganisation={true}
+        />
       )}
       {!isProjects && <span>Create a new project.</span>}
     </>
