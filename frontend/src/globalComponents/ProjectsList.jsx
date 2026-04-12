@@ -18,26 +18,29 @@ export const ProjectsList = ({
   return (
     <div className="project-list-div">
       <table>
-        <tr className="th-row">
-          {tableHeadings.map((tableHeading) => (
-            <th>{tableHeading}</th>
-          ))}
-          <th></th>
-        </tr>
-
-        {projects?.map((project) => {
-          const isOdd = count % 2 !== 0;
-          count++;
-          return (
-            <tr className={`${isOdd ? "odd-row" : ""}`} key={project.id}>
-              <ProjectComponent
-                project={project}
-                handleClick={handleClick}
-                isOrganisation={isOrganisation}
-              />
-            </tr>
-          );
-        })}
+        <thead>
+          <tr className="th-row">
+            {tableHeadings.map((tableHeading) => (
+              <th key={tableHeading}>{tableHeading}</th>
+            ))}
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {projects?.map((project) => {
+            const isOdd = count % 2 !== 0;
+            count++;
+            return (
+              <tr className={`${isOdd ? "odd-row" : ""}`} key={project.id}>
+                <ProjectComponent
+                  project={project}
+                  handleClick={handleClick}
+                  isOrganisation={isOrganisation}
+                />
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );

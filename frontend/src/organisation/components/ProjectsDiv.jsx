@@ -10,7 +10,6 @@ export const ProjectsDiv = () => {
     skip: !orgId,
   });
   const isProjects = data && data.lenght !== 0 && !isLoading && !isError;
-  console.log(data);
   const tableHeadings = [
     "Name",
     "Description",

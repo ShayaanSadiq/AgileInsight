@@ -41,9 +41,10 @@ export const orgAuthApi = createApi({
       }),
     }),
 
-    getLogout: builder.query({
+    getLogout: builder.mutation({
       query: () => ({
         url: "logout",
+        method: "GET",
       }),
     }),
   }),
@@ -52,6 +53,6 @@ export const orgAuthApi = createApi({
 export const {
   usePostLoginMutation,
   usePostSignupMutation,
-  useGetLogoutQuery,
+  useGetLogoutMutation,
   useGetVerifyQuery,
 } = orgAuthApi;

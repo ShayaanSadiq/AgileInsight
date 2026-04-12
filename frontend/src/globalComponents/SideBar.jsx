@@ -15,6 +15,7 @@ export const SideBar = ({
       <div className="manager-sideBar-upper">
         {upperDivOptions.map((option) => (
           <SideBarOption
+            key={option.text}
             Icon={option.icon}
             text={option.text}
             activeOption={activeOption}
@@ -25,6 +26,7 @@ export const SideBar = ({
       <div className="manager-sideBar-down">
         {downDivOptions.map((option) => (
           <SideBarOption
+            key={option.text}
             Icon={option.icon}
             text={option.text}
             activeOption={activeOption}
