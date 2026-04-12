@@ -11,6 +11,7 @@ import UserLoginPage from "./users/pages/LoginPage.jsx";
 import UserHomePage from "./users/pages/HomePage.jsx";
 import UserProjectPage from "./users/pages/ProjectPage.jsx";
 import ManagerEditPage from "./manager/pages/EditPage.jsx";
+import PageNotFound from "./PageNotFound.jsx";
 import { ProtectedRoute } from "./organisation/utils/ProtectedRoute.jsx";
 import { ManagerProtectedRoute } from "./manager/utils/ManagerProtectdRoute.jsx";
 import "./App.css";
@@ -65,6 +66,8 @@ function App() {
       <Route path="/user/login" element={<UserLoginPage />} />
       <Route path="/user/home" element={<UserHomePage />} />
       <Route path="/user/project/:projectId" element={<UserProjectPage />} />
+
+      <Route path="/*" element={<PageNotFound />} />
     </Routes>
   );
 }
