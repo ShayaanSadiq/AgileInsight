@@ -16,10 +16,11 @@ export const ProjectListComponent = () => {
   const handleClick = (projectId) => {
     navigate(`/manager/project/${projectId}`);
   };
+  let count = 0;
   return (
     <div>
       <table>
-        <tr>
+        <tr className="manager-th-row">
           <th>Name</th>
           <th>Description</th>
           <th>Start date</th>
@@ -29,11 +30,15 @@ export const ProjectListComponent = () => {
           <th></th>
         </tr>
 
-        {data?.map((project) => (
-          <tr key={project.id}>
-            <ProjectComponent project={project} handleClick={handleClick} />
-          </tr>
-        ))}
+        {data?.map((project) => {
+          const isOdd = count % 2 !== 0;
+          count++;
+          return (
+            <tr className={`${isOdd ? "odd-row" : ""}`} key={project.id}>
+              <ProjectComponent project={project} handleClick={handleClick} />
+            </tr>
+          );
+        })}
       </table>
     </div>
   );

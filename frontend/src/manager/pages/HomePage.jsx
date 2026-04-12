@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SideBar } from "../components/SideBar.jsx";
 import { HomePageMainDiv } from "../components/HomePageMainDIv.jsx";
 import { QuickAddAction } from "../components/QuickAddAction.jsx";
@@ -7,11 +7,16 @@ import {
   upperDivOptions,
   downDivOptions,
 } from "../constants/HomePageConstants.js";
+import { useGetLogoutMutation } from "../../redux/manager/authApiSlice.js";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import "../css/manager.homePage.css";
 
 const HomePage = () => {
+  const [logouttManager, { isError }] = useGetLogoutMutation();
   const [activeOption, setActiveOption] = useState("Project");
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const projectOptions = [
     { label: "Project Alpha", value: "p1" },
@@ -54,10 +59,18 @@ const HomePage = () => {
 
   const logout = async () => {
     if (activeOption === "Logout") {
-      console.log("hello world");
-      //change the logout query to mutation
+      const result = await logouttManager();
+      if (result.data.message === "Logout successful") {
+        toast.success(result.data.message);
+        return navigate("/manager/login");
+      }
+      toast.error("Logout failed");
     }
   };
+
+  useEffect(() => {
+    logout();
+  }, [activeOption]);
   return (
     <div className="manager-home-page">
       <div className="manager-home-page-body">

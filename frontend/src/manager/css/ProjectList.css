@@ -1,6 +1,34 @@
 table {
   width: 100%;
+  border-spacing: 0;
 }
+
 th {
   text-align: left;
+  font-size: medium;
+}
+
+table,
+th,
+td {
+  border: none;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+}
+
+td {
+  font-size: small;
+}
+
+.manager-th-row {
+  background-color: #76d2db;
+  color: white;
+}
+
+.odd-row {
+  background-color: rgba(219, 218, 218, 0.523);
 }

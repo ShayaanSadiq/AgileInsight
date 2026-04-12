@@ -39,9 +39,10 @@ export const managerAuthApi = createApi({
       }),
     }),
 
-    getLogout: builder.query({
+    getLogout: builder.mutation({
       query: () => ({
         url: "logout",
+        method: "GET",
       }),
     }),
   }),
@@ -50,6 +51,6 @@ export const managerAuthApi = createApi({
 export const {
   usePostLoginMutation,
   usePostManagerSignupMutation,
-  useGetLogoutQuery,
+  useGetLogoutMutation,
   useGetVerifyQuery,
 } = managerAuthApi;
