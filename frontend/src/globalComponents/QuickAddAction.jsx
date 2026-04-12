@@ -1,16 +1,12 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 import { MdArrowBackIos } from "react-icons/md";
-import "../css/manager.quickAdd.action.css";
+import { useForm } from "react-hook-form";
+import "./css/quickAddAction.css";
 
-export const QuickAddAction = ({
-  inputs,
-  setButtonClicked,
-  register,
-  handleSubmit,
-  useAddFunction,
-}) => {
+export const QuickAddAction = ({ inputs, useBack, useAddFunction }) => {
   // const [addFunction, { isLoading, isError }] = useAddFunction();
+  const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
     // const result = await addFunction(data);
     // console.log(result);
@@ -21,7 +17,7 @@ export const QuickAddAction = ({
       <div className="quick-add-div">
         <MdArrowBackIos
           style={{ cursor: "pointer", marginTop: "5px" }}
-          onClick={setButtonClicked}
+          onClick={useBack}
         />
         <form className="quick-add-form" onSubmit={handleSubmit(onSubmit)}>
           {inputs.map((input) => {

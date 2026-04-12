@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SideBar } from "../components/SideBar.jsx";
 import { HomePageMainDiv } from "../components/HomePageMainDIv.jsx";
-import { QuickAddAction } from "../components/QuickAddAction.jsx";
-import { useForm } from "react-hook-form";
+import { QuickAddAction } from "../../globalComponents/QuickAddAction.jsx";
 import {
   upperDivOptions,
   downDivOptions,
@@ -15,7 +14,6 @@ import "../css/manager.homePage.css";
 const HomePage = () => {
   const [logouttManager, { isError }] = useGetLogoutMutation();
   const [activeOption, setActiveOption] = useState("Project");
-  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   const projectOptions = [
@@ -84,18 +82,14 @@ const HomePage = () => {
         {activeOption === "Add Member" && (
           <QuickAddAction
             inputs={quickAddMemberInputs}
-            setButtonClicked={() => setActiveOption("Project")}
-            register={register}
-            handleSubmit={handleSubmit}
+            useBack={() => setActiveOption("Project")}
           />
         )}
 
         {activeOption === "Create Sprint" && (
           <QuickAddAction
             inputs={quickAddSprintInputs}
-            setButtonClicked={() => setActiveOption("Project")}
-            register={register}
-            handleSubmit={handleSubmit}
+            useBack={() => setActiveOption("Project")}
           />
         )}
       </div>
