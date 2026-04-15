@@ -15,8 +15,17 @@ export const orgProjectApi = createApi({
         url: `projects/${id}`,
       }),
     }),
+
+    getProjectById: builder.query({
+      query: (projectId) => ({
+        url: `/project/${projectId}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetProjectsByIdQuery, usePostCreateProjectMutation } =
-  orgProjectApi;
+export const {
+  useGetProjectsByIdQuery,
+  usePostCreateProjectMutation,
+  useGetProjectByIdQuery,
+} = orgProjectApi;

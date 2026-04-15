@@ -1,11 +1,18 @@
 import React from "react";
-import "../css/ProjectPage.css";
 import { ProjectPageMainDiv } from "../components/ProjectPageMainDiv";
+import { useParams } from "react-router-dom";
+import { useGetProjectByIdQuery } from "../../redux/manager/ProjectApiSlice.js";
+import "../css/ProjectPage.css";
 
 const ProjectPage = () => {
+  const { projectId } = useParams();
+  const { data, isLoading, isError } = useGetProjectByIdQuery(projectId, {
+    skip: !projectId,
+  });
+  const project = data ? data : {};
   return (
     <div className="project-page-body">
-      <ProjectPageMainDiv />
+      <ProjectPageMainDiv projectId={projectId} project={project} />
     </div>
   );
 };

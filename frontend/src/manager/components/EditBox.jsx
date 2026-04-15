@@ -1,6 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export const EditBox = () => {
+export const EditBox = ({ projectId }) => {
+  const navigate = useNavigate();
+
+  const onBtnClick = () => {
+    navigate(`/manager/project/${projectId}/edit`);
+  };
   return (
     <div className="project-editBox">
       <div className="editBox-header">
@@ -8,7 +14,7 @@ export const EditBox = () => {
           <div className="line">.</div>
           <span>Project Details</span>
         </div>
-        <button>Edit project</button>
+        <button onClick={onBtnClick}>Edit project</button>
       </div>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum

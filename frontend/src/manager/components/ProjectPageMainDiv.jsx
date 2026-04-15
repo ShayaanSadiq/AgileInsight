@@ -5,7 +5,7 @@ import { EditBox } from "./EditBox.jsx";
 import { AnalyticsBox } from "./AnalyticsBox.jsx";
 import "../css/ProjectPageMainDiv.css";
 
-export const ProjectPageMainDiv = () => {
+export const ProjectPageMainDiv = ({ projectId, project }) => {
   const [activeOption, setActiveOption] = useState("project");
   return (
     <div className="project-page-main">
@@ -16,7 +16,7 @@ export const ProjectPageMainDiv = () => {
       <div className="project-page-lowerBody">
         <ProjectOverview activeOption={activeOption} />
         <div className="rightSide-content">
-          <EditBox />
+          <EditBox projectId={projectId} />
           <AnalyticsBox activeOption={activeOption} />
         </div>
       </div>
