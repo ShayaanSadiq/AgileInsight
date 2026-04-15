@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.projection.ManagerProjectionView;
 import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.service.ManagerService;
@@ -213,5 +214,34 @@ public class ManagerController {
         }
 
         return ResponseEntity.ok(projectResponse);
+    }
+
+    @GetMapping("/profile/{managerId}")
+    public ResponseEntity<?> getProfile(@PathVariable @Valid String managerId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        ManagerProjectionView managerProjectionView = managerRepository.findProjectedById(managerId).orElse(null);
+
+        if(managerProjectionView != null) {
+            return ResponseEntity.ok(managerProjectionView);
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Not found"
+            ));
+        }
     }
 }

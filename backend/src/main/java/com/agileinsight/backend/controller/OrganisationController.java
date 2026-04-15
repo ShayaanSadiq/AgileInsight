@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Organisation;
+import com.agileinsight.backend.model.projection.OrganisationProjectionView;
 import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.OrganisationRepository;
@@ -242,5 +243,34 @@ public class OrganisationController {
         ArrayList<Manager> managers = managerRepository.findByOrganisationId(organisationId);
 
         return ResponseEntity.ok(managers);
+    }
+
+    @GetMapping("/profile/{organisationId}")
+    public ResponseEntity<?> getProfile(@PathVariable @Valid String organisationId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        OrganisationProjectionView organisationProjectionView = organisationRepository.findProjectedById(organisationId).orElse(null);
+
+        if(organisationProjectionView != null) {
+            return ResponseEntity.ok(organisationProjectionView);
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Not found"
+            ));
+        }
     }
 }

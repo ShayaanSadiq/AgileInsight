@@ -8,12 +8,14 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.User;
+import com.agileinsight.backend.model.projection.UserProjectionView;
 import com.agileinsight.backend.repository.UserRepository;
 import com.agileinsight.backend.service.UserService;
 import com.agileinsight.backend.utility.JwtUtil;
@@ -136,5 +138,34 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(Map.of("message", "Logout successful"));
+    }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<?> getProfile(@PathVariable @Valid String userId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        UserProjectionView userProjectionView = userRepository.findProjectedById(userId).orElse(null);
+
+        if(userProjectionView != null) {
+            return ResponseEntity.ok(userProjectionView);
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Not found"
+            ));
+        }
     }
 }

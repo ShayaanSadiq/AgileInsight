@@ -30,4 +30,12 @@ public class Organisation {
 
     @NotBlank(message = "Password is required") 
     private String password;
+
+    private String managerPassword;
+
+    public Organisation(String name, String email, String managerPassword) {
+        this.name = name;
+        this.email = email;
+        this.managerPassword = managerPassword;
+    }
 }

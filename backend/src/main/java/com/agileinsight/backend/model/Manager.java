@@ -32,4 +32,6 @@ public class Manager {
     private String password;
 
     private String organisationId;
+
+    private String userPassword;
 }
