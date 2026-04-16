@@ -63,13 +63,13 @@ public class ManagerController {
         if(manager1 != null) {
             String id = manager1.getId();
 
-            String token = jwtUtil.generateToken(manager1.getEmail(), id); 
+            String token = jwtUtil.generateToken(manager1.getEmail(), id, "manager"); 
             
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                     .httpOnly(true)
                                     .secure(false)
                                     .path("/")
-                                    .maxAge(1000 * 60 * 60)
+                                    .maxAge(60 * 60)
                                     .sameSite("Lax")
                                     .build();
             
