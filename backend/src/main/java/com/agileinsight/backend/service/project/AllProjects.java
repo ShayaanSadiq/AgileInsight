@@ -24,10 +24,14 @@ public class AllProjects {
         List<Project> projects = projectRepository.findByOrganisationId(organisationId);
 
         return projects.stream().map(project -> {
-
-            Manager manager = managerRepository
-                .findById(project.getManagerId())
-                .orElse(null);
+            
+            Manager manager = null;
+            
+            if(project.getManagerId() != null) {
+                manager = managerRepository
+                    .findById(project.getManagerId())
+                    .orElse(null);
+            }
 
             return new ProjectResponse(
                 project.getId(),

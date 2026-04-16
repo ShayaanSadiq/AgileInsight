@@ -10,7 +10,6 @@ import com.mongodb.lang.Nullable;
 
 public interface ProjectRepository extends MongoRepository<Project, String>{
     
-    @Nullable
     ArrayList<Project> findByOrganisationId(String organisationId);
 
     @Nullable
@@ -24,4 +23,5 @@ public interface ProjectRepository extends MongoRepository<Project, String>{
 
     ArrayList<Project> findByManagerId(String managerId);
 
+    
 }

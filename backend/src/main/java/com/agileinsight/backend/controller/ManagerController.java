@@ -187,7 +187,7 @@ public class ManagerController {
 
         if (!managerId.equals(tokenId)) {
             return ResponseEntity.ok(Map.of(
-                "message","Incorrect organisation id"
+                "message","Incorrect manager id"
             ));
         }
 

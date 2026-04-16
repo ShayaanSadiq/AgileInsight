@@ -19,6 +19,8 @@ import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.AnalyticsService;
 import com.agileinsight.backend.service.ProjectService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -36,7 +38,24 @@ public class ProjectController {
     private AnalyticsService analyticsService;
     
     @PostMapping("/create")
-    public ResponseEntity<?> createProject(@RequestBody @Valid Project project) {
+    public ResponseEntity<?> createProject(@RequestBody @Valid Project project, HttpServletRequest request) {
+
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
         Project createdProject = projectService.createProject(project);
 
         if(createdProject != null && project.getExpectedSprints() != null) {
@@ -57,7 +76,23 @@ public class ProjectController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProject(@PathVariable String id) {
+    public ResponseEntity<?> deleteProject(@PathVariable String id, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if (token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+        
         projectService.deleteProject(id);
 
         if(projectRepository.findById(id) != null) {
