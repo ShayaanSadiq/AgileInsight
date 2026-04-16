@@ -103,8 +103,8 @@ public class OrganisationController {
         }
     }
 
-    @GetMapping("/verify")
-    public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
+    @GetMapping("/verify/{organisationId}")
+    public ResponseEntity<?> verifyJwt(@PathVariable @Valid String organisationId, HttpServletRequest request) {
         String token = null;
 
         if (request.getCookies() != null) {
@@ -125,6 +125,10 @@ public class OrganisationController {
             String username = jwtUtil.extractUsername(token);
             String id = jwtUtil.extractId(token);
 
+            if(!organisationId.equals(id)) {
+                throw new Exception();
+            }
+            
             if (jwtUtil.validateToken(token, username) && organisationRepository.findById(id) != null) {
                 return ResponseEntity.ok(Map.of(
                     "message", "Login successful",
@@ -157,36 +161,12 @@ public class OrganisationController {
                 .body(Map.of("message", "Logout successful"));
     }
 
-    @GetMapping("/projects/{orgId}")
+    @GetMapping("/projects/{organisationId}")
     public ResponseEntity<?> getProjects(
-            @PathVariable String orgId,
+            @PathVariable String organisationId,
             HttpServletRequest request) {
 
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        String tokenId = jwtUtil.extractId(token);
-
-        if (!orgId.equals(tokenId)) {
-            return ResponseEntity.ok(Map.of(
-                "message","Incorrect organisation id"
-            ));
-        }
-
-        List<ProjectResponse> projects = projectService.getAllOrganisationProjects(orgId);
+        List<ProjectResponse> projects = projectService.getAllOrganisationProjects(organisationId);
 
         return ResponseEntity.ok(projects);
     }
