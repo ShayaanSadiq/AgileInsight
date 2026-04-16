@@ -39,13 +39,17 @@ public class ProjectController {
     public ResponseEntity<?> createProject(@RequestBody @Valid Project project) {
         Project createdProject = projectService.createProject(project);
 
-        if(createdProject != null) {
+        if(createdProject != null && project.getExpectedSprints() != null) {
             analyticsService.createAnalytics(project.getId(), project.getExpectedSprints());
 
             return ResponseEntity.ok(Map.of(
                 "message", "Project created successfully"
             ));
-        } else {
+        } else if (createdProject!= null && project.getExpectedSprints() == null){
+            return ResponseEntity.ok(Map.of(
+                "message", "Project created successfully"
+            ));
+        }else {
             return ResponseEntity.ok(Map.of(
                 "message", "Project not created"
             ));
