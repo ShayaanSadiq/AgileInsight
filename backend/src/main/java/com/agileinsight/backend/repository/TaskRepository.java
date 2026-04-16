@@ -1,5 +1,6 @@
 package com.agileinsight.backend.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,4 +32,6 @@ public interface TaskRepository extends MongoRepository<Task, String>{
     long countByProjectIdAndType(String projectId, Type type);
 
     long countByProjectIdAndStatusAndType(String projectId, Status status, Type type);
+
+    ArrayList<Task> findBySprintId(String sprintId);
 }

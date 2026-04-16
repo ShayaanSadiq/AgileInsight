@@ -1,5 +1,6 @@
 package com.agileinsight.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.Sprint;
+import com.agileinsight.backend.model.Task;
 import com.agileinsight.backend.model.projection.ManagerProjectionView;
 import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
+import com.agileinsight.backend.repository.SprintRepository;
+import com.agileinsight.backend.repository.TaskRepository;
 import com.agileinsight.backend.service.ManagerService;
 import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
@@ -38,6 +43,12 @@ public class ManagerController {
 
     @Autowired
     private ManagerRepository managerRepository;
+
+    @Autowired
+    private SprintRepository sprintRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -214,6 +225,52 @@ public class ManagerController {
         }
 
         return ResponseEntity.ok(projectResponse);
+    }
+
+    @GetMapping("/sprints/{projectId}")
+    public ResponseEntity<?> getAllSprints(@PathVariable @Valid String projectId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for(Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if(token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        ArrayList<Sprint> sprints = sprintRepository.findByProjectId(projectId);
+
+        return ResponseEntity.ok(sprints);
+    }
+
+    @GetMapping("/tasks/{sprintId}")
+    public ResponseEntity<?> getAllTasks(@PathVariable @Valid String sprintId, HttpServletRequest request) {
+        String token = null;
+
+        if (request.getCookies() != null) {
+            for(Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+
+        if(token == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Not logged in"
+            ));
+        }
+
+        ArrayList<Task> tasks = taskRepository.findBySprintId(sprintId);
+
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/profile/{managerId}")
