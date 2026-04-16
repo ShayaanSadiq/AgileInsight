@@ -6,20 +6,16 @@ import {
   downDivOptions,
 } from "../constants/HomePageConstants.js";
 import { useGetLogoutMutation } from "../../redux/manager/authApiSlice.js";
+import { usePostSignupMemberMutation } from "../../redux/manager/membersApiSlice.js";
+import { usePostSprintMutation } from "../../redux/manager/sprintApiSlice.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import "../css/manager.layout.css";
 
-export const ManagerLayout = ({ children }) => {
-  const [logouttManager, { isError }] = useGetLogoutMutation();
+export const ManagerLayout = ({ projects, children }) => {
+  const [logouttManager] = useGetLogoutMutation();
   const [activeOption, setActiveOption] = useState("Project");
   const navigate = useNavigate();
-
-  const projectOptions = [
-    { label: "Project Alpha", value: "p1" },
-    { label: "Project Beta", value: "p2" },
-    { label: "Project Gamma", value: "p3" },
-  ];
 
   const quickAddMemberInputs = [
     { name: "name", label: "Name", type: "text", placeholder: "type here" },
@@ -28,7 +24,7 @@ export const ManagerLayout = ({ children }) => {
       name: "projectId",
       label: "Select Project",
       type: "select",
-      options: projectOptions,
+      options: projects,
     },
   ];
 
@@ -38,7 +34,7 @@ export const ManagerLayout = ({ children }) => {
       name: "projectId",
       label: "Select Project",
       type: "select",
-      options: projectOptions,
+      options: projects,
     },
     {
       name: "startDate",
@@ -64,7 +60,6 @@ export const ManagerLayout = ({ children }) => {
       toast.error("Logout failed");
     }
   };
-
   useEffect(() => {
     logout();
   }, [activeOption]);
@@ -84,6 +79,7 @@ export const ManagerLayout = ({ children }) => {
           <QuickAddAction
             inputs={quickAddMemberInputs}
             useBack={() => setActiveOption("Project")}
+            useAddFunction={usePostSignupMemberMutation}
           />
         )}
 
@@ -91,6 +87,7 @@ export const ManagerLayout = ({ children }) => {
           <QuickAddAction
             inputs={quickAddSprintInputs}
             useBack={() => setActiveOption("Project")}
+            useAddFunction={usePostSprintMutation}
           />
         )}
       </div>

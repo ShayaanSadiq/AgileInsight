@@ -1,16 +1,9 @@
 import React from "react";
 import { AnalyticsDiv } from "./AnalyticsDiv.jsx";
 import { ProjectsList } from "../../globalComponents/ProjectsList.jsx";
-import { useGetProjectsByIdQuery } from "../../redux/manager/ProjectApiSlice.js";
-import { useSelector } from "react-redux";
 import "../css/manager.homePage.main.css";
 
-export const HomePageMainDiv = () => {
-  const managerId = useSelector((state) => state.currManager.id);
-  const { data, isLoading, isError } = useGetProjectsByIdQuery(managerId, {
-    skip: !managerId,
-  });
-
+export const HomePageMainDiv = ({ data }) => {
   const tableHeadings = [
     "Name",
     "Description",

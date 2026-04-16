@@ -74,6 +74,7 @@ const ProjectPage = () => {
             }
           })}
         </form>
+        <div>show analytics here</div>
       </div>
     </OrganisationLayout>
   );
