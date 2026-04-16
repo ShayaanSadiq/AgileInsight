@@ -47,13 +47,13 @@ public class UserController {
 
         if(user1 != null) {
             String id = user1.getId();
-            String token = jwtUtil.generateToken(user1.getEmail(), id); 
+            String token = jwtUtil.generateToken(user1.getEmail(), id, "user"); 
             
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                                     .httpOnly(true)
                                     .secure(false)
                                     .path("/")
-                                    .maxAge(1000 * 60 * 60)
+                                    .maxAge(60 * 60)
                                     .sameSite("Lax")
                                     .build();
             
