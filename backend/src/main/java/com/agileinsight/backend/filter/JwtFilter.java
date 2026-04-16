@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.agileinsight.backend.utility.JwtUtil;
+import com.agileinsight.backend.config.CustomUserDetails;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -30,6 +31,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
         String username = null;
+        String id = null;
+        String role = null;
 
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -42,23 +45,24 @@ public class JwtFilter extends OncePerRequestFilter {
         if (token != null) {
             try {
                 username = jwtUtil.extractUsername(token);
+                id = jwtUtil.extractId(token);
+                role = jwtUtil.extractRole(token);
             } catch (Exception e) {
-                System.out.println("JWT error: " + e.getMessage());
+                SecurityContextHolder.clearContext();
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && role != null) {
+            if (jwtUtil.validateToken(token, username)) {
 
-            boolean isValid = jwtUtil.validateToken(token, username);
-
-            if (isValid) {
+                CustomUserDetails userDetails = new CustomUserDetails(id, username, role);
 
                 UsernamePasswordAuthenticationToken authToken = 
                     new UsernamePasswordAuthenticationToken(
-                                    username,
-                                    null,
-                                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
-                            );
+                        userDetails,
+                        null,
+                        List.of(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                    );
 
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
