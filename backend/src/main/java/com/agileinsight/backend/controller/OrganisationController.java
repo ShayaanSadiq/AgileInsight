@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -104,7 +105,6 @@ public class OrganisationController {
         }
     }
 
-    // Decide between 401 error (current) or give 200 with invalid token message
     @PreAuthorize("hasRole('ORGANISATION')")
     @GetMapping("/verify")
     public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
@@ -128,14 +128,16 @@ public class OrganisationController {
                 .body(Map.of("message", "Logout successful"));
     }
 
-    // Remove path variable, and use user.getId() to retrieve projects
-    // Decide between 401 error (current) or give 200 with invalid token message
     @PreAuthorize("hasRole('ORGANISATION')")
-    @GetMapping("/projects/{organisationId}")
-    public ResponseEntity<?> getProjects(
-            @PathVariable String organisationId) {
+    @GetMapping("/projects")
+    public ResponseEntity<?> getProjects(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = organisationRepository.existsById(user.getId());
 
-        List<ProjectResponse> projects = projectService.getAllOrganisationProjects(organisationId);
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        List<ProjectResponse> projects = projectService.getAllOrganisationProjects(user.getId());
 
         return ResponseEntity.ok(projects);
     }
