@@ -27,6 +27,7 @@ import com.agileinsight.backend.model.User;
 import com.agileinsight.backend.model.projection.ManagerProjectionView;
 import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
+import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.repository.TaskRepository;
 import com.agileinsight.backend.repository.UserRepository;
@@ -58,6 +59,9 @@ public class ManagerController {
     private UserRepository userRepository;
 
     @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
@@ -76,7 +80,7 @@ public class ManagerController {
                                     .httpOnly(true)
                                     .secure(false)
                                     .path("/")
-                                    .maxAge(60 * 60)
+                                    .maxAge(60 * 60 * 60)
                                     .sameSite("Lax")
                                     .build();
             
@@ -90,7 +94,7 @@ public class ManagerController {
         }
     }
 
-    @PreAuthorize("hasRole('ORGANISATION')")
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
         if(manager.getName() != null) {
@@ -179,7 +183,7 @@ public class ManagerController {
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/getallusers")
+    @GetMapping("/getAllUsers")
     public ResponseEntity<?> getAllManagers(@AuthenticationPrincipal CustomUserDetails user) {
         boolean isValid = managerRepository.existsById(user.getId());
 
@@ -188,6 +192,21 @@ public class ManagerController {
         }
 
         ArrayList<User> users = userRepository.findByOrganisationId(user.getId());
+
+        return ResponseEntity.ok(users);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/getAllUsers/{projectId}")
+    public ResponseEntity<?> getAllManagers(@PathVariable String projectId, @AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid1 = managerRepository.existsById(user.getId());
+        boolean isValid2 = projectRepository.existsById(projectId);
+
+        if(!isValid1 && !isValid2) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        ArrayList<User> users = userRepository.findByProjectId(user.getId());
 
         return ResponseEntity.ok(users);
     }

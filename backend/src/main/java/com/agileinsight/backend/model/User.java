@@ -34,4 +34,6 @@ public class User {
     private String role;
 
     private String organisationId;
+
+    private String projectId;
 }

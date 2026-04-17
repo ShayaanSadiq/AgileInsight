@@ -17,4 +17,6 @@ public interface UserRepository extends MongoRepository<User, String> {
   Optional<UserProjectionView> findProjectedById(String userId);
 
   ArrayList<User> findByOrganisationId(String id);
+
+  ArrayList<User> findByProjectId(String id);
 }
