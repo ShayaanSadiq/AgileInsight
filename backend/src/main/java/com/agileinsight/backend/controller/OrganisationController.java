@@ -108,6 +108,12 @@ public class OrganisationController {
     @PreAuthorize("hasRole('ORGANISATION')")
     @GetMapping("/verify")
     public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = organisationRepository.existsById(user.getId());
+
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         return ResponseEntity.ok(Map.of(
             "message", "Login successful",
             "id", user.getId()
@@ -142,7 +148,6 @@ public class OrganisationController {
         return ResponseEntity.ok(projects);
     }
 
-    // Decide between 401 error (current) or give 200 with invalid token message
     @PreAuthorize("hasRole('ORGANISATION')")
     @GetMapping("/project/{projectId}")
     public ResponseEntity<?> getProject(@PathVariable String projectId, @AuthenticationPrincipal CustomUserDetails user) {
@@ -157,24 +162,24 @@ public class OrganisationController {
         return ResponseEntity.ok(projectResponse);
     }
 
-    // Remove path variable, and use user.getId() to retrieve projects
-    // Decide between 401 error (current) or give 200 with invalid token message
     @PreAuthorize("hasRole('ORGANISATION')")
-    @GetMapping("/getallmanagers/{organisationId}")
-    public ResponseEntity<?> getAllManagers(@PathVariable @Valid String organisationId) {
-        
-        ArrayList<Manager> managers = managerRepository.findByOrganisationId(organisationId);
+    @GetMapping("/getallmanagers")
+    public ResponseEntity<?> getAllManagers(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = organisationRepository.existsById(user.getId());
+
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        ArrayList<Manager> managers = managerRepository.findByOrganisationId(user.getId());
 
         return ResponseEntity.ok(managers);
     }
 
-    // Remove path variable, and use user.getId() to retrieve projects
-    // Decide between 401 error (current) or give 200 with invalid token message
     @PreAuthorize("hasRole('ORGANISATION')")
-    @GetMapping("/profile/{organisationId}")
-    public ResponseEntity<?> getProfile(@PathVariable @Valid String organisationId) {
-
-        OrganisationProjectionView organisationProjectionView = organisationRepository.findProjectedById(organisationId).orElse(null);
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
+        OrganisationProjectionView organisationProjectionView = organisationRepository.findProjectedById(user.getId()).orElse(null);
 
         if(organisationProjectionView != null) {
             return ResponseEntity.ok(organisationProjectionView);
