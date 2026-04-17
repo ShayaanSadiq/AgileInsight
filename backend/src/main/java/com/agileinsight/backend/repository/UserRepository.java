@@ -1,5 +1,6 @@
 package com.agileinsight.backend.repository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.jspecify.annotations.Nullable;
@@ -14,4 +15,6 @@ public interface UserRepository extends MongoRepository<User, String> {
   User findByEmail(String email);
 
   Optional<UserProjectionView> findProjectedById(String userId);
+
+  ArrayList<User> findByOrganisationId(String id);
 }

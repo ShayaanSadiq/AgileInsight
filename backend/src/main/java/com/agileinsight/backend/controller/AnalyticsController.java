@@ -20,20 +20,6 @@ public class AnalyticsController {
 
     @GetMapping("/{projectId}")
     public Analytics analyticsOfProject(@PathVariable String projectId)  {
-        // analytics.setTotalTasks(taskRepository.countByProjectId(projectId));
-
-        // analytics.setCompletedTasks(taskRepository.countByProjectIdAndStatus(projectId, Status.COMPLETED));
-
-        // analytics.setTotalSprints(sprintRepository.countByProjectId(projectId));
-
-        // analytics.setCompletedSprints(sprintRepository.countByProjectIdAndStatus(projectId, Status.COMPLETED));
-
-        // analytics.setTotalBugs(taskRepository.countByProjectIdAndType(projectId, Type.BUG));
-
-        // analytics.setResolvedBugs(taskRepository.countByProjectIdAndStatusAndType(projectId, Status.COMPLETED, Type.BUG));
-
-        // analytics.setProjectId(projectId);
-
         return analyticsRepository.findByProjectId(projectId);
     }
 }

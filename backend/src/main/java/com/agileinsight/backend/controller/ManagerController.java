@@ -6,8 +6,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,20 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.config.CustomUserDetails;
 import com.agileinsight.backend.model.Manager;
 import com.agileinsight.backend.model.Sprint;
 import com.agileinsight.backend.model.Task;
+import com.agileinsight.backend.model.User;
 import com.agileinsight.backend.model.projection.ManagerProjectionView;
 import com.agileinsight.backend.model.response.ProjectResponse;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.SprintRepository;
 import com.agileinsight.backend.repository.TaskRepository;
+import com.agileinsight.backend.repository.UserRepository;
 import com.agileinsight.backend.service.ManagerService;
 import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -49,6 +53,9 @@ public class ManagerController {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -83,6 +90,7 @@ public class ManagerController {
         }
     }
 
+    @PreAuthorize("hasRole('ORGANISATION')")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
         if(manager.getName() != null) {
@@ -108,44 +116,13 @@ public class ManagerController {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
-        String token = null;
-        
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        try {
-            String username = jwtUtil.extractUsername(token);
-            String id = jwtUtil.extractId(token);
-
-            if (jwtUtil.validateToken(token, username) && managerRepository.findById(id) != null) {
-                return ResponseEntity.ok(Map.of(
-                    "message", "Login successful",
-                    "id", id
-                ));
-            }
-
-        } catch (Exception e) {
-            return ResponseEntity.ok(Map.of(
-                "message","Invalid token"
-            ));
-        }
-
+    public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
         return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
+            "message", "Login successful",
+            "id", user.getId()
+        ));
     }
     
     @GetMapping("/logout")
@@ -162,136 +139,63 @@ public class ManagerController {
                 .body(Map.of("message", "Logout successful"));
     }
 
-    @GetMapping("/projects/{managerId}")
-    public ResponseEntity<?> getProjects(
-            @PathVariable String managerId,
-            HttpServletRequest request) {
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/projects")
+    public ResponseEntity<?> getProjects(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = managerRepository.existsById(user.getId());
 
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        String tokenId = jwtUtil.extractId(token);
-
-        if (!managerId.equals(tokenId)) {
-            return ResponseEntity.ok(Map.of(
-                "message","Incorrect manager id"
-            ));
-        }
-
-        List<ProjectResponse> projects = projectService.getAllManagerProjects(managerId);
+        List<ProjectResponse> projects = projectService.getAllManagerProjects(user.getId());
 
         return ResponseEntity.ok(projects);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<?> getProject(@PathVariable String projectId, HttpServletRequest request) {
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
+    public ResponseEntity<?> getProject(@PathVariable String projectId) {
 
         ProjectResponse projectResponse = projectService.getProject(projectId);
-
-        String tokenId = jwtUtil.extractId(token);
-
-        if (!projectResponse.getManagerId().equals(tokenId)) {
-            return ResponseEntity.ok(Map.of(
-                "message","Project not found"
-            ));
-        }
 
         return ResponseEntity.ok(projectResponse);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/sprints/{projectId}")
-    public ResponseEntity<?> getAllSprints(@PathVariable @Valid String projectId, HttpServletRequest request) {
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for(Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if(token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
+    public ResponseEntity<?> getAllSprints(@PathVariable @Valid String projectId) {
         ArrayList<Sprint> sprints = sprintRepository.findByProjectId(projectId);
 
         return ResponseEntity.ok(sprints);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/tasks/{sprintId}")
-    public ResponseEntity<?> getAllTasks(@PathVariable @Valid String sprintId, HttpServletRequest request) {
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for(Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if(token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
+    public ResponseEntity<?> getAllTasks(@PathVariable @Valid String sprintId) {
         ArrayList<Task> tasks = taskRepository.findBySprintId(sprintId);
 
         return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping("/profile/{managerId}")
-    public ResponseEntity<?> getProfile(@PathVariable @Valid String managerId, HttpServletRequest request) {
-        String token = null;
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/getallusers")
+    public ResponseEntity<?> getAllManagers(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = managerRepository.existsById(user.getId());
 
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
+        ArrayList<User> users = userRepository.findByOrganisationId(user.getId());
 
-        ManagerProjectionView managerProjectionView = managerRepository.findProjectedById(managerId).orElse(null);
+        return ResponseEntity.ok(users);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
+        ManagerProjectionView managerProjectionView = managerRepository.findProjectedById(user.getId()).orElse(null);
 
         if(managerProjectionView != null) {
             return ResponseEntity.ok(managerProjectionView);

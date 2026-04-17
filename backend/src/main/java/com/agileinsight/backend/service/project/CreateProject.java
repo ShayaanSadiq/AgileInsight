@@ -19,9 +19,7 @@ public class CreateProject {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    public Project createProject(Project project) {
-        String organisationId = project.getOrganisationId();
-
+    public Project createProject(Project project, String organisationId) {
         if(organisationRepository.existsById(organisationId) && 
            project.getStartDate().isAfter(LocalDate.now().minusDays(1)) && 
            project.getEndDate().isAfter(project.getStartDate())) {

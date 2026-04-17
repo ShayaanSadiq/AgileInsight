@@ -30,6 +30,22 @@ public class AnalyticsService {
         analyticsRepository.save(analytics);
     }
 
+    public void createAnalytics(String projectId) {
+        Analytics analytics = new Analytics();
+
+        analytics.setTotalSprints(0);
+        analytics.setCompletedSprints(0);
+        analytics.setTotalTasks(0);
+        analytics.setCompletedTasks(0);
+        analytics.setTotalBugs(0);
+        analytics.setResolvedBugs(0);
+        analytics.setExpectedSprints(0);
+        analytics.setCompletionPercentage(0);
+        analytics.setProjectId(projectId);
+
+        analyticsRepository.save(analytics);
+    }
+
     public void incrementTask(String projectId) {
         Analytics analytics = analyticsRepository.findByProjectId(projectId);
 

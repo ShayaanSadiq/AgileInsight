@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ public class TaskController {
     @Autowired
     private TaskRepository taskRepository;
     
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/create")
     public ResponseEntity<?> createTask(@RequestBody @Valid Task task) {
         Task createdTask = taskService.createTask(task);
@@ -46,6 +48,7 @@ public class TaskController {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable String id) {
         taskService.deleteTask(id);
@@ -61,6 +64,7 @@ public class TaskController {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PatchMapping("/update/{taskId}")
     public ResponseEntity<?> updateTask(@PathVariable @Valid String taskId, @RequestBody @Valid TaskUpdateDTO taskUpdateDTO) {
         boolean updated = taskService.updateTask(taskId, taskUpdateDTO);

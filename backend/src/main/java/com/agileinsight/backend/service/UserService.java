@@ -23,8 +23,8 @@ public class UserService{
     private UserRepository userRepository;
 
 
-    public User registerUser(User user) {
-        return registerUser.registerUser(user);
+    public User registerUser(User user, String managerEmail) {
+        return registerUser.registerUser(user, managerEmail);
     }
     
     public User loginUser(String email, String rawPassword) {

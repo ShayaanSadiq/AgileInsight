@@ -6,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.config.CustomUserDetails;
 import com.agileinsight.backend.model.User;
 import com.agileinsight.backend.model.projection.UserProjectionView;
 import com.agileinsight.backend.repository.UserRepository;
 import com.agileinsight.backend.service.UserService;
 import com.agileinsight.backend.utility.JwtUtil;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -66,12 +66,12 @@ public class UserController {
             ));
         }
     }
-
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid User user) {
+    public ResponseEntity<?> register(@RequestBody @Valid User user, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if(user.getName() != null) {
             try {
-                userService.registerUser(user);
+                userService.registerUser(user, userDetails.getUsername());
                 return ResponseEntity.ok()
                                     .body(Map.of("message","Register successful"));
             } catch (RuntimeException e) {
@@ -86,44 +86,13 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyJwt(HttpServletRequest request) {
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        try {
-            String username = jwtUtil.extractUsername(token);
-            String id = jwtUtil.extractId(token);
-            
-            if (jwtUtil.validateToken(token, username) && userRepository.findById(id) != null) {
-                return ResponseEntity.ok(Map.of(
-                    "message", "Login successful",
-                    "id", id
-                ));
-            }
-
-        } catch (Exception e) {
-            return ResponseEntity.ok(Map.of(
-                "message","Invalid token"
-            ));
-        }
-
+    public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
         return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
+            "message", "Login successful",
+            "id", user.getId()
+        ));
     }
     
     @GetMapping("/logout")
@@ -140,25 +109,10 @@ public class UserController {
                 .body(Map.of("message", "Logout successful"));
     }
 
-    @GetMapping("/profile/{userId}")
-    public ResponseEntity<?> getProfile(@PathVariable @Valid String userId, HttpServletRequest request) {
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        UserProjectionView userProjectionView = userRepository.findProjectedById(userId).orElse(null);
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
+        UserProjectionView userProjectionView = userRepository.findProjectedById(user.getId()).orElse(null);
 
         if(userProjectionView != null) {
             return ResponseEntity.ok(userProjectionView);

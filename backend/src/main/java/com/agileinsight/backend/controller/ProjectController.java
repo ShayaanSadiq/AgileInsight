@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agileinsight.backend.config.CustomUserDetails;
 import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.model.dto.ProjectUpdateDTO;
 import com.agileinsight.backend.repository.ProjectRepository;
 import com.agileinsight.backend.service.AnalyticsService;
 import com.agileinsight.backend.service.ProjectService;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -37,26 +38,10 @@ public class ProjectController {
     @Autowired
     private AnalyticsService analyticsService;
     
+    @PreAuthorize("hasRole('ORGANISATION')")
     @PostMapping("/create")
-    public ResponseEntity<?> createProject(@RequestBody @Valid Project project, HttpServletRequest request) {
-
-        String token = null;
-
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-
-        Project createdProject = projectService.createProject(project);
+    public ResponseEntity<?> createProject(@RequestBody @Valid Project project, @AuthenticationPrincipal CustomUserDetails user) {
+        Project createdProject = projectService.createProject(project, user.getId());
 
         if(createdProject != null && project.getExpectedSprints() != null) {
             analyticsService.createAnalytics(project.getId(), project.getExpectedSprints());
@@ -65,6 +50,7 @@ public class ProjectController {
                 "message", "Project created successfully"
             ));
         } else if (createdProject!= null && project.getExpectedSprints() == null){
+            analyticsService.createAnalytics(project.getId());
             return ResponseEntity.ok(Map.of(
                 "message", "Project created successfully"
             ));
@@ -75,27 +61,12 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteProject(@PathVariable String id, HttpServletRequest request) {
-        String token = null;
+    @PreAuthorize("hasRole('ORGANISATION')")
+    @DeleteMapping("/delete/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {        
+        projectService.deleteProject(projectId);
 
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-
-        if (token == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Not logged in"
-            ));
-        }
-        
-        projectService.deleteProject(id);
-
-        if(projectRepository.findById(id) != null) {
+        if(projectRepository.findById(projectId) != null) {
             return ResponseEntity.ok(Map.of(
                 "message","Project deleted successfully"
             ));
@@ -106,6 +77,7 @@ public class ProjectController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER', 'ORGANISATION')")
     @PatchMapping("/update/{projectId}")
     public ResponseEntity<?> updateProject(@PathVariable @Valid String projectId, @RequestBody @Valid ProjectUpdateDTO projectUpdateDTO) {
         boolean updated = projectService.updateProject(projectId, projectUpdateDTO);

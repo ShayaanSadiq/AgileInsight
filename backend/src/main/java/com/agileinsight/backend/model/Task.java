@@ -30,7 +30,7 @@ public class Task {
     @NotBlank(message = "Name is required") 
     private String name;
 
-    @NotBlank(message = "Password is required") 
+    @NotBlank(message = "Description is required") 
     private String description;
 
     @NotNull
@@ -46,9 +46,6 @@ public class Task {
 
     @NotBlank(message = "AssignedTo is required")
     private String assignedTo;
-
-    @NotBlank(message = "ManagerId is required")
-    private String managerId;
 
     @NotBlank(message = "ProjectId is required") 
     private String projectId;

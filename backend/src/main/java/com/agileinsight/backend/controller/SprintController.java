@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ public class SprintController {
     @Autowired
     private SprintRepository sprintRepository;
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/create")
     public ResponseEntity<?> createSprint(@RequestBody @Valid Sprint sprint) {
         Sprint createdSprint = sprintService.createSprint(sprint);
@@ -46,6 +48,7 @@ public class SprintController {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSprint(@PathVariable String id) {
         sprintService.deleteSprint(id);
@@ -61,6 +64,7 @@ public class SprintController {
         }
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PatchMapping("/update/{sprintId}")
     public ResponseEntity<?> updateSprint(@PathVariable @Valid String sprintId, @RequestBody @Valid SprintUpdateDTO sprintUpdateDTO) {
         boolean updated = sprintService.updateSprint(sprintId, sprintUpdateDTO);

@@ -32,8 +32,8 @@ public class ProjectService {
     @Autowired
     private UpdateProject updateProject;
 
-    public Project createProject(Project project) {
-        return createProject.createProject(project);
+    public Project createProject(Project project, String organisationId) {
+        return createProject.createProject(project, organisationId);
     }
 
     public void deleteProject(String id) {
