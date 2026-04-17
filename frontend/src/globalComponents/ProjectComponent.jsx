@@ -6,12 +6,12 @@ export const ProjectComponent = ({ project, handleClick, isOrganisation }) => {
     <>
       {!isOrganisation && (
         <>
-          <td>{project.name}</td>
-          <td>{project.description}</td>
-          <td>{project.startDate}</td>
-          <td>{project.endDate}</td>
-          <td>{project.currentSprintNumber}</td>
-          <td>{project.expectedSprints}</td>
+          <td>{project.name || "Set on edit page."}</td>
+          <td>{project.description || "Set on edit page."}</td>
+          <td>{project.startDate || "Set on edit page."}</td>
+          <td>{project.endDate || "Set on edit page."}</td>
+          <td>{project.currentSprintNumber || "Set on edit page."}</td>
+          <td>{project.expectedSprints || "Set on edit page."}</td>
           <td className="project-go-td" onClick={() => handleClick(project.id)}>
             Go
           </td>
@@ -20,13 +20,13 @@ export const ProjectComponent = ({ project, handleClick, isOrganisation }) => {
 
       {isOrganisation && (
         <>
-          <td>{project.name}</td>
-          <td>{project.description}</td>
-          <td>{project.startDate}</td>
-          <td>{project.endDate}</td>
-          <td>{project.manager.email}</td>
-          <td>{project.status}</td>
-          <td>{project.expectedSprints}</td>
+          <td>{project.name || "Add name"}</td>
+          <td>{project.description || "Add description"}</td>
+          <td>{project.startDate || "Add start date"}</td>
+          <td>{project.endDate || "Add end date"}</td>
+          <td>{project.manager?.email || "Add assigned to"}</td>
+          <td>{project.status || "Set on edit page."}</td>
+          <td>{project.expectedSprints || "Set on edit page."}</td>
           <td className="project-go-td" onClick={() => handleClick(project.id)}>
             Go
           </td>

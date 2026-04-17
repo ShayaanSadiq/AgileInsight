@@ -1,7 +1,7 @@
 import React from "react";
 import { OrganisationLayout } from "../components/OrganisationLayout.jsx";
 import { useParams } from "react-router-dom";
-import { useGetProjectByIdQuery } from "../../redux/organisation/projectApiSlice.js";
+import { useGetProjectByIdQuery } from "../../redux/organisation/orgProjectApiSlice.js";
 import { useForm } from "react-hook-form";
 import "../css/ProjectPage.css";
 

@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import moment from "moment";
 import "./css/quickAddAction.css";
 
-export const QuickAddAction = ({ inputs, useBack, useAddFunction }) => {
+export const QuickAddAction = ({ inputs, useBack, useAddFunction, orgId }) => {
+  // console.log(useAddFunction?.name);
   const [addFunction, { isLoading, isError }] = useAddFunction();
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
@@ -13,7 +14,16 @@ export const QuickAddAction = ({ inputs, useBack, useAddFunction }) => {
       data.startDate = moment(data.startDate).format("DD-MM-YYYY");
       data.endDate = moment(data.endDate).format("DD-MM-YYYY");
     }
-    const result = await addFunction(data);
+    let result = null;
+    if (orgId) {
+      let orgData = { ...data, orgId: orgId };
+      console.log(orgData);
+      result = await addFunction(orgData);
+      console.log(result);
+    } else {
+      result = await addFunction(data);
+    }
+    // console.log(result);
     if (!result.error) {
       toast.success("successful.");
       useBack();

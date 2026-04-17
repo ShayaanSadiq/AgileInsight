@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { SideBar } from "../../globalComponents/SideBar.jsx";
 import { QuickAddAction } from "../../globalComponents/QuickAddAction.jsx";
+import { useGetLogoutMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostCreateProjectMutation } from "../../redux/project/projectApiSlice.js";
+import { usePostManagerSignupMutation } from "../../redux/manager/authApiSlice.js";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import { LuFileCode } from "react-icons/lu";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { LuCircleUser } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
-import { useGetLogoutMutation } from "../../redux/organisation/authApiSlice.js";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import "../css/OrganisationLayout.css";
 
-export const OrganisationLayout = ({ children }) => {
+export const OrganisationLayout = ({ orgId, children }) => {
   const [logoutOrganisation, { isLoading, isError }] = useGetLogoutMutation();
   const [activeOption, setActiveOption] = useState("Projects");
   const navigate = useNavigate();
@@ -66,12 +68,16 @@ export const OrganisationLayout = ({ children }) => {
           <QuickAddAction
             inputs={addProjectInputs}
             useBack={() => setActiveOption("Projects")}
+            useAddFunction={usePostCreateProjectMutation}
+            orgId={orgId}
           />
         )}
         {activeOption === "Add Manager" && (
           <QuickAddAction
             inputs={addManagerInputs}
             useBack={() => setActiveOption("Projects")}
+            useAddFunction={usePostManagerSignupMutation}
+            orgId={orgId}
           />
         )}
       </div>

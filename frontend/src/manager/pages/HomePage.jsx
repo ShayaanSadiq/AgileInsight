@@ -1,7 +1,7 @@
 import React from "react";
 import { ManagerLayout } from "../components/ManagerLayout.jsx";
 import { HomePageMainDiv } from "../components/HomePageMainDIv.jsx";
-import { useGetProjectsByIdQuery } from "../../redux/manager/ProjectApiSlice.js";
+import { useGetProjectsByIdQuery } from "../../redux/manager/managerProjectApiSlice.js";
 import { useSelector } from "react-redux";
 
 import "../css/manager.homePage.css";

@@ -1,18 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "../baseApi.js";
 
-export const userAuthApi = createApi({
-  reducerPath: "userAuthApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/users/",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }),
+export const userAuthApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postLogin: builder.mutation({
       query: (data) => ({
-        url: "login",
+        url: "users/login",
         method: "POST",
         body: JSON.stringify({
           email: data.email,
@@ -23,7 +15,7 @@ export const userAuthApi = createApi({
 
     postSignup: builder.mutation({
       query: (data) => ({
-        url: "signup",
+        url: "users/signup",
         method: "POST",
         body: JSON.stringify({
           name: data.name,
@@ -35,7 +27,7 @@ export const userAuthApi = createApi({
 
     getVerify: builder.query({
       query: () => ({
-        url: "verify",
+        url: "users/verify",
       }),
     }),
   }),

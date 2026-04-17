@@ -1,15 +1,9 @@
 import React from "react";
-import { useGetProjectsByIdQuery } from "../../redux/organisation/projectApiSlice.js";
 import { ProjectsList } from "../../globalComponents/ProjectsList.jsx";
-import { useSelector } from "react-redux";
 import "../css/ProjectsDiv.css";
 
-export const ProjectsDiv = () => {
-  const orgId = useSelector((state) => state.currOrg.id);
-  const { data, isLoading, isError } = useGetProjectsByIdQuery(orgId, {
-    skip: !orgId,
-  });
-  const isProjects = data && data.lenght !== 0 && !isLoading && !isError;
+export const ProjectsDiv = ({ data }) => {
+  const isProjects = data && data.lenght !== 0;
   const tableHeadings = [
     "Name",
     "Description",

@@ -1,18 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "../baseApi.js";
 
-export const managerAuthApi = createApi({
-  reducerPath: "managerAuthApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/managers/",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }),
+export const managerAuthApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postLogin: builder.mutation({
       query: (data) => ({
-        url: "login",
+        url: "managers/login",
         method: "POST",
         body: JSON.stringify({
           email: data.email,
@@ -23,7 +15,7 @@ export const managerAuthApi = createApi({
 
     postManagerSignup: builder.mutation({
       query: (data) => ({
-        url: "register",
+        url: "managers/register",
         method: "POST",
         body: JSON.stringify({
           name: data.name,
@@ -35,13 +27,13 @@ export const managerAuthApi = createApi({
 
     getVerify: builder.query({
       query: () => ({
-        url: "verify",
+        url: "managers/verify",
       }),
     }),
 
     getLogout: builder.mutation({
       query: () => ({
-        url: "logout",
+        url: "managers/logout",
         method: "GET",
       }),
     }),

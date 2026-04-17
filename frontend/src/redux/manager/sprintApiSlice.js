@@ -1,18 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "../baseApi.js";
 
-export const managerSprintApi = createApi({
-  reducerPath: "managerSprintApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/sprints/",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }),
+export const managerSprintApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postSprint: builder.mutation({
       query: (data) => ({
-        url: "create",
+        url: "sprints/create",
         method: "POST",
         body: JSON.stringify({
           name: data.name,

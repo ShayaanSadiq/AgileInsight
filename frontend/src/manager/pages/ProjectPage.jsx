@@ -1,7 +1,7 @@
 import React from "react";
 import { ProjectPageMainDiv } from "../components/ProjectPageMainDiv";
 import { useParams } from "react-router-dom";
-import { useGetProjectByIdQuery } from "../../redux/manager/ProjectApiSlice.js";
+import { useGetProjectByIdQuery } from "../../redux/manager/managerProjectApiSlice";
 import "../css/ProjectPage.css";
 
 const ProjectPage = () => {

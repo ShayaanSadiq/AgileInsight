@@ -1,18 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApi } from "../baseApi.js";
 
-export const managerMembersApi = createApi({
-  reducerPath: "managerMemberApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/users/",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }),
+export const managerMembersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     postSignupMember: builder.mutation({
       query: (data) => ({
-        url: "register",
+        url: "users/register",
         method: "POST",
         body: JSON.stringify({
           name: data.name ? data.name : "",

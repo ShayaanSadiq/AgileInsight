@@ -13,8 +13,8 @@
 
 .projects-div {
   height: 60%;
-  margin-top: 5px;
   padding-right: 10px;
+  overflow-y: auto;
 }
 
 .analytics-div {
