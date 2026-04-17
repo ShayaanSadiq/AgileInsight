@@ -3,8 +3,8 @@ import { baseApi } from "../baseApi.js";
 export const managerProjectApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProjectsById: builder.query({
-      query: (id) => ({
-        url: `managers/projects/${id}`,
+      query: () => ({
+        url: "managers/projects",
       }),
     }),
 

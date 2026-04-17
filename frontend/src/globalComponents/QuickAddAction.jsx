@@ -6,7 +6,6 @@ import moment from "moment";
 import "./css/quickAddAction.css";
 
 export const QuickAddAction = ({ inputs, useBack, useAddFunction, orgId }) => {
-  // console.log(useAddFunction?.name);
   const [addFunction, { isLoading, isError }] = useAddFunction();
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
@@ -17,13 +16,10 @@ export const QuickAddAction = ({ inputs, useBack, useAddFunction, orgId }) => {
     let result = null;
     if (orgId) {
       let orgData = { ...data, orgId: orgId };
-      console.log(orgData);
       result = await addFunction(orgData);
-      console.log(result);
     } else {
       result = await addFunction(data);
     }
-    // console.log(result);
     if (!result.error) {
       toast.success("successful.");
       useBack();

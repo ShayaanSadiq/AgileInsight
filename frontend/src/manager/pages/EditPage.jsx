@@ -3,6 +3,8 @@ import { ProjectEdit } from "../components/ProjectEdit.jsx";
 import { SprintEdit } from "../components/SprintEdit.jsx";
 import { TaskEdit } from "../components/TaskEdit.jsx";
 import { SideBar } from "../components/SideBar.jsx";
+import { useParams } from "react-router-dom";
+import { useGetProjectsByIdQuery } from "../../redux/manager/managerProjectApiSlice.js";
 import { LuFileCode } from "react-icons/lu";
 import { LuListTodo } from "react-icons/lu";
 import { LuIterationCcw } from "react-icons/lu";
@@ -11,6 +13,8 @@ import { MdLogout } from "react-icons/md";
 import "../css/manager.editPage.css";
 
 const EditPage = () => {
+  const { data, isLoading, isError } = useGetProjectsByIdQuery();
+  const { projectId } = useParams();
   const [activeOption, setActiveOption] = useState("Project");
   const upperDivOptions = [
     { text: "Project", icon: LuFileCode },
@@ -31,7 +35,9 @@ const EditPage = () => {
           setActiveOption={setActiveOption}
         />
         <div className="manager-edit-main">
-          {activeOption === "Project" && <ProjectEdit />}
+          {activeOption === "Project" && (
+            <ProjectEdit projectId={projectId} projects={data} />
+          )}
           {activeOption === "Sprints" && <SprintEdit />}
           {activeOption === "Tasks" && <TaskEdit />}
         </div>

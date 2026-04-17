@@ -1,7 +1,22 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import "../css/manager.leftDetails.css";
 
-export const LeftDetails = ({ register, Icon, title, status, inputs }) => {
+export const LeftDetails = ({
+  Icon,
+  title,
+  status,
+  inputs,
+  defaultProject,
+}) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      name: defaultProject?.name,
+      description: defaultProject?.description,
+      startDate: defaultProject?.startDate,
+      endDate: defaultProject?.endDate,
+    },
+  });
   return (
     <>
       <div className="manager-left-details">
