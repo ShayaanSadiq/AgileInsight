@@ -94,7 +94,7 @@ public class ManagerController {
         }
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasRole('ORGANISATION')")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid Manager manager) {
         if(manager.getName() != null) {
