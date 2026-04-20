@@ -10,14 +10,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.config.CustomUserDetails;
+import com.agileinsight.backend.model.Task;
 import com.agileinsight.backend.model.User;
+import com.agileinsight.backend.model.defaultoptions.Status;
 import com.agileinsight.backend.model.projection.UserProjectionView;
+import com.agileinsight.backend.repository.TaskRepository;
 import com.agileinsight.backend.repository.UserRepository;
 import com.agileinsight.backend.service.UserService;
 import com.agileinsight.backend.utility.JwtUtil;
@@ -35,6 +39,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -119,6 +126,45 @@ public class UserController {
         } else {
             return ResponseEntity.ok(Map.of(
                 "message","Not found"
+            ));
+        }
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{taskId}/complete")
+    public ResponseEntity<?> completeTask(@PathVariable String taskId, @AuthenticationPrincipal CustomUserDetails user) {
+        Task task = taskRepository.findById(taskId).orElse(null);
+
+        if(task == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Task not found"
+            ));
+        }
+
+        boolean checkIfUserTask = task.getAssignedTo().equals(user.getId());
+
+        if(!checkIfUserTask) {
+            return ResponseEntity.ok(Map.of(
+                "message","Incorrect Task for User"
+            ));
+        }
+
+        if(task.getStatus() == Status.COMPLETED) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Task already completed"
+            ));
+        }
+
+        task.setStatus(Status.COMPLETED);
+        taskRepository.save(task);
+
+        if(taskRepository.findById(taskId).orElse(null).getStatus() == Status.COMPLETED) {
+            return ResponseEntity.ok(Map.of(
+                "message","Task completed successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Task not completed"
             ));
         }
     }
