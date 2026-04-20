@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -150,7 +149,9 @@ public class ManagerController {
         boolean isValid = managerRepository.existsById(user.getId());
 
         if(!isValid) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid managerId"
+            ));
         }
 
         List<ProjectResponse> projects = projectService.getAllManagerProjects(user.getId());
@@ -161,8 +162,13 @@ public class ManagerController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/project/{projectId}")
     public ResponseEntity<?> getProject(@PathVariable String projectId) {
-
         ProjectResponse projectResponse = projectService.getProject(projectId);
+
+        if(projectResponse == null) {
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid projectId"
+            ));
+        }
 
         return ResponseEntity.ok(projectResponse);
     }
@@ -170,6 +176,14 @@ public class ManagerController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/sprints/{projectId}")
     public ResponseEntity<?> getAllSprints(@PathVariable @Valid String projectId) {
+        boolean exists = projectRepository.existsById(projectId);
+
+        if(!exists) {
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid projectId"
+            ));
+        }
+
         ArrayList<Sprint> sprints = sprintRepository.findByProjectId(projectId);
 
         return ResponseEntity.ok(sprints);
@@ -178,6 +192,13 @@ public class ManagerController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/tasks/{sprintId}")
     public ResponseEntity<?> getAllTasks(@PathVariable @Valid String sprintId) {
+        boolean exists = sprintRepository.existsById(sprintId);
+
+        if(!exists) {
+            return ResponseEntity.ok(Map.of(
+                "message","Invalid sprintId"
+            ));
+        }
         ArrayList<Task> tasks = taskRepository.findBySprintId(sprintId);
 
         return ResponseEntity.ok(tasks);
