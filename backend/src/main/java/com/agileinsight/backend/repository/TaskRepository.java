@@ -34,4 +34,6 @@ public interface TaskRepository extends MongoRepository<Task, String>{
     long countByProjectIdAndStatusAndType(String projectId, Status status, Type type);
 
     ArrayList<Task> findBySprintId(String sprintId);
+
+    ArrayList<Task> findByAssignedTo(String userId);
 }

@@ -1,5 +1,6 @@
 package com.agileinsight.backend.controller;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,4 +174,19 @@ public class UserController {
             ));
         }
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/getAllTasks")
+    public ResponseEntity<?> getAllTasks(@AuthenticationPrincipal CustomUserDetails user) {
+        User user1 = userRepository.findById(user.getId()).orElse(null);
+
+        if(user1 == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        ArrayList<Task> tasks = taskRepository.findByAssignedTo(user1.getId());
+
+        return ResponseEntity.ok(tasks);
+    }
+
 }
