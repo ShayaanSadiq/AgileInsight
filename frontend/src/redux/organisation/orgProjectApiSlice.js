@@ -6,6 +6,7 @@ export const orgProjectApi = baseApi.injectEndpoints({
       query: () => ({
         url: "organisations/projects",
       }),
+      providesTags: ["Projects"],
     }),
 
     getProjectById: builder.query({

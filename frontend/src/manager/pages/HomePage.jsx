@@ -1,12 +1,12 @@
 import React from "react";
 import { ManagerLayout } from "../components/ManagerLayout.jsx";
 import { HomePageMainDiv } from "../components/HomePageMainDIv.jsx";
-import { useGetProjectsByIdQuery } from "../../redux/manager/managerProjectApiSlice.js";
+import { useGetManagerProjectsByIdQuery } from "../../redux/manager/managerProjectApiSlice.js";
 
 import "../css/manager.homePage.css";
 
 const HomePage = () => {
-  const { data, isLoading, isError } = useGetProjectsByIdQuery();
+  const { data, isLoading, isError } = useGetManagerProjectsByIdQuery();
 
   return (
     <>

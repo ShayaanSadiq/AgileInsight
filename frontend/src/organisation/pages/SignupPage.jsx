@@ -1,6 +1,6 @@
 import React from "react";
 import AuthComponent from "../../globalComponents/AuthComponent.jsx";
-import { usePostSignupMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostOrgSignupMutation } from "../../redux/organisation/authApiSlice.js";
 import { setCurrOrg } from "../../redux/organisation/currOrg.js";
 import { useForm } from "react-hook-form";
 

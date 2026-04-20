@@ -2,7 +2,7 @@ import { baseApi } from "../baseApi.js";
 
 export const orgAuthApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    postLogin: builder.mutation({
+    postOrgLogin: builder.mutation({
       query: (data) => {
         return {
           url: "organisations/login",
@@ -15,7 +15,7 @@ export const orgAuthApi = baseApi.injectEndpoints({
       },
     }),
 
-    postSignup: builder.mutation({
+    postOrgSignup: builder.mutation({
       query: (data) => ({
         url: "organisations/register",
         method: "POST",
@@ -27,13 +27,13 @@ export const orgAuthApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getVerify: builder.query({
+    getOrgVerify: builder.query({
       query: () => ({
         url: "organisations/verify",
       }),
     }),
 
-    getLogout: builder.mutation({
+    getOrgLogout: builder.mutation({
       query: () => ({
         url: "organisations/logout",
         method: "GET",
@@ -43,8 +43,8 @@ export const orgAuthApi = baseApi.injectEndpoints({
 });
 
 export const {
-  usePostLoginMutation,
-  usePostSignupMutation,
-  useGetLogoutMutation,
-  useGetVerifyQuery,
+  usePostOrgLoginMutation,
+  usePostOrgSignupMutation,
+  useGetOrgLogoutMutation,
+  useGetOrgVerifyQuery,
 } = orgAuthApi;

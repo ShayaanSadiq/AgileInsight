@@ -13,18 +13,6 @@ export const userAuthApi = baseApi.injectEndpoints({
       }),
     }),
 
-    postSignup: builder.mutation({
-      query: (data) => ({
-        url: "users/signup",
-        method: "POST",
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      }),
-    }),
-
     getVerify: builder.query({
       query: () => ({
         url: "users/verify",
@@ -33,8 +21,4 @@ export const userAuthApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {
-  usePostLoginMutation,
-  usePostSignupMutation,
-  useGetVerifyQuery,
-} = userAuthApi;
+export const { usePostLoginMutation, useGetVerifyQuery } = userAuthApi;

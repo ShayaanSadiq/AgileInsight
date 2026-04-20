@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useGetVerifyQuery } from "../../redux/organisation/authApiSlice.js";
+import { useGetOrgVerifyQuery } from "../../redux/organisation/authApiSlice.js";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,7 +8,7 @@ import { setCurrOrg } from "../../redux/organisation/currOrg.js";
 export const ProtectedRoute = ({ children }) => {
   const organisationId = useSelector((state) => state.currOrg.id);
 
-  const { data, isLoading, isError, isFetching } = useGetVerifyQuery(
+  const { data, isLoading, isError, isFetching } = useGetOrgVerifyQuery(
     undefined,
     {
       skip: !!organisationId,

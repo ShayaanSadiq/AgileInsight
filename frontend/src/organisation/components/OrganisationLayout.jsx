@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SideBar } from "../../globalComponents/SideBar.jsx";
 import { QuickAddAction } from "../../globalComponents/QuickAddAction.jsx";
-import { useGetLogoutMutation } from "../../redux/organisation/authApiSlice.js";
+import { useGetOrgLogoutMutation } from "../../redux/organisation/authApiSlice.js";
 import { usePostCreateProjectMutation } from "../../redux/project/projectApiSlice.js";
 import { usePostManagerSignupMutation } from "../../redux/manager/authApiSlice.js";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,8 @@ import { MdLogout } from "react-icons/md";
 import "../css/OrganisationLayout.css";
 
 export const OrganisationLayout = ({ orgId, children }) => {
-  const [logoutOrganisation, { isLoading, isError }] = useGetLogoutMutation();
+  const [logoutOrganisation, { isLoading, isError }] =
+    useGetOrgLogoutMutation();
   const [activeOption, setActiveOption] = useState("Projects");
   const navigate = useNavigate();
   const upperDivOptions = [

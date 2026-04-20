@@ -1,16 +1,8 @@
 import React from "react";
 import AuthComponent from "../../globalComponents/AuthComponent.jsx";
-import { usePostLoginMutation } from "../../redux/manager/authApiSlice.js";
+import { usePostManagerLoginMutation } from "../../redux/manager/authApiSlice.js";
 import { useForm } from "react-hook-form";
 import { setCurrManager } from "../../redux/manager/currManagerSlice.js";
-
-// inputs,
-//   title,
-//   useLoginMutation,
-//   register,
-//   handleSubmit,
-//   setCurrData,
-//   navigateLink,
 
 const LoginPage = () => {
   const title = "Login";
@@ -29,7 +21,7 @@ const LoginPage = () => {
     <AuthComponent
       title={title}
       inputs={inputs}
-      useAuthMutation={usePostLoginMutation}
+      useAuthMutation={usePostManagerLoginMutation}
       register={register}
       handleSubmit={handleSubmit}
       setCurrData={setCurrManager}
