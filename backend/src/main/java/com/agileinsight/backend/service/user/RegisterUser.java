@@ -25,7 +25,7 @@ public class RegisterUser {
             throw new RuntimeException("Email already registered");
         }
 
-        user.setOrganisationId(managerRepository.findByEmail(managerEmail).getOrganisationId());
+        user.setManagerId(managerRepository.findByEmail(managerEmail).getId());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

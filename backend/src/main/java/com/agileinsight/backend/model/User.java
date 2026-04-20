@@ -31,9 +31,10 @@ public class User {
     @NotBlank(message = "Password is required")
     private String password;
 
+    @NotBlank(message = "Role is required")
     private String role;
 
-    private String organisationId;
+    private String managerId;
 
     private String projectId;
 }
