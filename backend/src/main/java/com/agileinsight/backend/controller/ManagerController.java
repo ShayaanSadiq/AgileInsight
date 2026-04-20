@@ -215,7 +215,7 @@ public class ManagerController {
             ));
         }
 
-        ArrayList<User> users = userRepository.findByOrganisationId(user.getId());
+        ArrayList<User> users = userRepository.findByManagerId(user.getId());
 
         return ResponseEntity.ok(users);
     }

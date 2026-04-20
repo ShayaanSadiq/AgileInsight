@@ -50,8 +50,6 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody @Valid User user, HttpServletResponse response) {
         User user1 = userService.loginUser(user.getEmail(), user.getPassword());
 
-        
-
         if(user1 != null) {
             String id = user1.getId();
             String token = jwtUtil.generateToken(user1.getEmail(), id, "user"); 
