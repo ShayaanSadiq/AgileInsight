@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agileinsight.backend.config.CustomUserDetails;
 import com.agileinsight.backend.model.Manager;
+import com.agileinsight.backend.model.Project;
 import com.agileinsight.backend.model.Sprint;
 import com.agileinsight.backend.model.Task;
 import com.agileinsight.backend.model.User;
@@ -188,7 +189,9 @@ public class ManagerController {
         boolean isValid = managerRepository.existsById(user.getId());
 
         if(!isValid) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return ResponseEntity.ok(Map.of(
+                "message","Wrong Manager"
+            ));
         }
 
         ArrayList<User> users = userRepository.findByOrganisationId(user.getId());
@@ -201,14 +204,31 @@ public class ManagerController {
     public ResponseEntity<?> getAllManagers(@PathVariable String projectId, @AuthenticationPrincipal CustomUserDetails user) {
         boolean isValid1 = managerRepository.existsById(user.getId());
         boolean isValid2 = projectRepository.existsById(projectId);
+        Project project = projectRepository.findById(projectId).orElse(null);
 
+        // Check if Manager and Project exist
         if(!isValid1 && !isValid2) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return ResponseEntity.ok(Map.of(
+                "message","Project/Manager doesn't exist"
+            ));
         }
 
-        ArrayList<User> users = userRepository.findByProjectId(user.getId());
+        // Check if managerId field in project is null
+        if (project.getManagerId() == null){
+            return ResponseEntity.ok(Map.of(
+                "message","ManagerId doesn't exist in project"
+            ));
+        }
 
-        return ResponseEntity.ok(users);
+        if(project.getManagerId().equals(user.getId())) {
+            ArrayList<User> users = userRepository.findByProjectId(user.getId());
+
+            return ResponseEntity.ok(users);
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Wrong Manager"
+            ));
+        }
     }
 
     @PreAuthorize("hasRole('MANAGER')")
