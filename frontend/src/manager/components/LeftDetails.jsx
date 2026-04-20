@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import "../css/manager.leftDetails.css";
 
 export const LeftDetails = ({
@@ -8,15 +10,42 @@ export const LeftDetails = ({
   status,
   inputs,
   defaultProject,
+  usePatchMutation,
 }) => {
-  const { register, handleSubmit } = useForm({
+  const { projectId } = useParams();
+  const [updateProject, { isLoading, isError }] = usePatchMutation();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { dirtyFields },
+  } = useForm({
     defaultValues: {
-      name: defaultProject?.name,
-      description: defaultProject?.description,
-      startDate: defaultProject?.startDate,
-      endDate: defaultProject?.endDate,
+      name: "",
+      description: "",
+      startDate: "",
+      endDate: "",
     },
   });
+
+  const onSubmit = async (data) => {
+    const modifiedData = Object.keys(dirtyFields).reduce((acc, key) => {
+      acc[key] = data[key];
+      return acc;
+    }, {});
+
+    const result = await updateProject({ projectId, modifiedData });
+    if (result.data.message === "Project updated successfully") {
+      toast.success(result.data.message);
+    } else {
+      toast.error("Project not updated.");
+    }
+  };
+  useEffect(() => {
+    if (defaultProject) {
+      reset(defaultProject);
+    }
+  }, [defaultProject, reset]);
   return (
     <>
       <div className="manager-left-details">
@@ -37,11 +66,14 @@ export const LeftDetails = ({
             flexDirection: "column",
           }}
         >
-          <form className="manager-left-details-form">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="manager-left-details-form"
+          >
             {inputs.map((input) => {
               if (input.type === "textarea") {
                 return (
-                  <div className="manager-form-object">
+                  <div key={input.name} className="manager-form-object">
                     <label htmlFor={`${input.name}`}>{input.label}</label>
                     <textarea
                       type="text"
@@ -54,7 +86,7 @@ export const LeftDetails = ({
                 );
               } else if (input.type === "text") {
                 return (
-                  <div className="manager-form-object">
+                  <div key={input.name} className="manager-form-object">
                     <label htmlFor={`${input.name}`}>{input.label}</label>
                     <input
                       type="text"
@@ -72,7 +104,7 @@ export const LeftDetails = ({
               {inputs.map((input) => {
                 if (input.type === "date") {
                   return (
-                    <div className="manager-form-object">
+                    <div key={input.name} className="manager-form-object">
                       <label htmlFor={`${input.name}`}>{input.label}</label>
                       <input
                         type="text"
@@ -86,11 +118,13 @@ export const LeftDetails = ({
                 }
               })}
             </div>
-          </form>
-          <section>
             <span>Status </span>
-            {status}
-          </section>
+            <section>{status}</section>
+
+            <button style={{ alignSelf: "end" }} type="submit">
+              Update
+            </button>
+          </form>
         </section>
       </div>
     </>

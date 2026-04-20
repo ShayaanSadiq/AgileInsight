@@ -13,8 +13,17 @@ export const managerMembersApi = baseApi.injectEndpoints({
           projectId: data.projectId,
         }),
       }),
+      invalidatesTags: ["ManagerMembers"],
+    }),
+
+    getUsersByProjId: builder.query({
+      query: (projectId) => ({
+        url: `managers/getAllUsers/${projectId}`,
+      }),
+      providesTags: ["ManagerMembers"],
     }),
   }),
 });
 
-export const { usePostSignupMemberMutation } = managerMembersApi;
+export const { usePostSignupMemberMutation, useGetUsersByProjIdQuery } =
+  managerMembersApi;

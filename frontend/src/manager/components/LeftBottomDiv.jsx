@@ -1,26 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/manager.left.bottom.css";
 
 export const LeftBottomDiv = ({
   title,
-  array = [
-    { id: "1", name: "Kill muqeet", description: "please kill muqeet" },
-    { id: "2", name: "Kill muqeet2", description: "please kill muqeet2" },
-  ],
+  projects,
   selectedOption,
   setSelectedOption,
 }) => {
+  const navigate = useNavigate();
+  const handleClick = (projectId) => {
+    // setSelectedOption(projectId);
+    navigate(`/manager/project/${projectId}/edit`);
+  };
   return (
     <div className="manager-left-bottom">
       <span style={{ marginBottom: "5px" }}>{title}</span>
-      {array?.map((object) => (
+      {projects?.map((project) => (
         <div
-          key={object.id}
-          className={`mlb-single-object ${selectedOption === object.id ? "mlb-active" : ""}`}
-          onClick={() => setSelectedOption(object.id)}
+          key={project.id}
+          className={`mlb-single-object ${selectedOption === project.id ? "mlb-active" : ""}`}
+          onClick={() => handleClick(project.id)}
         >
-          <span style={{ fontSize: "medium" }}>{object.name}</span>
-          <span style={{ fontSize: "small" }}>{object.description}</span>
+          <span style={{ fontSize: "medium" }}>{project.name}</span>
+          <span style={{ fontSize: "small" }}>{project.description}</span>
         </div>
       ))}
     </div>

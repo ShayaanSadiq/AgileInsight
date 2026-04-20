@@ -1,6 +1,6 @@
 import React from "react";
 import AuthComponent from "../../globalComponents/AuthComponent.jsx";
-import { usePostLoginMutation } from "../../redux/organisation/authApiSlice.js";
+import { usePostOrgLoginMutation } from "../../redux/organisation/authApiSlice.js";
 import { setCurrOrg } from "../../redux/organisation/currOrg.js";
 import { useForm } from "react-hook-form";
 
@@ -22,7 +22,7 @@ const LoginPage = () => {
       title={title}
       inputs={inputs}
       navigateLink={navigateLink}
-      useAuthMutation={usePostLoginMutation}
+      useAuthMutation={usePostOrgLoginMutation}
       register={register}
       handleSubmit={handleSubmit}
       setCurrData={setCurrOrg}

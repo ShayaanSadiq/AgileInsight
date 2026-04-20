@@ -2,13 +2,13 @@ import { baseApi } from "../baseApi.js";
 
 export const managerProjectApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProjectsById: builder.query({
+    getManagerProjectsById: builder.query({
       query: () => ({
         url: "managers/projects",
       }),
     }),
 
-    getProjectById: builder.query({
+    getManagerProjectById: builder.query({
       query: (projectId) => ({
         url: `managers/project/${projectId}`,
       }),
@@ -16,5 +16,5 @@ export const managerProjectApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProjectsByIdQuery, useGetProjectByIdQuery } =
+export const { useGetManagerProjectsByIdQuery, useGetManagerProjectByIdQuery } =
   managerProjectApi;

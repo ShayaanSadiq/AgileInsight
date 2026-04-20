@@ -2,7 +2,13 @@ import React from "react";
 import { BottomDiv } from "./BottomDiv.jsx";
 import { HeadingDescription } from "./HeadingDescription.jsx";
 
-export const ProjectEdit = ({ projectId, projects }) => {
+export const ProjectEdit = ({
+  managerProjects,
+  currentProject,
+  usePatchMutation,
+  useGetUsersByProjectId,
+  useSignupMember,
+}) => {
   return (
     <>
       <HeadingDescription
@@ -10,7 +16,13 @@ export const ProjectEdit = ({ projectId, projects }) => {
         description={"please kill bad people"}
         lastUpdated={"today"}
       />
-      <BottomDiv projectId={projectId} projects={projects} />
+      <BottomDiv
+        managerProjects={managerProjects}
+        currentProject={currentProject}
+        usePatchMutation={usePatchMutation}
+        useGetUsersByProjectId={useGetUsersByProjectId}
+        useSignupMember={useSignupMember}
+      />
     </>
   );
 };

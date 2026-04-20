@@ -15,8 +15,18 @@ export const projectApi = baseApi.injectEndpoints({
           }),
         };
       },
+      invalidatesTags: ["Projects"],
+    }),
+
+    patchProject: builder.mutation({
+      query: ({ projectId, modifiedData }) => ({
+        url: `projects/update/${projectId}`,
+        method: "PATCH",
+        body: JSON.stringify({ ...modifiedData }),
+      }),
     }),
   }),
 });
 
-export const { usePostCreateProjectMutation } = projectApi;
+export const { usePostCreateProjectMutation, usePatchProjectMutation } =
+  projectApi;

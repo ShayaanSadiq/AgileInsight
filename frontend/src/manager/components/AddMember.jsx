@@ -2,15 +2,22 @@ import React from "react";
 import "../css/AddMember.css";
 import { MdArrowBackIos } from "react-icons/md";
 
-export const AddMember = ({ setButtonClicked, register, handleSubmit }) => {
+export const AddMember = ({
+  setButtonClicked,
+  register,
+  handleSubmit,
+  useSignupMember,
+}) => {
+  const [signupMember, { isLoading, isError }] = useSignupMember();
   const inputs = [
     { name: "name", label: "Name", type: "text" },
     { name: "email", label: "Email", type: "text" },
     { name: "role", label: "Role", type: "text" },
   ];
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const result = await signupMember(data);
+    console.log(result);
   };
   return (
     <div className="overlay">

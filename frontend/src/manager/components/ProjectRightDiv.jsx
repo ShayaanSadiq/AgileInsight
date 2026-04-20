@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { AddMember } from "./AddMember";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { MdOutlineGroups } from "react-icons/md";
 import "../css/ProjectRightDiv.css";
 
 export const ProjectRightDiv = ({
-  members = [
-    { id: 1, name: "muqeet" },
-    { id: 2, name: "kuchbhi" },
-  ],
+  useGetUsersByProjectId,
+  useSignupMember,
 }) => {
+  const { projectId } = useParams();
+  const { data, isLoading, isError } = useGetUsersByProjectId(projectId, {
+    skip: !projectId,
+  });
   const [buttonClicked, setButtonClicked] = useState(false);
   const { register, handleSubmit } = useForm();
+  console.log(data);
   return (
     <>
       <div className="right-div-main">
@@ -34,11 +38,13 @@ export const ProjectRightDiv = ({
         <section
           style={{ flex: "1", display: "flex", flexDirection: "column" }}
         >
-          {members?.map((member) => (
-            <div className="member" key={member.id}>
-              <span>{member.name}</span>
-            </div>
-          ))}
+          {data?.length !== 0 &&
+            data?.map((member) => (
+              <div className="member" key={member.id}>
+                <span>{member.name}</span>
+              </div>
+            ))}
+          {data?.length === 0 && <p>Add a member</p>}
         </section>
       </div>
       {buttonClicked && (
@@ -46,6 +52,7 @@ export const ProjectRightDiv = ({
           register={register}
           handleSubmit={handleSubmit}
           setButtonClicked={setButtonClicked}
+          useSignupMember={useSignupMember}
         />
       )}
     </>

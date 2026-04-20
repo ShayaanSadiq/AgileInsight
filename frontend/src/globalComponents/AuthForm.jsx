@@ -17,6 +17,7 @@ export const AuthForm = ({
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data);
     const result = await authFunction(data);
     if (result.data?.message && result.data.message == `${title} successful`) {
       let payload = { id: result.data.id };

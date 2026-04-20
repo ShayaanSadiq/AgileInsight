@@ -2,7 +2,7 @@ import { baseApi } from "../baseApi.js";
 
 export const managerAuthApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    postLogin: builder.mutation({
+    postManagerLogin: builder.mutation({
       query: (data) => ({
         url: "managers/login",
         method: "POST",
@@ -41,7 +41,7 @@ export const managerAuthApi = baseApi.injectEndpoints({
 });
 
 export const {
-  usePostLoginMutation,
+  usePostManagerLoginMutation,
   usePostManagerSignupMutation,
   useGetLogoutMutation,
   useGetVerifyQuery,
