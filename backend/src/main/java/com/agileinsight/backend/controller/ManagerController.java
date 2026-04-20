@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -123,6 +124,12 @@ public class ManagerController {
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/verify")
     public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = managerRepository.existsById(user.getId());
+
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        
         return ResponseEntity.ok(Map.of(
             "message", "Login successful",
             "id", user.getId()
@@ -149,9 +156,7 @@ public class ManagerController {
         boolean isValid = managerRepository.existsById(user.getId());
 
         if(!isValid) {
-            return ResponseEntity.ok(Map.of(
-                "message","Invalid managerId"
-            ));
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         List<ProjectResponse> projects = projectService.getAllManagerProjects(user.getId());
@@ -210,9 +215,7 @@ public class ManagerController {
         boolean isValid = managerRepository.existsById(user.getId());
 
         if(!isValid) {
-            return ResponseEntity.ok(Map.of(
-                "message","Wrong Manager"
-            ));
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         ArrayList<User> users = userRepository.findByManagerId(user.getId());

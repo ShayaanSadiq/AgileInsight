@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -94,6 +95,12 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/verify")
     public ResponseEntity<?> verifyJwt(@AuthenticationPrincipal CustomUserDetails user) {
+        boolean isValid = userRepository.existsById(user.getId());
+
+        if(!isValid) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         return ResponseEntity.ok(Map.of(
             "message", "Login successful",
             "id", user.getId()
