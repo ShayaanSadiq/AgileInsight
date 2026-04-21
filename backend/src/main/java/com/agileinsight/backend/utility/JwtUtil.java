@@ -24,7 +24,7 @@ public class JwtUtil {
                 .claim("id", id)
                 .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60))
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24))
                 .signWith(getSignKey())
                 .compact();
     }
