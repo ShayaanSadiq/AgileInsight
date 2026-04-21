@@ -1,0 +1,16 @@
+.task-edit-body {
+  display: flex;
+  padding: 10px;
+  height: 100%;
+}
+
+.task-left-div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-right-div {
+  width: 50%;
+  border: 2px solid black;
+}

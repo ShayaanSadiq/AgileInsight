@@ -56,8 +56,18 @@ const EditPage = () => {
               useSignupMember={usePostSignupMemberMutation}
             />
           )}
-          {activeOption === "Sprints" && <SprintEdit />}
-          {activeOption === "Tasks" && <TaskEdit />}
+          {activeOption === "Sprints" && (
+            <SprintEdit
+              managerProjects={managerProjects}
+              currentProject={currentProject}
+            />
+          )}
+          {activeOption === "Tasks" && (
+            <TaskEdit
+              managerProjects={managerProjects}
+              currentProject={currentProject}
+            />
+          )}
         </div>
       </div>
     </div>

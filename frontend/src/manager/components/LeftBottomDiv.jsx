@@ -10,9 +10,9 @@ export const LeftBottomDiv = ({
 }) => {
   const navigate = useNavigate();
   const handleClick = (projectId) => {
-    // setSelectedOption(projectId);
     navigate(`/manager/project/${projectId}/edit`);
   };
+
   return (
     <div className="manager-left-bottom">
       <span style={{ marginBottom: "5px" }}>{title}</span>

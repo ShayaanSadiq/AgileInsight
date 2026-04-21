@@ -13,8 +13,27 @@ export const managerSprintApi = baseApi.injectEndpoints({
           endDate: data.endDate,
         }),
       }),
+      invalidatesTags: ["managerSprints"],
+    }),
+
+    getSprintsByProjectId: builder.query({
+      query: (projectId) => ({
+        url: `managers/sprints/${projectId}`,
+      }),
+      providesTags: ["managerSprints"],
+    }),
+    patchSprint: builder.mutation({
+      query: ({ sprintId, modifiedData }) => ({
+        url: `sprints/update/${sprintId}`,
+        method: "PATCH",
+        body: JSON.stringify({ ...modifiedData }),
+      }),
     }),
   }),
 });
 
-export const { usePostSprintMutation } = managerSprintApi;
+export const {
+  usePostSprintMutation,
+  usePatchSprintMutation,
+  useGetSprintsByProjectIdQuery,
+} = managerSprintApi;

@@ -42,25 +42,25 @@ function App() {
       <Route
         path="/manager/home"
         element={
-          <ManagerProtectedRoute>
+          
             <ManagerHomePage />
-          </ManagerProtectedRoute>
+          
         }
       />
       <Route
         path="/manager/project/:projectId"
         element={
-          <ManagerProtectedRoute>
+          
             <ManagerProjectPage />
-          </ManagerProtectedRoute>
+          
         }
       />
       <Route
         path="/manager/project/:projectId/edit"
         element={
-          <ManagerProtectedRoute>
+          
             <ManagerEditPage />
-          </ManagerProtectedRoute>
+          
         }
       />
       <Route path="/user/login" element={<UserLoginPage />} />
