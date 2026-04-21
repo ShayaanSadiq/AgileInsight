@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { LuFileCode } from "react-icons/lu";
-import { LeftDetails } from "./LeftDetails";
-import { LeftBottomDiv } from "./LeftBottomDiv";
+import { ShowDetails } from "./ShowDetails.jsx";
+import { ShowProjects } from "./ShowProjects";
 import { ProjectRightDiv } from "./ProjectRightDiv";
+import { useParams } from "react-router-dom";
 import "../css/manager.editPage.bottom.css";
 
 export const BottomDiv = ({
@@ -12,6 +13,7 @@ export const BottomDiv = ({
   useGetUsersByProjectId,
   useSignupMember,
 }) => {
+  const { projectId } = useParams();
   const [selectedOption, setSelectedOption] = useState("");
   const inputs = [
     { name: "name", label: "Name", type: "text", placeholder: "type here" },
@@ -45,21 +47,22 @@ export const BottomDiv = ({
       <div className="manager-projectEdit-bottomLeft">
         {!currentProject && <p>Loading project details</p>}
         {currentProject && (
-          <LeftDetails
+          <ShowDetails
             Icon={LuFileCode}
             title={"Project Details"}
             inputs={inputs}
             status={"in progress"}
-            defaultProject={{
+            defaultValues={{
               name: currentProject.name,
               description: currentProject.description,
               startDate: currentProject.startDate,
               endDate: currentProject.endDate,
             }}
             usePatchMutation={usePatchMutation}
+            projectId={projectId}
           />
         )}
-        <LeftBottomDiv
+        <ShowProjects
           title={"Projects"}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}

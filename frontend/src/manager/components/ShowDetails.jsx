@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import "../css/manager.leftDetails.css";
 
-export const LeftDetails = ({
+export const ShowDetails = ({
   Icon,
   title,
   status,
   inputs,
-  defaultProject,
+  defaultValues,
   usePatchMutation,
+  projectId,
+  sprintId,
 }) => {
-  const { projectId } = useParams();
   const [updateProject, { isLoading, isError }] = usePatchMutation();
   const {
     register,
@@ -34,18 +34,18 @@ export const LeftDetails = ({
       return acc;
     }, {});
 
-    const result = await updateProject({ projectId, modifiedData });
-    if (result.data.message === "Project updated successfully") {
+    const result = await updateProject({ projectId, sprintId, modifiedData });
+    if (!result.error) {
       toast.success(result.data.message);
     } else {
-      toast.error("Project not updated.");
+      toast.error("Something went wrong.");
     }
   };
   useEffect(() => {
-    if (defaultProject) {
-      reset(defaultProject);
+    if (defaultValues) {
+      reset(defaultValues);
     }
-  }, [defaultProject, reset]);
+  }, [defaultValues, reset]);
   return (
     <>
       <div className="manager-left-details">

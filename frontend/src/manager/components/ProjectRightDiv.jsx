@@ -15,7 +15,6 @@ export const ProjectRightDiv = ({
   });
   const [buttonClicked, setButtonClicked] = useState(false);
   const { register, handleSubmit } = useForm();
-  console.log(data);
   return (
     <>
       <div className="right-div-main">

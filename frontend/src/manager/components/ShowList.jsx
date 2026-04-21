@@ -10,6 +10,7 @@ export const ShowList = ({
   buttonTxt,
   array,
   useAddFunction,
+  setSelectedOption,
   inputs,
   noListMessage,
   ProjectId,
@@ -28,7 +29,6 @@ export const ShowList = ({
     const sprintId = SprintId ? SprintId : null;
     const payload = { ...data, projectId, sprintId };
     const result = await addFunction(payload);
-    console.log(result, projectId);
     if (!result.error) {
       toast.success(result.data.message);
       setBtnClicked(false);
@@ -42,7 +42,7 @@ export const ShowList = ({
   };
   return (
     <>
-      <div className="show-lsit">
+      <div className="show-list">
         <section className="show-list-header">
           <span>{title}</span>
           <button onClick={useBack}>{buttonTxt}</button>
@@ -51,11 +51,15 @@ export const ShowList = ({
           <section className="show-list-section">
             {array?.map((obj) => (
               <div
+                key={obj.id}
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   borderBottom: "1px solid black",
+                  padding: "3px",
+                  cursor: "pointer",
                 }}
+                onClick={() => setSelectedOption(obj.id)}
               >
                 <span>{obj.name}</span>
                 <span>{obj.description}</span>

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/manager.left.bottom.css";
 
-export const LeftBottomDiv = ({
+export const ShowProjects = ({
   title,
   projects,
   selectedOption,

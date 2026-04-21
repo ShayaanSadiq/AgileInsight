@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ShowList } from "./ShowList.jsx";
-import { LeftBottomDiv } from "./LeftBottomDiv.jsx";
+import { ShowProjects } from "./ShowProjects.jsx";
 import "../css/TaskEdit.css";
 
 export const TaskEdit = ({
@@ -29,7 +29,7 @@ export const TaskEdit = ({
     <div className="task-edit-body">
       <div className="task-left-div">
         <ShowList />
-        <LeftBottomDiv
+        <ShowProjects
           title={"Projects"}
           projects={managerProjects}
           selectedOption={selectedOption}
