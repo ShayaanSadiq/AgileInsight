@@ -8,6 +8,7 @@ export const managerSprintApi = baseApi.injectEndpoints({
         method: "POST",
         body: JSON.stringify({
           name: data.name,
+          description: data.description ? data.description : null,
           projectId: data.projectId,
           startDate: data.startDate,
           endDate: data.endDate,

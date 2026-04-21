@@ -1,6 +1,9 @@
 import React from "react";
-import "../css/AddMember.css";
 import { MdArrowBackIos } from "react-icons/md";
+import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import { usePostSignupMemberMutation } from "../../redux/manager/membersApiSlice.js";
+import "../css/AddMember.css";
 
 export const AddMember = ({
   setButtonClicked,
@@ -8,7 +11,8 @@ export const AddMember = ({
   handleSubmit,
   useSignupMember,
 }) => {
-  const [signupMember, { isLoading, isError }] = useSignupMember();
+  const { projectId } = useParams();
+  const [signupMember, { isLoading, isError }] = usePostSignupMemberMutation();
   const inputs = [
     { name: "name", label: "Name", type: "text" },
     { name: "email", label: "Email", type: "text" },
@@ -16,8 +20,13 @@ export const AddMember = ({
   ];
 
   const onSubmit = async (data) => {
-    const result = await signupMember(data);
-    console.log(result);
+    const result = await signupMember({ projectId, ...data });
+    if (!result.error) {
+      toast.success(result.data.message);
+      setButtonClicked(false);
+    } else {
+      toast.error("Something went wrong.");
+    }
   };
   return (
     <div className="overlay">

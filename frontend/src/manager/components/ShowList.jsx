@@ -10,6 +10,7 @@ export const ShowList = ({
   buttonTxt,
   array,
   useAddFunction,
+  selectedOption,
   setSelectedOption,
   inputs,
   noListMessage,
@@ -25,6 +26,7 @@ export const ShowList = ({
       data.startDate = moment(data.startDate).format("DD-MM-YYYY");
       data.endDate = moment(data.endDate).format("DD-MM-YYYY");
     }
+
     const projectId = ProjectId ? ProjectId : null;
     const sprintId = SprintId ? SprintId : null;
     const payload = { ...data, projectId, sprintId };
@@ -52,13 +54,7 @@ export const ShowList = ({
             {array?.map((obj) => (
               <div
                 key={obj.id}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  borderBottom: "1px solid black",
-                  padding: "3px",
-                  cursor: "pointer",
-                }}
+                className={`list-option ${selectedOption === obj.id ? "active" : ""}`}
                 onClick={() => setSelectedOption(obj.id)}
               >
                 <span>{obj.name}</span>

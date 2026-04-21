@@ -95,6 +95,7 @@ export const SprintEdit = ({ currentProject, managerProjects }) => {
             buttonTxt={"Create Sprint"}
             array={data}
             useAddFunction={usePostSprintMutation}
+            selectedOption={selectedSprint}
             setSelectedOption={setSelectedSprint}
             inputs={addSprintInputs}
             noListMessage={"No sprints for the selected project"}
