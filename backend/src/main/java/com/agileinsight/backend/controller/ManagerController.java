@@ -245,7 +245,7 @@ public class ManagerController {
         }
 
         if(project.getManagerId().equals(user.getId())) {
-            ArrayList<User> users = userRepository.findByProjectId(user.getId());
+            ArrayList<User> users = userRepository.findByProjectId(projectId);
 
             return ResponseEntity.ok(users);
         } else {
