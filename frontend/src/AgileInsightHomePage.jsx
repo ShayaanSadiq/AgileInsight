@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./AIHomePage.css";
 import homepage from "./assets/homepage.png";
 import logoImg from "./assets/AgileInsightLogo.jpeg";
 import { useNavigate } from "react-router-dom";
 
 const AgileInsightHomePage = () => {
+  const [loginOption, setLoginOption] = useState("");
   const navigate = useNavigate();
 
-  const onLoginBtnClicked = () => {
-    navigate("/org/login");
+  const onLoginBtnClicked = (value) => {
+    if (value === "org") {
+      navigate("/org/login");
+    } else if (value === "manager") {
+      navigate("/manager/login");
+    } else {
+      navigate("/user/login");
+    }
   };
 
   const onSignupBtnClicked = () => {
@@ -25,9 +32,20 @@ const AgileInsightHomePage = () => {
             </span>
           </div>
 
-          <button onClick={onLoginBtnClicked} className="login-btn">
-            Login
-          </button>
+          <select
+            className="login-select"
+            value={loginOption}
+            onChange={(e) => {
+              const value = e.target.value;
+              setLoginOption(value);
+              onLoginBtnClicked(value);
+            }}
+          >
+            <option value="">Select Login</option>
+            <option value="org">Organisation Login</option>
+            <option value="manager">Manager Login</option>
+            <option value="user">Member Login</option>
+          </select>
         </nav>
 
         <div className="hero">

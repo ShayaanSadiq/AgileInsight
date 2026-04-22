@@ -2,7 +2,7 @@
   margin: 0;
   padding: 10px;
   background-color: #cae7ed;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .home-container {
@@ -16,6 +16,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.login-select {
+  outline: none;
+  border: none;
+  background-color: #76d2db;
+  color: white;
+  padding: 3px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .logo-section {
