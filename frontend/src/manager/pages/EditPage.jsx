@@ -22,6 +22,9 @@ const EditPage = () => {
   const { data: sprints } = useGetSprintsByProjectIdQuery(projectId, {
     skip: !projectId,
   });
+  const { data: members } = useGetUsersByProjIdQuery(projectId, {
+    skip: !projectId,
+  });
   const [activeOption, setActiveOption] = useState("Project");
   const upperDivOptions = [
     { text: "Project", icon: LuFileCode },
@@ -56,7 +59,7 @@ const EditPage = () => {
               managerProjects={managerProjects}
               currentProject={currentProject}
               usePatchMutation={usePatchProjectMutation}
-              useGetUsersByProjectId={useGetUsersByProjIdQuery}
+              members={members}
               useSignupMember={usePostSignupMemberMutation}
             />
           )}
@@ -73,6 +76,7 @@ const EditPage = () => {
               managerProjects={managerProjects}
               currentProject={currentProject}
               sprints={sprints}
+              memebers={members}
             />
           )}
         </div>

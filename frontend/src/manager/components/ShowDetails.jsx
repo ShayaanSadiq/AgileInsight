@@ -12,6 +12,7 @@ export const ShowDetails = ({
   usePatchMutation,
   projectId,
   sprintId,
+  taskId,
 }) => {
   const [updateProject, { isLoading, isError }] = usePatchMutation();
   const {
@@ -34,7 +35,12 @@ export const ShowDetails = ({
       return acc;
     }, {});
 
-    const result = await updateProject({ projectId, sprintId, modifiedData });
+    const result = await updateProject({
+      projectId,
+      sprintId,
+      taskId,
+      modifiedData,
+    });
     if (!result.error) {
       toast.success(result.data.message);
     } else {

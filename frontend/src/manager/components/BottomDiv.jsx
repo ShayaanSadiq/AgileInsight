@@ -10,8 +10,8 @@ export const BottomDiv = ({
   managerProjects,
   currentProject,
   usePatchMutation,
-  useGetUsersByProjectId,
   useSignupMember,
+  members,
 }) => {
   const { projectId } = useParams();
   const [selectedOption, setSelectedOption] = useState("");
@@ -70,10 +70,7 @@ export const BottomDiv = ({
         />
       </div>
       <div className="manager-projectEdit-bottomRight">
-        <ProjectRightDiv
-          useGetUsersByProjectId={useGetUsersByProjectId}
-          useSignupMember={useSignupMember}
-        />
+        <ProjectRightDiv members={members} useSignupMember={useSignupMember} />
       </div>
     </div>
   );

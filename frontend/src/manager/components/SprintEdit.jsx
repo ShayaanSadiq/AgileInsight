@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePostSprintMutation } from "../../redux/manager/sprintApiSlice.js";
 import { usePatchSprintMutation } from "../../redux/manager/sprintApiSlice.js";
-import { HeadingDescription } from "./HeadingDescription.jsx";
 import { ShowDetails } from "./ShowDetails.jsx";
 import { ShowList } from "./ShowList.jsx";
 import { ShowProjects } from "./ShowProjects.jsx";
@@ -81,11 +80,6 @@ export const SprintEdit = ({
   }, [sprints, selectedSprint, currentProject]);
   return (
     <div className="sprint-edit">
-      <HeadingDescription
-        title={"Sprint"}
-        description={"please kill bad people"}
-        lastUpdated={"today"}
-      />
       <div className="sprint-edit-body">
         <div className="sprint-left">
           <ShowList
@@ -97,7 +91,7 @@ export const SprintEdit = ({
             setSelectedOption={setSelectedSprint}
             inputs={addSprintInputs}
             noListMessage={"No sprints for the selected project"}
-            ProjectId={projectId}
+            projectId={projectId}
           />
           <ShowProjects
             title={"Projects"}

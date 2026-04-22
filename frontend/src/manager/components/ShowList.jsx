@@ -17,22 +17,20 @@ export const ShowList = ({
   setSelectedSprint,
   inputs,
   noListMessage,
-  ProjectId,
-  SprintId,
+  projectId,
 }) => {
   const [addFunction, { isLoading, isError }] = useAddFunction();
   const [btnClicked, setBtnClicked] = useState(false);
 
   const { register, handleSubmit } = useForm();
   const handleClick = async (data) => {
+    console.log(data);
     if (data?.startDate || data?.endDate) {
       data.startDate = moment(data.startDate).format("DD-MM-YYYY");
       data.endDate = moment(data.endDate).format("DD-MM-YYYY");
     }
 
-    const projectId = ProjectId ? ProjectId : null;
-    const sprintId = SprintId ? SprintId : null;
-    const payload = { ...data, projectId, sprintId };
+    const payload = { ...data, projectId };
     const result = await addFunction(payload);
     if (!result.error) {
       toast.success(result.data.message);
@@ -92,24 +90,64 @@ export const ShowList = ({
             <form className="add-form" onSubmit={handleSubmit(handleClick)}>
               {inputs.map((input) => {
                 if (input.type === "select") {
-                  return (
-                    <div className="form-element" key={input.name}>
-                      <label htmlFor={`${input.name}`}>{input.label}</label>
-                      <select
-                        name={`${input.name}`}
-                        id={`${input.name}`}
-                        className="add-input"
-                        {...register("projectId")}
-                      >
-                        <option value="">Select</option>
-                        {input.options.map((option) => (
-                          <option key={option.id} value={option.id}>
-                            {option.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  );
+                  if (input.name === "sprintId") {
+                    return (
+                      <div className="form-element" key={input.name}>
+                        <label htmlFor={`${input.name}`}>{input.label}</label>
+                        <select
+                          name={`${input.name}`}
+                          id={`${input.name}`}
+                          className="add-input"
+                          {...register("sprintId")}
+                        >
+                          <option value="">Select</option>
+                          {input.options.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  } else if (input.name === "type") {
+                    return (
+                      <div className="form-element" key={input.name}>
+                        <label htmlFor={`${input.name}`}>{input.label}</label>
+                        <select
+                          name={`${input.name}`}
+                          id={`${input.name}`}
+                          className="add-input"
+                          {...register("type")}
+                        >
+                          <option value="">Select</option>
+                          {input.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  } else if (input.name === "assignedTo") {
+                    return (
+                      <div className="form-element" key={input.name}>
+                        <label htmlFor={`${input.name}`}>{input.label}</label>
+                        <select
+                          name={`${input.name}`}
+                          id={`${input.name}`}
+                          className="add-input"
+                          {...register("assignedTo")}
+                        >
+                          <option value="">Select</option>
+                          {input.options.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
                 } else {
                   return (
                     <div className="form-element" key={input.name}>
@@ -119,6 +157,7 @@ export const ShowList = ({
                         id={`${input.name}`}
                         className="add-input"
                         {...register(input.name)}
+                        placeholder={input.placeholder}
                       />
                     </div>
                   );

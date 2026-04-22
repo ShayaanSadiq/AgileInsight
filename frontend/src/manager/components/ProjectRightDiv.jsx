@@ -5,14 +5,7 @@ import { useParams } from "react-router-dom";
 import { MdOutlineGroups } from "react-icons/md";
 import "../css/ProjectRightDiv.css";
 
-export const ProjectRightDiv = ({
-  useGetUsersByProjectId,
-  useSignupMember,
-}) => {
-  const { projectId } = useParams();
-  const { data, isLoading, isError } = useGetUsersByProjectId(projectId, {
-    skip: !projectId,
-  });
+export const ProjectRightDiv = ({ members, useSignupMember }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const { register, handleSubmit } = useForm();
   return (
@@ -37,13 +30,13 @@ export const ProjectRightDiv = ({
         <section
           style={{ flex: "1", display: "flex", flexDirection: "column" }}
         >
-          {data?.length !== 0 &&
-            data?.map((member) => (
+          {members?.length !== 0 &&
+            members?.map((member) => (
               <div className="member" key={member.id}>
                 <span>{member.name}</span>
               </div>
             ))}
-          {data?.length === 0 && <p>Add a member</p>}
+          {members?.length === 0 && <p>Add a member</p>}
         </section>
       </div>
       {buttonClicked && (

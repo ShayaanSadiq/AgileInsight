@@ -5,10 +5,17 @@ import { ShowDetails } from "./ShowDetails.jsx";
 import { useGetTasksBySprintIdQuery } from "../../redux/manager/managerTasksApiSlice.js";
 import { usePostTaskMutation } from "../../redux/manager/managerTasksApiSlice.js";
 import { usePatchTaskMutation } from "../../redux/manager/managerTasksApiSlice.js";
+import { useParams } from "react-router-dom";
 import { LuListTodo } from "react-icons/lu";
 import "../css/TaskEdit.css";
 
-export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
+export const TaskEdit = ({
+  managerProjects,
+  sprints,
+  memebers,
+  currentProject,
+}) => {
+  const { projectId } = useParams();
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
   const [selectedSprint, setSelectedSprint] = useState("");
@@ -16,8 +23,7 @@ export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
     selectedSprint,
     { skip: !selectedSprint },
   );
-  const sprintValues = data?.find((sprint) => selectedSprint === sprint.id);
-  console.log(data);
+  const taskValues = data?.find((task) => selectedTask === task.id);
   const inputs = [
     { name: "name", label: "Name", type: "text", placeholder: "type here" },
     {
@@ -46,6 +52,55 @@ export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
       placeholder: "type here",
     },
   ];
+
+  const createTaskInputs = [
+    { name: "name", label: "Name", type: "text", placeholder: "type here" },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      placeholder: "type here",
+    },
+    {
+      name: "type",
+      label: "Type",
+      type: "select",
+      placeholder: "Select Type",
+      options: ["BUG", "IMPROVEMENT", "FEATURE"],
+    },
+    {
+      name: "assignedTo",
+      label: "Assign Member",
+      type: "select",
+      placeholder: "Select Member",
+      options: memebers,
+    },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "endDate",
+      label: "End Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "priority",
+      label: "Priority",
+      type: "text",
+      placeholder: "HIGH MEDIUM LOW",
+    },
+    {
+      name: "sprintId",
+      label: "Sprint",
+      type: "select",
+      placeholder: "Select Sprint",
+      options: sprints,
+    },
+  ];
   useEffect(() => {
     if (currentProject) {
       setSelectedOption(currentProject.id);
@@ -64,7 +119,8 @@ export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
           setSelectedOption={setSelectedTask}
           selectedSprint={selectedSprint}
           setSelectedSprint={setSelectedSprint}
-          inputs={inputs}
+          inputs={createTaskInputs}
+          projectId={projectId}
           noListMessage={"Create some tasks"}
         />
         <ShowProjects
@@ -75,27 +131,20 @@ export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
         />
       </div>
 
-      {/* Icon,
-  title,
-  status,
-  inputs,
-  defaultValues,
-  usePatchMutation,
-  projectId,
-  sprintId, */}
       <ShowDetails
         Icon={LuListTodo}
         title={"Task Details"}
         inputs={inputs}
         defaultValues={{
-          name: sprintValues?.name,
-          description: sprintValues?.description,
-          startDate: sprintValues?.startDate,
-          endDate: sprintValues?.endDate,
-          type: sprintValues?.type,
-          priority: sprintValues?.priority,
+          name: taskValues?.name,
+          description: taskValues?.description,
+          startDate: taskValues?.startDate,
+          endDate: taskValues?.endDate,
+          type: taskValues?.type,
+          priority: taskValues?.priority,
         }}
         usePatchMutation={usePatchTaskMutation}
+        taskId={taskValues?.id}
       />
     </div>
   );

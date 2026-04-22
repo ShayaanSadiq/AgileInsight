@@ -6,6 +6,7 @@ export const managerTaskApi = baseApi.injectEndpoints({
       query: (sprintId) => ({
         url: `managers/tasks/${sprintId}`,
       }),
+      providesTags: ["Tasks"],
     }),
 
     postTask: builder.mutation({
@@ -14,6 +15,7 @@ export const managerTaskApi = baseApi.injectEndpoints({
         method: "POST",
         body: JSON.stringify({ ...data }),
       }),
+      invalidatesTags: ["Tasks"],
     }),
 
     patchTask: builder.mutation({
@@ -22,6 +24,7 @@ export const managerTaskApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: JSON.stringify({ ...modifiedData }),
       }),
+      invalidatesTags: ["Tasks"],
     }),
   }),
 });
