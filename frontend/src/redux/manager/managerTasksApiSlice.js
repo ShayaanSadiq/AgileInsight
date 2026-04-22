@@ -15,8 +15,19 @@ export const managerTaskApi = baseApi.injectEndpoints({
         body: JSON.stringify({ ...data }),
       }),
     }),
+
+    patchTask: builder.mutation({
+      query: ({ taskId, modifiedData }) => ({
+        url: `tasks/update/${taskId}`,
+        method: "PATCH",
+        body: JSON.stringify({ ...modifiedData }),
+      }),
+    }),
   }),
 });
 
-export const { useGetTasksBySprintIdQuery, usePostTaskMutation } =
-  managerTaskApi;
+export const {
+  useGetTasksBySprintIdQuery,
+  usePostTaskMutation,
+  usePatchTaskMutation,
+} = managerTaskApi;

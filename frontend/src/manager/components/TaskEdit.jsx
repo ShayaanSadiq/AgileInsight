@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { ShowList } from "./ShowList.jsx";
 import { ShowProjects } from "./ShowProjects.jsx";
+import { ShowDetails } from "./ShowDetails.jsx";
+import { useGetTasksBySprintIdQuery } from "../../redux/manager/managerTasksApiSlice.js";
 import { usePostTaskMutation } from "../../redux/manager/managerTasksApiSlice.js";
+import { usePatchTaskMutation } from "../../redux/manager/managerTasksApiSlice.js";
+import { LuListTodo } from "react-icons/lu";
 import "../css/TaskEdit.css";
 
-export const TaskEdit = ({
-  managerProjects = [
-    { id: 1, name: "kill muqeet", description: "please someone kill muqeet" },
-    {
-      id: 2,
-      name: "kill muqeet 1",
-      description: "please someone kill muqeet 1",
-    },
-  ],
-  tasks = [
-    { name: "kill muqeet", description: "please someone kill muqeet" },
-    { name: "kill muqeet 1", description: "please someone kill muqeet 1" },
-  ],
-  currentProject,
-}) => {
+export const TaskEdit = ({ managerProjects, sprints, currentProject }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
-
+  const [selectedSprint, setSelectedSprint] = useState("");
+  const { data, isLoading, isError } = useGetTasksBySprintIdQuery(
+    selectedSprint,
+    { skip: !selectedSprint },
+  );
+  const sprintValues = data?.find((sprint) => selectedSprint === sprint.id);
+  console.log(data);
   const inputs = [
     { name: "name", label: "Name", type: "text", placeholder: "type here" },
     {
@@ -58,25 +54,16 @@ export const TaskEdit = ({
   return (
     <div className="task-edit-body">
       <div className="task-left-div">
-        {/* 
-  title,
-  buttonTxt,
-  array,
-  useAddFunction,
-  selectedOption,
-  setSelectedOption,
-  inputs,
-  noListMessage,
-  ProjectId,
-  SprintId, */}
-
         <ShowList
           title={"Tasks"}
           buttonTxt={"Create Task"}
-          array={[]}
+          array={data}
+          sprints={sprints}
           useAddFunction={usePostTaskMutation}
           selectedOption={selectedTask}
           setSelectedOption={setSelectedTask}
+          selectedSprint={selectedSprint}
+          setSelectedSprint={setSelectedSprint}
           inputs={inputs}
           noListMessage={"Create some tasks"}
         />
@@ -87,7 +74,29 @@ export const TaskEdit = ({
           setSelectedOption={setSelectedOption}
         />
       </div>
-      <div className="task-right-div">hello</div>
+
+      {/* Icon,
+  title,
+  status,
+  inputs,
+  defaultValues,
+  usePatchMutation,
+  projectId,
+  sprintId, */}
+      <ShowDetails
+        Icon={LuListTodo}
+        title={"Task Details"}
+        inputs={inputs}
+        defaultValues={{
+          name: sprintValues?.name,
+          description: sprintValues?.description,
+          startDate: sprintValues?.startDate,
+          endDate: sprintValues?.endDate,
+          type: sprintValues?.type,
+          priority: sprintValues?.priority,
+        }}
+        usePatchMutation={usePatchTaskMutation}
+      />
     </div>
   );
 };

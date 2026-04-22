@@ -9,9 +9,12 @@ export const ShowList = ({
   title,
   buttonTxt,
   array,
+  sprints,
   useAddFunction,
   selectedOption,
   setSelectedOption,
+  selectedSprint,
+  setSelectedSprint,
   inputs,
   noListMessage,
   ProjectId,
@@ -49,6 +52,19 @@ export const ShowList = ({
           <span>{title}</span>
           <button onClick={useBack}>{buttonTxt}</button>
         </section>
+        {sprints?.length !== 0 && (
+          <section className="sprints-list">
+            {sprints?.map((sprint) => (
+              <span
+                key={sprint.id}
+                onClick={() => setSelectedSprint(sprint.id)}
+                className={`sprint-obj ${selectedSprint === sprint.id ? "active" : ""}`}
+              >
+                {sprint.name}
+              </span>
+            ))}
+          </section>
+        )}
         {array?.length !== 0 && (
           <section className="show-list-section">
             {array?.map((obj) => (

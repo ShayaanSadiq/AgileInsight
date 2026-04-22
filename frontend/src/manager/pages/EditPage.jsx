@@ -6,6 +6,7 @@ import { SideBar } from "../components/SideBar.jsx";
 import { useParams } from "react-router-dom";
 import { useGetManagerProjectsByIdQuery } from "../../redux/manager/managerProjectApiSlice.js";
 import { usePatchProjectMutation } from "../../redux/project/projectApiSlice.js";
+import { useGetSprintsByProjectIdQuery } from "../../redux/manager/sprintApiSlice.js";
 import { useGetUsersByProjIdQuery } from "../../redux/manager/membersApiSlice.js";
 import { usePostSignupMemberMutation } from "../../redux/manager/membersApiSlice.js";
 import { LuFileCode } from "react-icons/lu";
@@ -18,6 +19,9 @@ import "../css/manager.editPage.css";
 const EditPage = () => {
   const { data, isLoading, isError } = useGetManagerProjectsByIdQuery();
   const { projectId } = useParams();
+  const { data: sprints } = useGetSprintsByProjectIdQuery(projectId, {
+    skip: !projectId,
+  });
   const [activeOption, setActiveOption] = useState("Project");
   const upperDivOptions = [
     { text: "Project", icon: LuFileCode },
@@ -60,12 +64,15 @@ const EditPage = () => {
             <SprintEdit
               managerProjects={managerProjects}
               currentProject={currentProject}
+              sprints={sprints}
+              projectId={projectId}
             />
           )}
           {activeOption === "Tasks" && (
             <TaskEdit
               managerProjects={managerProjects}
               currentProject={currentProject}
+              sprints={sprints}
             />
           )}
         </div>

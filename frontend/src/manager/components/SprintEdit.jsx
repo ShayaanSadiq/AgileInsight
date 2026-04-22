@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePostSprintMutation } from "../../redux/manager/sprintApiSlice.js";
 import { usePatchSprintMutation } from "../../redux/manager/sprintApiSlice.js";
-import { useGetSprintsByProjectIdQuery } from "../../redux/manager/sprintApiSlice.js";
 import { HeadingDescription } from "./HeadingDescription.jsx";
 import { ShowDetails } from "./ShowDetails.jsx";
 import { ShowList } from "./ShowList.jsx";
@@ -10,18 +9,17 @@ import { LuFileCode } from "react-icons/lu";
 import { LuListTodo } from "react-icons/lu";
 import { LuIterationCcw } from "react-icons/lu";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import "../css/SprintEdit.css";
 
-export const SprintEdit = ({ currentProject, managerProjects }) => {
-  const { projectId } = useParams();
+export const SprintEdit = ({
+  currentProject,
+  managerProjects,
+  sprints,
+  projectId,
+}) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedSprint, setSelectedSprint] = useState("");
   const [currSprint, setCurrSprint] = useState(null);
-  const { data, isLoading, isError } = useGetSprintsByProjectIdQuery(
-    projectId,
-    { skip: !projectId },
-  );
   const { register, handleSubmit } = useForm({
     defaultValues: {
       name: "kill muqeet",
@@ -77,10 +75,10 @@ export const SprintEdit = ({ currentProject, managerProjects }) => {
     if (currentProject?.id) {
       setSelectedOption(currentProject.id);
     }
-    if (data) {
-      setCurrSprint(data.find((sprint) => selectedSprint === sprint.id));
+    if (sprints) {
+      setCurrSprint(sprints.find((sprint) => selectedSprint === sprint.id));
     }
-  }, [data, selectedSprint, currentProject]);
+  }, [sprints, selectedSprint, currentProject]);
   return (
     <div className="sprint-edit">
       <HeadingDescription
@@ -93,7 +91,7 @@ export const SprintEdit = ({ currentProject, managerProjects }) => {
           <ShowList
             title={"Sprints"}
             buttonTxt={"Create Sprint"}
-            array={data}
+            array={sprints}
             useAddFunction={usePostSprintMutation}
             selectedOption={selectedSprint}
             setSelectedOption={setSelectedSprint}

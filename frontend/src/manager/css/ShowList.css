@@ -21,6 +21,18 @@
   font-size: small;
 }
 
+.sprints-list {
+  font-size: small;
+  display: flex;
+  overflow-x: auto;
+}
+
+.sprint-obj {
+  padding: 5px;
+  border-right: 1px solid black;
+  cursor: pointer;
+}
+
 .list-option {
   display: flex;
   flex-direction: column;
