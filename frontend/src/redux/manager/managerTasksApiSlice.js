@@ -7,7 +7,16 @@ export const managerTaskApi = baseApi.injectEndpoints({
         url: `managers/tasks/${sprintId}`,
       }),
     }),
+
+    postTask: builder.mutation({
+      query: (data) => ({
+        url: "tasks/create",
+        method: "POST",
+        body: JSON.stringify({ ...data }),
+      }),
+    }),
   }),
 });
 
-export const { useGetTasksBySprintIdQuery } = managerTaskApi;
+export const { useGetTasksBySprintIdQuery, usePostTaskMutation } =
+  managerTaskApi;

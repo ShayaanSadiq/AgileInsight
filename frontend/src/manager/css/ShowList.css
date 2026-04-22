@@ -42,8 +42,8 @@
 }
 
 .overlay-inner-div {
-  height: 350px;
-  width: 350px;
+  height: 70%;
+  width: 40%;
   background-color: white;
   border-radius: 30px;
   display: flex;

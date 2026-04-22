@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ShowList } from "./ShowList.jsx";
 import { ShowProjects } from "./ShowProjects.jsx";
+import { usePostTaskMutation } from "../../redux/manager/managerTasksApiSlice.js";
 import "../css/TaskEdit.css";
 
 export const TaskEdit = ({
@@ -19,7 +20,36 @@ export const TaskEdit = ({
   currentProject,
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
+  const [selectedTask, setSelectedTask] = useState("");
 
+  const inputs = [
+    { name: "name", label: "Name", type: "text", placeholder: "type here" },
+    {
+      name: "description",
+      label: "Description",
+      type: "textarea",
+      placeholder: "type here",
+    },
+    { name: "type", label: "Type", type: "text", placeholder: "type here" },
+    {
+      name: "startDate",
+      label: "Start Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "endDate",
+      label: "End Date",
+      type: "date",
+      placeholder: "dd / mm / yyyy",
+    },
+    {
+      name: "priority",
+      label: "Priority",
+      type: "text",
+      placeholder: "type here",
+    },
+  ];
   useEffect(() => {
     if (currentProject) {
       setSelectedOption(currentProject.id);
@@ -28,7 +58,28 @@ export const TaskEdit = ({
   return (
     <div className="task-edit-body">
       <div className="task-left-div">
-        <ShowList />
+        {/* 
+  title,
+  buttonTxt,
+  array,
+  useAddFunction,
+  selectedOption,
+  setSelectedOption,
+  inputs,
+  noListMessage,
+  ProjectId,
+  SprintId, */}
+
+        <ShowList
+          title={"Tasks"}
+          buttonTxt={"Create Task"}
+          array={[]}
+          useAddFunction={usePostTaskMutation}
+          selectedOption={selectedTask}
+          setSelectedOption={setSelectedTask}
+          inputs={inputs}
+          noListMessage={"Create some tasks"}
+        />
         <ShowProjects
           title={"Projects"}
           projects={managerProjects}
