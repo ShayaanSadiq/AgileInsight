@@ -12,7 +12,7 @@ export const ProjectsList = ({
   const navigate = useNavigate();
 
   const handleClick = (projectId) => {
-    navigate(`/${navigationLink}/${projectId}`);
+    navigate(`/${navigationLink}/${projectId}/analytics`);
   };
   let count = 0;
   return (

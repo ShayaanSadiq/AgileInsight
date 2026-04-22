@@ -13,7 +13,7 @@ export const HomePageMainDiv = ({ data }) => {
     "Expected Sprints",
   ];
 
-  const navigateLink = "/manager/project-overview";
+  const navigateLink = "/manager/project";
   return (
     <div className="manager-home-page-main">
       <div className="manager-home-projects-div">

@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { ProjectPageHeader } from "./ProjectPageHeader";
 import "../css/AnalyticsBox.css";
 
 export const AnalyticsBox = () => {
+  const [activeOption, setActiveOption] = useState("project");
+
   return (
     <div className="analytics-box-body">
+      <ProjectPageHeader
+        activeOption={activeOption}
+        setActiveOption={setActiveOption}
+      />
       <h3>Analytics</h3>
       <div>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto ducimus

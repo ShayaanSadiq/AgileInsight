@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const EditBox = ({ projectId }) => {
+export const EditBox = ({ projectId, project }) => {
   const navigate = useNavigate();
 
   const onBtnClick = () => {
@@ -16,12 +16,13 @@ export const EditBox = ({ projectId }) => {
         </div>
         <button onClick={onBtnClick}>Edit project</button>
       </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-        necessitatibus doloremque repudiandae quia numquam. Fugiat similique
-        totam atque maxime officiis necessitatibus architecto molestiae, eos
-        nisi dolorem, vero commodi blanditiis ullam!
-      </p>
+      <span>
+        <b>Name: </b> {project.name}
+      </span>
+      <span>
+        <b>Description: </b>
+        {project.description}
+      </span>
     </div>
   );
 };

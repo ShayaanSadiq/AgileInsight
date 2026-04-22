@@ -1,6 +1,8 @@
 .project-page-body {
   min-height: 100vh;
   background: rgb(203, 241, 245);
-  padding: 7px;
-  padding-top: 10px;
+  padding: 5px;
+  padding-top: 7px;
+  display: flex;
+  flex-direction: column;
 }

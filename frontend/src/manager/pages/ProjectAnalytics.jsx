@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useGetManagerProjectByIdQuery } from "../../redux/manager/managerProjectApiSlice";
 import "../css/ProjectPage.css";
 
-const ProjectOverview = () => {
+const ProjectAnalytics = () => {
   const { projectId } = useParams();
   const { data, isLoading, isError } = useGetManagerProjectByIdQuery(
     projectId,
@@ -20,4 +20,4 @@ const ProjectOverview = () => {
   );
 };
 
-export default ProjectOverview;
+export default ProjectAnalytics;

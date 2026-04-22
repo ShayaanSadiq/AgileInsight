@@ -6,7 +6,7 @@ import OrgSignupPage from "./organisation/pages/SignupPage.jsx";
 import OrgProjectPage from "./organisation/pages/ProjectPage.jsx";
 import ManagerLoginPage from "./manager/pages/LoginPage.jsx";
 import ManagerHomePage from "./manager/pages/HomePage.jsx";
-import ManagerProjectOverview from "./manager/pages/ProjectOverview.jsx";
+import ManagerProjectAnalytics from "./manager/pages/ProjectAnalytics.jsx";
 import UserLoginPage from "./users/pages/LoginPage.jsx";
 import UserHomePage from "./users/pages/HomePage.jsx";
 import UserProjectPage from "./users/pages/ProjectPage.jsx";
@@ -41,8 +41,8 @@ function App() {
       <Route path="/manager/login" element={<ManagerLoginPage />} />
       <Route path="/manager/home" element={<ManagerHomePage />} />
       <Route
-        path="/manager/project-overview/:projectId"
-        element={<ManagerProjectOverview />}
+        path="/manager/project/:projectId/analytics"
+        element={<ManagerProjectAnalytics />}
       />
       <Route
         path="/manager/project/:projectId/edit"

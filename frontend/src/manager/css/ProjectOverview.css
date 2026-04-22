@@ -1,7 +1,6 @@
 .project-overview-body {
-  margin-top: 10px;
-  min-height: 90vh;
-  width: 22%;
+  min-height: 100%;
+  width: 17%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -17,7 +16,7 @@
 .circular-progressbar {
   display: flex;
   flex-direction: column;
-  height: 33%;
+  max-height: 250px;
   width: 100%;
   padding-bottom: 10px;
   border-bottom: 1px solid rgb(182, 182, 182);
