@@ -88,7 +88,7 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER', 'ORGANISATION')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     @GetMapping("/getTask/{taskId}")
     public ResponseEntity<?> getTask(@PathVariable @Valid String taskId, @AuthenticationPrincipal CustomUserDetails user) {
         Task task = taskRepository.findById(taskId).orElse(null);
