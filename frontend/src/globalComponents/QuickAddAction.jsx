@@ -15,8 +15,7 @@ export const QuickAddAction = ({ inputs, useBack, useAddFunction, orgId }) => {
     }
     let result = null;
     if (orgId) {
-      let orgData = { ...data, orgId: orgId };
-      result = await addFunction(orgData);
+      result = await addFunction({ ...data, orgId });
     } else {
       result = await addFunction(data);
     }
@@ -27,6 +26,7 @@ export const QuickAddAction = ({ inputs, useBack, useAddFunction, orgId }) => {
       toast.error("Something went wrong!");
     }
   };
+
   return (
     <div className="overlay">
       <div className="quick-add-div">

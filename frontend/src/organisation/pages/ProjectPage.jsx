@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { OrganisationLayout } from "../components/OrganisationLayout.jsx";
 import { useParams } from "react-router-dom";
 import { useGetProjectByIdQuery } from "../../redux/organisation/orgProjectApiSlice.js";
+import { usePatchOrgProjectMutation } from "../../redux/organisation/orgProjectApiSlice.js";
+import { useGetAllManagersQuery } from "../../redux/organisation/orgManagersApiSlice.js";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import "../css/ProjectPage.css";
 
 const ProjectPage = () => {
@@ -10,12 +13,19 @@ const ProjectPage = () => {
   const { data, isLoading, isError } = useGetProjectByIdQuery(projectId, {
     skip: !projectId,
   });
-  const { register, handleSubmit } = useForm({
+  const [updateProject] = usePatchOrgProjectMutation();
+  const { data: managers } = useGetAllManagersQuery();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { dirtyFields },
+  } = useForm({
     defaultValues: {
-      name: "hello",
-      description: "hi",
-      startDate: "12/12/2025",
-      endDate: "12/01/2026",
+      name: "",
+      description: "",
+      startDate: "",
+      endDate: "",
     },
   });
 
@@ -41,14 +51,38 @@ const ProjectPage = () => {
     },
   ];
 
+  const onUpdate = async (data) => {
+    const modifiedData = Object.keys(dirtyFields).reduce((acc, key) => {
+      acc[key] = data[key];
+      return acc;
+    }, {});
+
+    const result = await updateProject({ projectId, modifiedData });
+    if (!result.error) {
+      toast.success(result.data.message);
+    } else {
+      toast.error("Something went wrong.");
+    }
+  };
+
+  useEffect(() => {
+    if (data) {
+      reset(data);
+    }
+  }, [data, reset]);
+
+  console.log(managers);
   return (
     <OrganisationLayout>
       <div className="org-project-main">
-        <form className="org-project-form">
+        <form className="org-project-form" onSubmit={handleSubmit(onUpdate)}>
+          <div>
+            <h4>Project Details</h4>
+          </div>
           {inputs.map((input) => {
             if (input.type === "textarea") {
               return (
-                <div className="org-form-object">
+                <div key={input.name} className="org-form-object">
                   <label htmlFor={`${input.name}`}>{input.label}</label>
                   <textarea
                     id={`${input.name}`}
@@ -60,7 +94,7 @@ const ProjectPage = () => {
               );
             } else {
               return (
-                <div className="org-form-object">
+                <div key={input.name} className="org-form-object">
                   <label htmlFor={`${input.name}`}>{input.label}</label>
                   <input
                     type="text"
@@ -73,6 +107,9 @@ const ProjectPage = () => {
               );
             }
           })}
+          <button style={{ maxWidth: "100px", alignSelf: "end" }} type="submit">
+            update
+          </button>
         </form>
         <div>show analytics here</div>
       </div>

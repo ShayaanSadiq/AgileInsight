@@ -14,8 +14,19 @@ export const orgProjectApi = baseApi.injectEndpoints({
         url: `organisations/project/${projectId}`,
       }),
     }),
+
+    patchOrgProject: builder.mutation({
+      query: ({ modifiedData, projectId }) => ({
+        url: `projects/update/${projectId}`,
+        method: "PATCH",
+        body: JSON.stringify({ ...modifiedData }),
+      }),
+    }),
   }),
 });
 
-export const { useGetProjectsByIdQuery, useGetProjectByIdQuery } =
-  orgProjectApi;
+export const {
+  useGetProjectsByIdQuery,
+  useGetProjectByIdQuery,
+  usePatchOrgProjectMutation,
+} = orgProjectApi;

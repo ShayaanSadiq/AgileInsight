@@ -14,15 +14,18 @@ export const managerAuthApi = baseApi.injectEndpoints({
     }),
 
     postManagerSignup: builder.mutation({
-      query: (data) => ({
-        url: "managers/register",
-        method: "POST",
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.email,
-        }),
-      }),
+      query: (data) => {
+        return {
+          url: "managers/register",
+          method: "POST",
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            password: data.email,
+            orgId: data.orgId,
+          }),
+        };
+      },
     }),
 
     getVerify: builder.query({

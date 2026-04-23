@@ -5,6 +5,7 @@ import { useGetOrgLogoutMutation } from "../../redux/organisation/authApiSlice.j
 import { usePostCreateProjectMutation } from "../../redux/project/projectApiSlice.js";
 import { usePostManagerSignupMutation } from "../../redux/manager/authApiSlice.js";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { LuFileCode } from "react-icons/lu";
 import { MdPersonAddAlt1 } from "react-icons/md";
@@ -12,7 +13,8 @@ import { LuCircleUser } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import "../css/OrganisationLayout.css";
 
-export const OrganisationLayout = ({ orgId, children }) => {
+export const OrganisationLayout = ({ children }) => {
+  const orgId = useSelector((state) => state.currOrg.id);
   const [logoutOrganisation, { isLoading, isError }] =
     useGetOrgLogoutMutation();
   const [activeOption, setActiveOption] = useState("Projects");
@@ -47,12 +49,15 @@ export const OrganisationLayout = ({ orgId, children }) => {
         return navigate("/org/login");
       }
       toast.error("Logout unsuccessful");
+    } else if (activeOption === "Profile") {
+      navigate(`/${"org"}/profile`);
     }
   };
 
   useEffect(() => {
     handleLogoutOrganisation();
   }, [activeOption]);
+
   return (
     <div className="org-layout">
       <div className="org-layout-body">
