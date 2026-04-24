@@ -189,4 +189,20 @@ public class OrganisationController {
             ));
         }
     }
+
+    @PreAuthorize("hasRole('ORGANISATION')")
+    @PostMapping("/updateProfile")
+    public ResponseEntity<?> updateProfile(@RequestBody Organisation organisation, @AuthenticationPrincipal CustomUserDetails user) {
+        boolean updated = organisationService.updateProfile(organisation, user.getId());
+
+        if(updated) {
+            return ResponseEntity.ok(Map.of(
+                "message","Organisation updated successfully"
+            ));
+        } else {
+            return ResponseEntity.ok(Map.of(
+                "message","Organisation not updated"
+            ));
+        }
+    }
 }

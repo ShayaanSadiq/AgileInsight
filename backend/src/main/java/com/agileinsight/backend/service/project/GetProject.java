@@ -1,7 +1,5 @@
 package com.agileinsight.backend.service.project;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,17 +19,18 @@ public class GetProject {
     private ManagerRepository managerRepository;
 
     public ProjectResponse getProject(String projectId) {
-        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        Project project = projectRepository.findById(projectId).orElse(null);
 
-        if (optionalProject.isEmpty()) {
+        if (project == null) {
             return null; 
         }
 
-        Project project = optionalProject.get();
-
-        Manager manager = managerRepository
-            .findById(project.getManagerId())
+        Manager manager = null;
+        if(project.getManagerId() != null) {
+            manager = managerRepository
+            .findById(project.getManagerId() )
             .orElse(null);
+        }
 
         return new ProjectResponse(
             project.getId(),
@@ -41,7 +40,6 @@ public class GetProject {
             project.getCurrentSprintId(),
             project.getStartDate(),
             project.getEndDate(),
-            project.getManagerId(),
             manager,
             project.getOrganisationId(),
             project.getExpectedSprints(),

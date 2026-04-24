@@ -9,6 +9,7 @@ import com.agileinsight.backend.model.Organisation;
 import com.agileinsight.backend.repository.OrganisationRepository;
 import com.agileinsight.backend.service.organisation.LoginOrganisation;
 import com.agileinsight.backend.service.organisation.RegisterOrganisation;
+import com.agileinsight.backend.service.organisation.UpdateOrganisation;
 
 @Service
 public class OrganisationService{
@@ -18,6 +19,9 @@ public class OrganisationService{
 
     @Autowired
     private LoginOrganisation loginOrganisation;
+
+    @Autowired
+    private UpdateOrganisation updateOrganisation;
 
     @Autowired
     private OrganisationRepository organisationRepository;
@@ -32,5 +36,9 @@ public class OrganisationService{
 
     public List<Organisation> getAllOrganisations() {
         return organisationRepository.findAll();
+    }
+
+    public boolean updateProfile(Organisation organisation, String organisationId) {
+        return updateOrganisation.updateProfile(organisation, organisationId);
     }
 }
