@@ -24,7 +24,7 @@ const SignupPage = () => {
       title={title}
       inputs={inputs}
       navigateLink={navigateLink}
-      useAuthMutation={usePostSignupMutation}
+      useAuthMutation={usePostOrgSignupMutation}
       register={register}
       handleSubmit={handleSubmit}
       setCurrData={setCurrOrg}

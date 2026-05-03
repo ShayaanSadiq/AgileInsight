@@ -1,0 +1,27 @@
+.sprint-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 5px;
+}
+
+.one-box {
+  display: flex;
+  flex-direction: column;
+  font-size: medium;
+  gap: 3px;
+}
+
+.sprint-input {
+  padding: 5px;
+  font-size: medium;
+  outline: none;
+}
+
+.sprint-textarea {
+  padding: 5px;
+  height: 120px;
+  font-size: medium;
+  outline: none;
+}

@@ -1,0 +1,56 @@
+.content-area {
+  flex: 1;
+  padding: 20px;
+}
+
+.project-details-container {
+  width: 80%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: whitesmoke;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.project-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.project-details-container label {
+  display: block;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.project-details-container input,
+.project-details-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #999;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.date-row {
+  display: flex;
+  gap: 30px;
+  margin-top: 15px;
+}
+
+.date-row > div {
+  flex: 1;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.analytics-text {
+  margin-top: 15px;
+  font-size: 16px;
+}
