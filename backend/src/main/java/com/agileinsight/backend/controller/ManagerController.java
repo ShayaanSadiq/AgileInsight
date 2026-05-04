@@ -3,6 +3,7 @@ package com.agileinsight.backend.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -169,13 +170,10 @@ public class ManagerController {
     public ResponseEntity<?> getProject(@PathVariable String projectId) {
         ProjectResponse projectResponse = projectService.getProject(projectId);
 
-        if(projectResponse == null) {
-            return ResponseEntity.ok(Map.of(
-                "message","Invalid projectId"
-            ));
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(projectResponse, () -> Map.of(
+                "message", "Invalid projectId"
+        )));
 
-        return ResponseEntity.ok(projectResponse);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -260,12 +258,8 @@ public class ManagerController {
     public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
         ManagerProjectionView managerProjectionView = managerRepository.findProjectedById(user.getId()).orElse(null);
 
-        if(managerProjectionView != null) {
-            return ResponseEntity.ok(managerProjectionView);
-        } else {
-            return ResponseEntity.ok(Map.of(
-                "message","Not found"
-            ));
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(managerProjectionView, () -> Map.of(
+                "message", "Not found"
+        )));
     }
 }

@@ -49,7 +49,7 @@ public class ProjectController {
             return ResponseEntity.ok(Map.of(
                 "message", "Project created successfully"
             ));
-        } else if (createdProject!= null && project.getExpectedSprints() == null){
+        } else if (createdProject!= null){
             analyticsService.createAnalytics(project.getId());
             return ResponseEntity.ok(Map.of(
                 "message", "Project created successfully"

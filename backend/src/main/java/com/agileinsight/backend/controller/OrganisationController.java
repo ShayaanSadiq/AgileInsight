@@ -3,6 +3,7 @@ package com.agileinsight.backend.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,6 @@ import com.agileinsight.backend.service.OrganisationService;
 import com.agileinsight.backend.service.ProjectService;
 import com.agileinsight.backend.utility.JwtUtil;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -54,7 +54,7 @@ public class OrganisationController {
     private ManagerRepository managerRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid Organisation organisation, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody @Valid Organisation organisation) {
         Organisation organisation1 = organisationService.loginOrganisation(organisation.getEmail(), organisation.getPassword());
 
         if(organisation1 != null) {
@@ -181,13 +181,9 @@ public class OrganisationController {
     public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
         OrganisationProjectionView organisationProjectionView = organisationRepository.findProjectedById(user.getId()).orElse(null);
 
-        if(organisationProjectionView != null) {
-            return ResponseEntity.ok(organisationProjectionView);
-        } else {
-            return ResponseEntity.ok(Map.of(
-                "message","Not found"
-            ));
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(organisationProjectionView, () -> Map.of(
+                "message", "Not found"
+        )));
     }
 
     @PreAuthorize("hasRole('ORGANISATION')")

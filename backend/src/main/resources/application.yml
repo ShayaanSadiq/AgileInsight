@@ -4,5 +4,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017
+      # noinspection SpellCheckingInspection
       database: agileinsight
       auto-index-creation: true

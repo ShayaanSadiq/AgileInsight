@@ -47,7 +47,7 @@ public class TaskController {
 
         if(createdTask != null) {
             return ResponseEntity.ok(Map.of(
-                "message", "Task created succesfully"
+                "message", "Task created successfully"
             ));
         } else {
             return ResponseEntity.ok(Map.of(

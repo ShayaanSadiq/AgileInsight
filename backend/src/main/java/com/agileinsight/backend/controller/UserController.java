@@ -2,6 +2,7 @@ package com.agileinsight.backend.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -127,13 +128,9 @@ public class UserController {
     public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails user) {
         UserProjectionView userProjectionView = userRepository.findProjectedById(user.getId()).orElse(null);
 
-        if(userProjectionView != null) {
-            return ResponseEntity.ok(userProjectionView);
-        } else {
-            return ResponseEntity.ok(Map.of(
-                "message","Not found"
-            ));
-        }
+        return ResponseEntity.ok(Objects.requireNonNullElseGet(userProjectionView, () -> Map.of(
+                "message", "Not found"
+        )));
     }
 
     @PreAuthorize("hasRole('USER')")
