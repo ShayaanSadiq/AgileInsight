@@ -22,8 +22,8 @@ public class ManagerService{
     @Autowired
     private ManagerRepository managerRepository;
 
-    public Manager registerManager(Manager manager) {
-        return registerManager.registerManager(manager);
+    public void registerManager(Manager manager) {
+        registerManager.registerManager(manager);
     }
     
     public Manager loginManager(String email, String rawPassword) {

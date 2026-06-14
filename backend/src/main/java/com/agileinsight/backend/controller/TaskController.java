@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,7 @@ public class TaskController {
     public ResponseEntity<?> deleteTask(@PathVariable String id) {
         taskService.deleteTask(id);
 
-        if(taskRepository.findById(id) != null) {
+        if(taskRepository.findById(id).equals(Optional.empty())) {
             return ResponseEntity.ok(Map.of(
                 "message","Task deleted successfully"
             ));
@@ -88,7 +89,8 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
+    // CHECK METHOD BEFORE IMPLEMENTATION
+    /* @PreAuthorize("hasAnyRole('MANAGER', 'USER')")
     @GetMapping("/getTask/{taskId}")
     public ResponseEntity<?> getTask(@PathVariable @Valid String taskId, @AuthenticationPrincipal CustomUserDetails user) {
         Task task = taskRepository.findById(taskId).orElse(null);
@@ -99,13 +101,15 @@ public class TaskController {
             ));
         }
 
-        boolean isManagerValid = taskRepository.findById(taskId).orElse(null).getProjectId().equals(user.getId());
-        boolean isOrganisationValid = taskRepository.findById(taskId).orElse(null).getProjectId().equals(managerRepository.findById(user.getId()).orElse(null).getOrganisationId());
+        // CHECK THIS METHOD
+        boolean isManagerValid = task.getProjectId().equals(user.getId());
+        // CHECK THIS METHOD
+        boolean isOrganisationValid = task.getProjectId().equals(managerRepository.findById(user.getId()).orElse(null).getOrganisationId());
 
         if(!isManagerValid || !isOrganisationValid) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         return ResponseEntity.ok(task);
-    }
+    } */
 }

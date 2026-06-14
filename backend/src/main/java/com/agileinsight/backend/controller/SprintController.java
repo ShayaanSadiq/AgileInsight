@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class SprintController {
     public ResponseEntity<?> deleteSprint(@PathVariable String id) {
         sprintService.deleteSprint(id);
 
-        if(sprintRepository.findById(id) != null) {
+        if(sprintRepository.findById(id).equals(Optional.empty())) {
             return ResponseEntity.ok(Map.of(
                 "message","Sprint deleted successfully"
             ));

@@ -15,10 +15,14 @@ public class UpdateOrganisation {
     public boolean updateProfile(Organisation organisation, String organisationId) {
         Organisation organisation1 = organisationRepository.findById(organisationId).orElse(null);
 
+        if(organisation1 == null) {
+            return false;
+        }
         organisation1.setName(organisation.getName());
         organisation1.setEmail(organisation.getEmail());
         organisation1.setPassword(organisation.getPassword());
 
-        return organisationRepository.save(organisation1) != null;
+        organisationRepository.save(organisation1);
+        return true;
     }
 }

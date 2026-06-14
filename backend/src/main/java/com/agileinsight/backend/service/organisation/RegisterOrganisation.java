@@ -16,12 +16,12 @@ public class RegisterOrganisation {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Organisation registerOrganisation(Organisation organisation) {
+    public void registerOrganisation(Organisation organisation) {
         if (organisationRepository.findByEmail(organisation.getEmail()) != null) {
             throw new RuntimeException("Email already registered");
         }
 
         organisation.setPassword(passwordEncoder.encode(organisation.getPassword()));
-        return organisationRepository.save(organisation);
+        organisationRepository.save(organisation);
     }
 }

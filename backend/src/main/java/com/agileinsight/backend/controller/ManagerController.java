@@ -103,7 +103,7 @@ public class ManagerController {
             try {
                 managerService.registerManager(manager);
 
-                String id = (managerRepository.findByEmail(manager.getEmail())).getId();
+                String id = (Objects.requireNonNull(managerRepository.findByEmail(manager.getEmail()))).getId();
                 
                 return ResponseEntity.ok()
                                     .body(Map.of(
@@ -226,7 +226,6 @@ public class ManagerController {
     public ResponseEntity<?> getAllManagers(@PathVariable String projectId, @AuthenticationPrincipal CustomUserDetails user) {
         boolean isValid1 = managerRepository.existsById(user.getId());
         boolean isValid2 = projectRepository.existsById(projectId);
-        Project project = projectRepository.findById(projectId).orElse(null);
 
         // Check if Manager and Project exist
         if(!isValid1 && !isValid2) {
@@ -235,6 +234,9 @@ public class ManagerController {
             ));
         }
 
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        assert project != null;
         // Check if managerId field in project is null
         if (project.getManagerId() == null){
             return ResponseEntity.ok(Map.of(

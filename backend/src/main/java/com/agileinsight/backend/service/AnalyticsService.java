@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.agileinsight.backend.model.Analytics;
 import com.agileinsight.backend.repository.AnalyticsRepository;
 
+import java.util.Objects;
+
 @Service
 public class AnalyticsService {
     
@@ -126,10 +128,10 @@ public class AnalyticsService {
     }
 
     public void deleteAnalytics(String projectId) {
-        analyticsRepository.delete(analyticsRepository.findByProjectId(projectId));
+        analyticsRepository.delete(Objects.requireNonNull(analyticsRepository.findByProjectId(projectId)));
     }
 
-    public void calulateCompletionPercentage(String projectId) {
+    public void calculateCompletionPercentage(String projectId) {
         Analytics analytics = analyticsRepository.findByProjectId(projectId);
 
         double completionPercentage;

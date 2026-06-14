@@ -26,8 +26,8 @@ public class OrganisationService{
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    public Organisation registerOrganisation(Organisation organisation) {
-        return registerOrganisation.registerOrganisation(organisation);
+    public void registerOrganisation(Organisation organisation) {
+        registerOrganisation.registerOrganisation(organisation);
     }
     
     public Organisation loginOrganisation(String email, String rawPassword) {

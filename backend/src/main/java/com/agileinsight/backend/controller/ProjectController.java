@@ -1,6 +1,7 @@
 package com.agileinsight.backend.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,7 @@ public class ProjectController {
     public ResponseEntity<?> deleteProject(@PathVariable String projectId) {        
         projectService.deleteProject(projectId);
 
-        if(projectRepository.findById(projectId) != null) {
+        if(projectRepository.findById(projectId).equals(Optional.empty())) {
             return ResponseEntity.ok(Map.of(
                 "message","Project deleted successfully"
             ));

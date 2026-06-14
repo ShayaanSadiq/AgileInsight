@@ -19,12 +19,6 @@ public interface TaskRepository extends MongoRepository<Task, String>{
     @Nullable
     Task findByName(String name);
 
-    @Nullable
-    Optional<Task> findById(String id);
-
-    @Nullable
-    void deleteById(String id);
-
     long countByProjectId(String projectId);
 
     long countByProjectIdAndStatus(String projectId, Status status);

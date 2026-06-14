@@ -12,9 +12,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "secret_key_more_than_32_characters";
-
     private SecretKey getSignKey() {
+        String SECRET = "secret_key_more_than_32_characters";
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 

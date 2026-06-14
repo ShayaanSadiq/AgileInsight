@@ -16,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 public class ProjectUpdateDTO {
+    
     private String name;
     private String description;
     private LocalDate startDate;

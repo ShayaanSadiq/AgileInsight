@@ -22,9 +22,8 @@ public class UserService{
     @Autowired
     private UserRepository userRepository;
 
-
-    public User registerUser(User user, String managerEmail) {
-        return registerUser.registerUser(user, managerEmail);
+    public void registerUser(User user, String managerEmail) {
+        registerUser.registerUser(user, managerEmail);
     }
     
     public User loginUser(String email, String rawPassword) {

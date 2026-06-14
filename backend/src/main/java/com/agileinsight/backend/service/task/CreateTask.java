@@ -38,19 +38,15 @@ public class CreateTask {
            task.getStatus() == null) {
             Task task1 = taskRepository.save(task);
 
-            if(task1 != null) {
-                if(task1.getType() == Type.BUG) {
-                    analyticsService.incrementBug(projectId);
-                } else {
-                    analyticsService.incrementTask(projectId);
-                }
-
-                analyticsService.calulateCompletionPercentage(projectId);
-
-                return task1;
+            if (task1.getType() == Type.BUG) {
+                analyticsService.incrementBug(projectId);
             } else {
-                return null;
+                analyticsService.incrementTask(projectId);
             }
+
+            analyticsService.calculateCompletionPercentage(projectId);
+
+            return task1;
         } else {
             return null;
         }

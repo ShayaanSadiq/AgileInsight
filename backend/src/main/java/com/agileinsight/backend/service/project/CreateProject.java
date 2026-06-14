@@ -30,13 +30,7 @@ public class CreateProject {
                 project.setStatus(Status.YET_TO_START);
             }
 
-            Project project1 = projectRepository.save(project);
-
-            if(project1 != null) {
-                return project1;
-            } else {
-                return null;
-            }
+            return projectRepository.save(project);
         } else {
             return null;
         }

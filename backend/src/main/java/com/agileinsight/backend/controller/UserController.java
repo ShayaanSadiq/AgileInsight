@@ -161,15 +161,10 @@ public class UserController {
         task.setStatus(Status.COMPLETED);
         taskRepository.save(task);
 
-        if(taskRepository.findById(taskId).orElse(null).getStatus() == Status.COMPLETED) {
-            return ResponseEntity.ok(Map.of(
-                "message","Task completed successfully"
-            ));
-        } else {
-            return ResponseEntity.ok(Map.of(
-                "message","Task not completed"
-            ));
-        }
+        return ResponseEntity.ok(
+                Map.of(
+                        "message","Task completed successfully"
+        ));
     }
 
     @PreAuthorize("hasRole('USER')")

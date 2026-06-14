@@ -16,12 +16,12 @@ public class RegisterManager {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Manager registerManager(Manager manager) {
+    public void registerManager(Manager manager) {
         if (managerRepository.findByEmail(manager.getEmail()) != null) {
             throw new RuntimeException("Email already registered");
         }
 
         manager.setPassword(passwordEncoder.encode(manager.getPassword()));
-        return managerRepository.save(manager);
+        managerRepository.save(manager);
     }
 }

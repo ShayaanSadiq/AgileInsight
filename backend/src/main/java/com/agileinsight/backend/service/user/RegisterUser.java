@@ -8,6 +8,8 @@ import com.agileinsight.backend.model.User;
 import com.agileinsight.backend.repository.ManagerRepository;
 import com.agileinsight.backend.repository.UserRepository;
 
+import java.util.Objects;
+
 @Component
 public class RegisterUser {
     
@@ -20,14 +22,14 @@ public class RegisterUser {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(User user, String managerEmail) {
+    public void registerUser(User user, String managerEmail) {
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new RuntimeException("Email already registered");
         }
 
-        user.setManagerId(managerRepository.findByEmail(managerEmail).getId());
+        user.setManagerId(Objects.requireNonNull(managerRepository.findByEmail(managerEmail)).getId());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }
