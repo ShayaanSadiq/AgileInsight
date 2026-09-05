@@ -1,0 +1,1 @@
+AgileInsight is a Spring Stability Monitoring System which is built on Java Spring Boot and React.js. It is a web application which simplifies the Agile Model of Project Development, so that users can easily understand how it works. It can also be used as a training application to allow students to use the Agile Model practically.
